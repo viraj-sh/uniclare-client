@@ -7,5 +7,6 @@ logs
 test.py
 dev
 */__pycache__
+*/*/__pycache__
 .env
 prompt.md

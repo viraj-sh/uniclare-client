@@ -27,14 +27,20 @@ def cached_request(
     *,
     expire_after: timedelta | None = None,
     log_prefix: str = "",
+    refetch: bool = False,
     **kwargs,
 ):
+    if refetch:
+        kwargs.setdefault("headers", {}).update({"Cache-Control": "no-cache"})
     response = cached_session.request(method, url, expire_after=expire_after, **kwargs)
     from_cache = getattr(response, "from_cache", False)
-    ttl = expire_after or cached_session.expire_after
+    ttl_requested = (
+        expire_after if expire_after is not None else cached_session.expire_after
+    )
+    ttl_remaining = "N/A"
+    age_str = "N/A"
     now = datetime.now(timezone.utc)
 
-    age_str, ttl_str = "N/A", "N/A"
     if from_cache:
         try:
             cache_key = cached_session.cache.create_key(response.request)
@@ -54,19 +60,17 @@ def cached_request(
 
                 if expires:
                     remaining = expires - now
-                    ttl_str = f"{remaining.total_seconds() / 60:.1f} min left"
+                    ttl_remaining = f"{remaining.total_seconds() / 60:.1f} min left"
         except Exception as e:
             logger.debug(f"{log_prefix}Failed to compute cache metadata: {e}")
+
     cache_event = "HIT" if from_cache else "MISS"
     logger.info(
-        f"{log_prefix}Cache {cache_event}",
+        f"{log_prefix}Cache {cache_event}, TTL requested: {ttl_requested}, TTL remaining: {ttl_remaining}, age: {age_str}",
         extra={
             "url": url,
             "method": method,
             "source": "cache" if from_cache else "network",
-            "age": age_str,
-            "ttl": str(ttl),
-            "ttl_remaining": ttl_str if from_cache else None,
         },
     )
 
@@ -107,11 +111,25 @@ def clear_cache():
 
 def get_cache_stats() -> dict:
     cache = cached_session.cache
+    now = datetime.now(timezone.utc)
+    response_ttls = {}
+
+    for key, record in cache.responses.items():
+        expires = getattr(record, "expires", None)
+        if expires and expires.tzinfo is None:
+            expires = expires.replace(tzinfo=timezone.utc)
+        if expires:
+            ttl_remaining = (expires - now).total_seconds() / 60  # minutes
+            response_ttls[key] = f"{ttl_remaining:.1f} min left"
+        else:
+            response_ttls[key] = "N/A"
+
     stats = {
         "backend": type(cache).__name__,
         "responses": len(cache.responses),
-        "expire_after": str(cached_session.expire_after),
+        "expire_after_default": str(cached_session.expire_after),
         "cache_path": str(cache.cache_name),
+        "response_ttls": response_ttls,
     }
     logger.debug("Cache stats retrieved", extra=stats)
     return stats
