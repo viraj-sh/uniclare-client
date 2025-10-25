@@ -1,8 +1,9 @@
 import os
 from pathlib import Path
 from dotenv import load_dotenv, set_key
-from core.config import ENV_PATH
 from typing import Any, Optional
+
+ENV_PATH = ".env"
 
 
 class EnvManager:

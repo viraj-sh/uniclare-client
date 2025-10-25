@@ -2,8 +2,10 @@ endlinks.md
 test.json
 venv
 creds.json
-core/__pycache__
 .cache
 logs
 test.py
 dev
+*/__pycache__
+.env
+prompt.md
