@@ -10,3 +10,5 @@ dev
 */*/__pycache__
 .env
 prompt.md
+endpoints.md
+__pycache__

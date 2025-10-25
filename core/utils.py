@@ -11,7 +11,7 @@ class EnvManager:
     _loaded = False
 
     @classmethod
-    def _ensure_loaded(cls, force: bool = False):
+    def _ensure_loaded(cls, force: bool = True):
         if not cls._loaded or force:
             if cls.path.exists():
                 load_dotenv(cls.path, override=True)
@@ -19,7 +19,7 @@ class EnvManager:
 
     @classmethod
     def get(
-        cls, key: str, default: str | None = None, *, force_reload: bool = False
+        cls, key: str, default: str | None = None, *, force_reload: bool = True
     ) -> str | None:
         cls._ensure_loaded(force=force_reload)
         return os.getenv(key, default)
@@ -36,11 +36,11 @@ class EnvManager:
 
     @classmethod
     def unset(cls, key: str) -> None:
-        if not cls.path.exists():
-            return
-        lines = cls.path.read_text().splitlines()
-        new_lines = [l for l in lines if not l.startswith(f"{key}=")]
-        cls.path.write_text("\n".join(new_lines))
+        if cls.path.exists():
+            lines = cls.path.read_text().splitlines()
+            new_lines = [l for l in lines if not l.startswith(f"{key}=")]
+            cls.path.write_text("\n".join(new_lines))
+        os.environ.pop(key, None)
         cls._loaded = False
 
 

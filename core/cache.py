@@ -105,8 +105,29 @@ def invalidate_cache(response) -> None:
 # Cache maintenance utilities
 # ----------------------------
 def clear_cache():
-    cached_session.cache.clear()
-    logger.warning("All HTTP cache cleared", extra={"action": "clear_cache"})
+    logger = setup_logging(name="core.clear_cache", level="INFO")
+
+    try:
+        if "cached_session" not in globals() or cached_session is None:
+            logger.warning("Cache clear skipped: cached_session not initialized")
+            return
+
+        cache_attr = getattr(cached_session, "cache", None)
+        if cache_attr is None:
+            logger.warning("Cache clear skipped: no cache attribute on cached_session")
+            return
+        try:
+            cache_attr.clear()
+            logger.info(
+                "All HTTP cache cleared successfully", extra={"action": "clear_cache"}
+            )
+        except Exception as inner_exc:
+            logger.warning(
+                f"Failed to clear cache: {inner_exc}", extra={"action": "clear_cache"}
+            )
+
+    except Exception as exc:
+        logger.exception(f"Unexpected error while clearing cache: {exc}")
 
 
 def get_cache_stats() -> dict:

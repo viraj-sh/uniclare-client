@@ -6,6 +6,7 @@ from core.cache import clear_cache
 import json
 import shutil
 from pathlib import Path
+from core.exceptions import handle_exception
 
 
 def authenticate_student(registration_number: str, password: str) -> Dict[str, Any]:
@@ -132,15 +133,14 @@ def validate_session(phpsessid: Optional[str] = None) -> Dict[str, Any]:
         return result
 
 
-def logout_user(phpsessid: Optional[str] = None) -> Dict[str, Any]:
+def logout_user() -> Dict[str, Any]:
     logger = setup_logging(name="core.logout_user", level="INFO")
     url = "https://studentportal.universitysolutions.in/src/logout.php"
 
-    if not phpsessid:
-        phpsessid = EnvManager.get("PHPSESSID", default=None)
-        logger.info(
-            f"EnvManager retrieval: PHPSESSID {'found' if phpsessid else 'not found'}"
-        )
+    phpsessid = EnvManager.get("PHPSESSID", default=None)
+    logger.info(
+        f"EnvManager retrieval: PHPSESSID {'found' if phpsessid else 'not found'}"
+    )
 
     if not phpsessid:
         logger.warning("Logout skipped: No PHPSESSID available")
