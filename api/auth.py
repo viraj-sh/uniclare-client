@@ -124,7 +124,7 @@ def validate_session_endpoint() -> JSONResponse:
 
 
 @router.post(
-    "/auth/logout",
+    "/logout",
     operation_id="auth_logout_post",
     summary="Logout current session",
     response_model=LogoutResponse,

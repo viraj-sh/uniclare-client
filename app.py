@@ -3,6 +3,8 @@ from fastapi.middleware.cors import CORSMiddleware
 import logging
 
 from api.system import router as system_router
+from api.profile import router as profile_router
+from api.result import router as result_router
 from api.auth import router as auth_router
 from core.logging import setup_logging
 from fastapi_mcp import FastApiMCP
@@ -33,6 +35,8 @@ logger.info("Application startup complete")
 # Include routers
 app.include_router(system_router, prefix="/api")
 app.include_router(auth_router, prefix="/api")
+app.include_router(profile_router, prefix="/api")
+app.include_router(result_router, prefix="/api")
 
 mcp = FastApiMCP(
     app,
@@ -44,6 +48,12 @@ mcp = FastApiMCP(
         "auth_logout_post",
         "auth_send_password_reset_otp_post",
         "password_reset_confirm_post",
+        "get_student_profile",
+        "get_editable_profile",
+        "update_editable_profile_patch",
+        "get_student_results",
+        "fetchExamResult",
+        "get_detailed_exam_results",
     ],
 )
 mcp.mount_http()

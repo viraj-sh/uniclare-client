@@ -4,7 +4,6 @@ from core.utils import EnvManager, standard_response
 from core.logging import setup_logging
 from core.cache import clear_cache
 import json
-import shutil
 from pathlib import Path
 from core.exceptions import handle_exception
 
@@ -185,14 +184,6 @@ def logout_user() -> Dict[str, Any]:
             logger.info("PHPSESSID removed from environment")
 
             clear_cache()
-
-            cache_dir = Path(".cache")
-            if cache_dir.exists() and cache_dir.is_dir():
-                try:
-                    shutil.rmtree(cache_dir)
-                    logger.info(".cache directory deleted from disk")
-                except Exception as e:
-                    logger.warning(f"Failed to delete .cache directory: {e}")
 
             result_data = {"phpsessid": phpsessid, "message": "Logout successful"}
             logger.info(f"Logout successful for PHPSESSID: {phpsessid}")

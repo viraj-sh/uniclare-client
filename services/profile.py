@@ -8,21 +8,19 @@ from core.exceptions import handle_exception
 from .model.model_profile import StudentProfile, EditableProfile
 
 
-def fetch_profile(
-    phpsessid: Optional[str] = None, refetch: bool = False
-) -> Dict[str, any]:
+def fetch_profile(refetch: bool = False) -> Dict[str, any]:
     logger = setup_logging(name="core.fetch_profile", level="INFO")
     log_prefix = "[StudentProfile] "
 
     try:
+
+        phpsessid = EnvManager.get("PHPSESSID", default=None)
         if not phpsessid:
-            phpsessid = EnvManager.get("PHPSESSID", default=None)
-            if not phpsessid:
-                logger.warning(f"{log_prefix}No PHPSESSID found in environment")
-                return standard_response(
-                    False, error_msg="Missing session ID", status_code=400
-                )
-            logger.info(f"{log_prefix}Fetched PHPSESSID from EnvManager")
+            logger.warning(f"{log_prefix}No PHPSESSID found in environment")
+            return standard_response(
+                False, error_msg="Missing session ID", status_code=400
+            )
+        logger.info(f"{log_prefix}Fetched PHPSESSID from EnvManager")
 
         url = "https://studentportal.universitysolutions.in/src/profile.php"
         headers = {"Cookie": f"PHPSESSID={phpsessid}"}
@@ -65,20 +63,17 @@ def fetch_profile(
         return handle_exception(logger, exc, context="fetch_profile")
 
 
-def fetch_editable_profile(
-    phpsessid: Optional[str] = None, refetch: bool = False
-) -> Dict[str, Any]:
+def fetch_editable_profile(refetch: bool = False) -> Dict[str, Any]:
     logger = setup_logging(name="core.fetch_editable_profile", level="INFO")
 
     try:
 
-        if phpsessid is None:
-            phpsessid = EnvManager.get("PHPSESSID", default=None)
-            if not phpsessid:
-                return standard_response(
-                    False, error_msg="Missing PHPSESSID", status_code=400
-                )
-            logger.info("Fetched PHPSESSID from EnvManager")
+        phpsessid = EnvManager.get("PHPSESSID", default=None)
+        if not phpsessid:
+            return standard_response(
+                False, error_msg="Missing PHPSESSID", status_code=400
+            )
+        logger.info("Fetched PHPSESSID from EnvManager")
 
         url = "https://studentportal.universitysolutions.in/app.php?a=getStudDet&univcode=051"
         headers = {"Cookie": f"PHPSESSID={phpsessid}"}
@@ -123,7 +118,6 @@ def fetch_editable_profile(
 
 
 def update_editable_profile(
-    phpsessid: Optional[str] = None,
     ffatname: Optional[str] = None,
     fmotname: Optional[str] = None,
     fabcno: Optional[str] = None,
@@ -131,13 +125,12 @@ def update_editable_profile(
     logger = setup_logging(name="core.update_editable_profile", level="INFO")
 
     try:
+        phpsessid = EnvManager.get("PHPSESSID", default=None)
         if not phpsessid:
-            phpsessid = EnvManager.get("PHPSESSID", default=None)
-            if not phpsessid:
-                logger.warning("PHPSESSID not provided or found in environment.")
-                return standard_response(
-                    False, error_msg="Session ID missing", status_code=400
-                )
+            logger.warning("PHPSESSID not provided or found in environment.")
+            return standard_response(
+                False, error_msg="Session ID missing", status_code=400
+            )
 
         current_profile_resp = fetch_editable_profile(phpsessid)
         current_profile = current_profile_resp.get("data", {})

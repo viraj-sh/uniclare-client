@@ -10,13 +10,11 @@ from .model.model_result import StudentResult, ExamResult, SubjectsResult
 logger = setup_logging(name="core.result", level="INFO")
 
 
-def fetch_student_results(
-    phpsessid: Optional[str] = None, refetch: bool = False
-) -> Dict[str, Any]:
+def fetch_student_results(refetch: bool = False) -> Dict[str, Any]:
     log_prefix = "[StudentResults] "
 
     try:
-        session_id = phpsessid or EnvManager.get("PHPSESSID", default=None)
+        session_id = EnvManager.get("PHPSESSID", default=None)
         if not session_id:
             logger.warning(f"{log_prefix}Missing PHPSESSID. Cannot fetch results.")
             return standard_response(
@@ -113,9 +111,7 @@ def fetch_student_results(
 
 
 def fetch_exam_result(
-    phpsessid: Optional[str] = None,
-    exam_code: Optional[str] = None,
-    refetch: bool = False,
+    exam_code: Optional[str] = None, refetch: bool = False
 ) -> Dict[str, Any]:
     log_prefix = "[ExamResult] "
 
@@ -127,8 +123,7 @@ def fetch_exam_result(
                 status_code=400,
             )
 
-        if phpsessid is None:
-            phpsessid = EnvManager.get("PHPSESSID", default=None)
+        phpsessid = EnvManager.get("PHPSESSID", default=None)
 
         if not phpsessid:
             return standard_response(
@@ -205,19 +200,16 @@ def fetch_exam_result(
 
 
 def fetch_detailed_exam_result(
-    phpsessid: Optional[str] = None,
-    exam_code: Optional[str] = None,
-    refetch: bool = False,
+    exam_code: Optional[str] = None, refetch: bool = False
 ) -> Dict[str, Any]:
     logger = setup_logging(name="core.fetch_detailed_exam_result", level="INFO")
 
     try:
+        phpsessid = EnvManager.get("PHPSESSID", default=None)
         if phpsessid is None:
-            phpsessid = EnvManager.get("PHPSESSID", default=None)
-            if phpsessid is None:
-                return standard_response(
-                    False, error_msg="PHPSESSID not found", status_code=400
-                )
+            return standard_response(
+                False, error_msg="PHPSESSID not found", status_code=400
+            )
 
         if not exam_code:
             return standard_response(
