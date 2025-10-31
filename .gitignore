@@ -12,3 +12,4 @@ dev
 prompt.md
 endpoints.md
 __pycache__
+frontend/hash.py

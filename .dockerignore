@@ -1,0 +1,12 @@
+__pycache__
+.cache
+*/__pycache__
+*/*/__pycache__
+logs
+venv
+.env
+.gitignore
+prompt.md
+readme.md
+requirements-dev.txt
+frontend/hash.py
