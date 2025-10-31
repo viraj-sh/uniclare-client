@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Result Details</title>
+    <link rel="icon" href="/static/src/favicon.ico" type="image/x-icon" />
+    <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="/static/js/sidebar_user.js"></script>
+    <script src="/static/js/result_details.js"></script>
+    <script src="/static/js/signout.js"></script>
+
+</head>
+
+<body>
+    <button data-drawer-target="sidebar-multi-level-sidebar" data-drawer-toggle="sidebar-multi-level-sidebar"
+        aria-controls="sidebar-multi-level-sidebar" type="button"
+        class="inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-neutral-800 dark:focus:ring-gray-600">
+        <span class="sr-only">Open sidebar</span>
+        <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg">
+            <path clip-rule="evenodd" fill-rule="evenodd"
+                d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z">
+            </path>
+        </svg>
+    </button>
+
+    <aside id="sidebar-multi-level-sidebar"
+        class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0"
+        aria-label="Sidebar">
+        <div class="h-full px-3 py-4 overflow-y-auto bg-white dark:bg-neutral-800 shadow-sm transition-colors">
+            <a href="/static/pages/profile.html" class="flex items-center ps-2.5 mb-5">
+                <span id="sidebar-username"
+                    class="self-center text-xl font-semibold whitespace-nowrap dark:text-white">Username</span>
+            </a>
+            <ul class="space-y-2 font-medium">
+                <li>
+                    <button type="button"
+                        class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group dark:text-white dark:hover:bg-green-800 hover:text-white hover:bg-green-700"
+                        aria-controls="dropdown-example" data-collapse-toggle="dropdown-example">
+                        <svg class="shrink-0 w-5 h-5 text-gray-500 transition duration-75 group-hover:text-white dark:text-gray-400 dark:group-hover:text-white"
+                            xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="currentColor"
+                            viewBox="0 0 640 640">
+                            <path
+                                d="M320 312C386.3 312 440 258.3 440 192C440 125.7 386.3 72 320 72C253.7 72 200 125.7 200 192C200 258.3 253.7 312 320 312zM290.3 368C191.8 368 112 447.8 112 546.3C112 562.7 125.3 576 141.7 576L498.3 576C514.7 576 528 562.7 528 546.3C528 447.8 448.2 368 349.7 368L290.3 368z" />
+                        </svg>
+                        <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">Profile</span>
+                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 10 6">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="m1 1 4 4 4-4" />
+                        </svg>
+                    </button>
+                    <ul id="dropdown-example" class="hidden py-2 space-y-2">
+                        <li>
+
+                            </svg>
+                            <a href="/static/pages/profile.html"
+                                class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group dark:text-white dark:hover:bg-green-800 hover:text-white hover:bg-green-700">View
+                                Profile</a>
+                        </li>
+                        <li>
+                            <a href="/static/pages/edit_profile.html"
+                                class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:text-white hover:bg-green-700 dark:text-white dark:hover:bg-green-800">
+                                Edit
+                                Profile</a>
+                        </li>
+                    </ul>
+                </li>
+
+                <!-- <li>
+                    <a href="#"
+                        class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:text-white hover:bg-green-700 dark:hover:bg-green-800 group">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640"
+                            class="shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-white dark:group-hover:text-white"
+                            aria-hidden="true" svg" fill="currentColor">
+                            <path
+                                d="M320 64C302.3 64 288 78.3 288 96L288 99.2C215 114 160 178.6 160 256L160 277.7C160 325.8 143.6 372.5 113.6 410.1L103.8 422.3C98.7 428.6 96 436.4 96 444.5C96 464.1 111.9 480 131.5 480L508.4 480C528 480 543.9 464.1 543.9 444.5C543.9 436.4 541.2 428.6 536.1 422.3L526.3 410.1C496.4 372.5 480 325.8 480 277.7L480 256C480 178.6 425 114 352 99.2L352 96C352 78.3 337.7 64 320 64zM258 528C265.1 555.6 290.2 576 320 576C349.8 576 374.9 555.6 382 528L258 528z" />
+                        </svg>
+                        <span class="flex-1 ms-3 whitespace-nowrap">Notifications</span>
+                        <span
+                            class="inline-flex items-center justify-center w-3 h-3 p-3 ms-3 text-sm font-medium text-blue-800 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-300">3</span>
+                    </a>
+                </li> -->
+                <li>
+                    <a href="/static/pages/results.html"
+                        class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:text-white hover:bg-green-700 dark:hover:bg-green-800 group">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640"
+                            class="shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-white dark:group-hover:text-white"
+                            aria-hidden="true" svg" fill="currentColor">
+                            <path
+                                d="M544 160C544 124.7 515.3 96 480 96L160 96C124.7 96 96 124.7 96 160L96 480C96 515.3 124.7 544 160 544L480 544C515.3 544 544 515.3 544 480L544 160zM352 216C352 229.3 341.3 240 328 240L216 240C202.7 240 192 229.3 192 216C192 202.7 202.7 192 216 192L328 192C341.3 192 352 202.7 352 216zM424 296C437.3 296 448 306.7 448 320C448 333.3 437.3 344 424 344L216 344C202.7 344 192 333.3 192 320C192 306.7 202.7 296 216 296L424 296zM288 424C288 437.3 277.3 448 264 448L216 448C202.7 448 192 437.3 192 424C192 410.7 202.7 400 216 400L264 400C277.3 400 288 410.7 288 424z" />
+                        </svg>
+                        <span class="flex-1 ms-3 whitespace-nowrap">Results</span>
+                    </a>
+                </li>
+            </ul>
+            <ul class="pt-4 mt-4 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700">
+                <!-- <li>
+                    <a href="#"
+                        class="flex items-center p-2 text-gray-900 transition duration-75 rounded-lg hover:text-white hover:bg-green-700 dark:hover:bg-green-800 dark:text-white group">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640"
+                            class="shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-white dark:group-hover:text-white"
+                            aria-hidden="true" svg" fill="currentColor">
+                            <path
+                                d="M400 416C497.2 416 576 337.2 576 240C576 142.8 497.2 64 400 64C302.8 64 224 142.8 224 240C224 258.7 226.9 276.8 232.3 293.7L71 455C66.5 459.5 64 465.6 64 472L64 552C64 565.3 74.7 576 88 576L168 576C181.3 576 192 565.3 192 552L192 512L232 512C245.3 512 256 501.3 256 488L256 448L296 448C302.4 448 308.5 445.5 313 441L346.3 407.7C363.2 413.1 381.3 416 400 416zM440 160C462.1 160 480 177.9 480 200C480 222.1 462.1 240 440 240C417.9 240 400 222.1 400 200C400 177.9 417.9 160 440 160z" />
+                        </svg>
+                        <span class="ms-3">Change Password</span>
+                    </a>
+                </li> -->
+                <!-- <li>
+                    <a href="#"
+                        class="flex items-center p-2 text-gray-900 transition duration-75 rounded-lg hover:text-white hover:bg-green-700 dark:hover:bg-green-800 dark:text-white group">
+                        <svg class="shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-white dark:group-hover:text-white"
+                            aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                            viewBox="0 0 21 21">
+                            <path
+                                d="m5.4 2.736 3.429 3.429A5.046 5.046 0 0 1 10.134 6c.356.01.71.06 1.056.147l3.41-3.412c.136-.133.287-.248.45-.344A9.889 9.889 0 0 0 10.269 1c-1.87-.041-3.713.44-5.322 1.392a2.3 2.3 0 0 1 .454.344Zm11.45 1.54-.126-.127a.5.5 0 0 0-.706 0l-2.932 2.932c.029.023.049.054.078.077.236.194.454.41.65.645.034.038.078.067.11.107l2.927-2.927a.5.5 0 0 0 0-.707Zm-2.931 9.81c-.024.03-.057.052-.081.082a4.963 4.963 0 0 1-.633.639c-.041.036-.072.083-.115.117l2.927 2.927a.5.5 0 0 0 .707 0l.127-.127a.5.5 0 0 0 0-.707l-2.932-2.931Zm-1.442-4.763a3.036 3.036 0 0 0-1.383-1.1l-.012-.007a2.955 2.955 0 0 0-1-.213H10a2.964 2.964 0 0 0-2.122.893c-.285.29-.509.634-.657 1.013l-.01.016a2.96 2.96 0 0 0-.21 1 2.99 2.99 0 0 0 .489 1.716c.009.014.022.026.032.04a3.04 3.04 0 0 0 1.384 1.1l.012.007c.318.129.657.2 1 .213.392.015.784-.05 1.15-.192.012-.005.02-.013.033-.018a3.011 3.011 0 0 0 1.676-1.7v-.007a2.89 2.89 0 0 0 0-2.207 2.868 2.868 0 0 0-.27-.515c-.007-.012-.02-.025-.03-.039Zm6.137-3.373a2.53 2.53 0 0 1-.35.447L14.84 9.823c.112.428.166.869.16 1.311-.01.356-.06.709-.147 1.054l3.413 3.412c.132.134.249.283.347.444A9.88 9.88 0 0 0 20 11.269a9.912 9.912 0 0 0-1.386-5.319ZM14.6 19.264l-3.421-3.421c-.385.1-.781.152-1.18.157h-.134c-.356-.01-.71-.06-1.056-.147l-3.41 3.412a2.503 2.503 0 0 1-.443.347A9.884 9.884 0 0 0 9.732 21H10a9.9 9.9 0 0 0 5.044-1.388 2.519 2.519 0 0 1-.444-.348ZM1.735 15.6l3.426-3.426a4.608 4.608 0 0 1-.013-2.367L1.735 6.4a2.507 2.507 0 0 1-.35-.447 9.889 9.889 0 0 0 0 10.1c.1-.164.217-.316.35-.453Zm5.101-.758a4.957 4.957 0 0 1-.651-.645c-.033-.038-.077-.067-.11-.107L3.15 17.017a.5.5 0 0 0 0 .707l.127.127a.5.5 0 0 0 .706 0l2.932-2.933c-.03-.018-.05-.053-.078-.076ZM6.08 7.914c.03-.037.07-.063.1-.1.183-.22.384-.423.6-.609.047-.04.082-.092.129-.13L3.983 4.149a.5.5 0 0 0-.707 0l-.127.127a.5.5 0 0 0 0 .707L6.08 7.914Z" />
+                        </svg>
+                        <span class="ms-3">Help</span>
+                    </a>
+                </li> -->
+                <li>
+                    <a href="#"
+                        class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:text-white hover:bg-green-700 dark:hover:bg-green-800 group">
+                        <svg class="shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-white dark:group-hover:text-white"
+                            aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 16">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M1 8h11m0 0L8 4m4 4-4 4m4-11h3a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-3" />
+                        </svg>
+                        <span class="flex-1 ms-3 whitespace-nowrap">Sign Out</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </aside>
+    <!-- End of Sidebar -->
+
+    <div class="p-4 sm:ml-64">
+        <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg">
+
+            <!-- Result Details Section -->
+            <div id="result-details-section" class="space-y-8">
+
+                <!-- Header Info -->
+                <div class="border-b border-gray-200 pb-4">
+                    <div class="flex items-center justify-between flex-wrap gap-4">
+                        <div>
+                            <h1 id="student-name" class="text-2xl font-semibold text-gray-900">
+                                <!-- Student Name -->
+                            </h1>
+                            <p id="student-usn" class="text-sm text-gray-600 mt-1">
+                                <!-- USN -->
+                            </p>
+                            <p id="college-name" class="text-sm text-gray-600 mt-1">
+                                <!-- College -->
+                            </p>
+                        </div>
+                        <div class="text-right">
+                            <p id="exam-name" class="text-base font-medium text-green-800">
+                                <!-- Example: IV Semester B.Tech (AI & ML) -->
+                            </p>
+                            <p id="exam-date" class="text-sm text-gray-600 mt-1">
+                                <!-- Example: June 2025 -->
+                            </p>
+                            <p id="result-date" class="text-sm text-gray-600 mt-1">
+                                <!-- Example: Result Declared on 23 July 2025 -->
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Summary Cards -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                    <div class="bg-green-50 border border-green-200 rounded-lg p-4 text-center">
+                        <p class="text-sm text-gray-600 uppercase font-medium">SGPA</p>
+                        <p id="sgpa" class="text-xl font-semibold text-green-800 mt-1">--</p>
+                    </div>
+                    <div class="bg-green-50 border border-green-200 rounded-lg p-4 text-center">
+                        <p class="text-sm text-gray-600 uppercase font-medium">Percentage</p>
+                        <p id="percentage" class="text-xl font-semibold text-green-800 mt-1">--</p>
+                    </div>
+                    <div class="bg-green-50 border border-green-200 rounded-lg p-4 text-center">
+                        <p class="text-sm text-gray-600 uppercase font-medium">CGPA</p>
+                        <p id="cgpa" class="text-xl font-semibold text-green-800 mt-1">--</p>
+                    </div>
+                    <div class="bg-green-50 border border-green-200 rounded-lg p-4 text-center">
+                        <p class="text-sm text-gray-600 uppercase font-medium">Credits</p>
+                        <p id="credits" class="text-xl font-semibold text-green-800 mt-1">--</p>
+                    </div>
+                    <div class="bg-green-50 border border-green-200 rounded-lg p-4 text-center">
+                        <p class="text-sm text-gray-600 uppercase font-medium">Result</p>
+                        <p id="final-result" class="text-xl font-semibold text-green-800 mt-1">--</p>
+                    </div>
+                </div>
+
+                <!-- Subject Table -->
+                <div class="overflow-x-auto rounded-lg border border-gray-200">
+                    <table class="min-w-full divide-y divide-gray-200 text-sm">
+                        <thead class="bg-green-800 text-white">
+                            <tr>
+                                <th class="px-4 py-3 text-left font-medium">No</th>
+                                <th class="px-4 py-3 text-left font-medium">Subject</th>
+                                <th class="px-4 py-3 text-left font-medium">Type</th>
+                                <th class="px-4 py-3 text-left font-medium">End Marks</th>
+                                <th class="px-4 py-3 text-left font-medium">Viva Marks</th>
+                                <th class="px-4 py-3 text-left font-medium">IA Marks</th>
+                                <th class="px-4 py-3 text-left font-medium">Total Marks</th>
+                                <th class="px-4 py-3 text-left font-medium">Credit Hours</th>
+                                <th class="px-4 py-3 text-left font-medium">Grade Points</th>
+                                <th class="px-4 py-3 text-left font-medium">Credit Points</th>
+                                <th class="px-4 py-3 text-left font-medium">Grade</th>
+                                <th class="px-4 py-3 text-left font-medium">Remarks</th>
+                            </tr>
+                        </thead>
+                        <tbody id="subjects-table-body" class="divide-y divide-gray-200 bg-white">
+                            <!-- Dynamically populated rows -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Additional Info -->
+                <div class="border-t border-gray-200 pt-4 text-sm text-gray-700">
+                    <p id="reval-date" class="mt-1"><span class="font-semibold">Revaluation Date:</span> --</p>
+                    <p id="retot-date" class="mt-1"><span class="font-semibold">Re-totaling Date:</span> --</p>
+                    <p id="pc-date" class="mt-1"><span class="font-semibold">Provisional Certificate Date:</span> --</p>
+                </div>
+
+                <!-- Back Button -->
+                <div class="pt-4 border-t border-gray-200 flex justify-end">
+                    <a href="/static/pages/results.html"
+                        class="bg-green-800 text-white font-medium px-5 py-2.5 rounded-lg hover:bg-green-900 transition-colors">
+                        ← Back to Results
+                    </a>
+                </div>
+
+                <!-- Feedback -->
+                <p id="result-feedback" class="hidden text-center text-sm font-medium mt-3"></p>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- End of Main Section -->
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
+</body>
+
+</html>

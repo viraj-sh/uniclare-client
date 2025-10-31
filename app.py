@@ -30,6 +30,14 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+app.mount("/static", StaticFiles(directory="frontend"), name="frontend_static")
+
+
+@app.get("/", include_in_schema=False)
+def serve_frontend():
+    return FileResponse("frontend/index.html")
+
+
 logger.info("Application startup complete")
 
 # Include routers

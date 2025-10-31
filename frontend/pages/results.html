@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Results</title>
+    <link rel="icon" href="/static/src/favicon.ico" type="image/x-icon" />
+    <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="/static/js/sidebar_user.js"></script>
+    <script src="/static/js/result.js"></script>
+    <script src="/static/js/signout.js"></script>
+
+</head>
+
+<body>
+
+    <!-- Start of Sidebar -->
+    <button data-drawer-target="sidebar-multi-level-sidebar" data-drawer-toggle="sidebar-multi-level-sidebar"
+        aria-controls="sidebar-multi-level-sidebar" type="button"
+        class="inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-neutral-800 dark:focus:ring-gray-600">
+        <span class="sr-only">Open sidebar</span>
+        <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg">
+            <path clip-rule="evenodd" fill-rule="evenodd"
+                d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z">
+            </path>
+        </svg>
+    </button>
+
+    <aside id="sidebar-multi-level-sidebar"
+        class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0"
+        aria-label="Sidebar">
+        <div class="h-full px-3 py-4 overflow-y-auto bg-white dark:bg-neutral-800 shadow-sm transition-colors">
+            <a href="/static/pages/profile.html" class="flex items-center ps-2.5 mb-5">
+                <span id="sidebar-username"
+                    class="self-center text-xl font-semibold whitespace-nowrap dark:text-white">Username</span>
+            </a>
+            <ul class="space-y-2 font-medium">
+                <li>
+                    <button type="button"
+                        class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group dark:text-white dark:hover:bg-green-800 hover:text-white hover:bg-green-700"
+                        aria-controls="dropdown-example" data-collapse-toggle="dropdown-example">
+                        <svg class="shrink-0 w-5 h-5 text-gray-500 transition duration-75 group-hover:text-white dark:text-gray-400 dark:group-hover:text-white"
+                            xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="currentColor"
+                            viewBox="0 0 640 640">
+                            <path
+                                d="M320 312C386.3 312 440 258.3 440 192C440 125.7 386.3 72 320 72C253.7 72 200 125.7 200 192C200 258.3 253.7 312 320 312zM290.3 368C191.8 368 112 447.8 112 546.3C112 562.7 125.3 576 141.7 576L498.3 576C514.7 576 528 562.7 528 546.3C528 447.8 448.2 368 349.7 368L290.3 368z" />
+                        </svg>
+                        <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">Profile</span>
+                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 10 6">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="m1 1 4 4 4-4" />
+                        </svg>
+                    </button>
+                    <ul id="dropdown-example" class="hidden py-2 space-y-2">
+                        <li>
+
+                            </svg>
+                            <a href="/static/pages/profile.html"
+                                class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group dark:text-white dark:hover:bg-green-800 hover:text-white hover:bg-green-700">View
+                                Profile</a>
+                        </li>
+                        <li>
+                            <a href="/static/pages/edit_profile.html"
+                                class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:text-white hover:bg-green-700 dark:text-white dark:hover:bg-green-800">
+                                Edit
+                                Profile</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="/static/pages/results.html"
+                        class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:text-white hover:bg-green-700 dark:hover:bg-green-800 group">
+
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640"
+                            class="shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-white dark:group-hover:text-white"
+                            aria-hidden="true" svg" fill="currentColor">
+                            <path
+                                d="M544 160C544 124.7 515.3 96 480 96L160 96C124.7 96 96 124.7 96 160L96 480C96 515.3 124.7 544 160 544L480 544C515.3 544 544 515.3 544 480L544 160zM352 216C352 229.3 341.3 240 328 240L216 240C202.7 240 192 229.3 192 216C192 202.7 202.7 192 216 192L328 192C341.3 192 352 202.7 352 216zM424 296C437.3 296 448 306.7 448 320C448 333.3 437.3 344 424 344L216 344C202.7 344 192 333.3 192 320C192 306.7 202.7 296 216 296L424 296zM288 424C288 437.3 277.3 448 264 448L216 448C202.7 448 192 437.3 192 424C192 410.7 202.7 400 216 400L264 400C277.3 400 288 410.7 288 424z" />
+                        </svg>
+                        <span class="flex-1 ms-3 whitespace-nowrap">Results</span>
+
+                    </a>
+                </li>
+            </ul>
+            <ul class="pt-4 mt-4 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700">
+                <li>
+                    <a href="#"
+                        class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:text-white hover:bg-green-700 dark:hover:bg-green-800 group">
+                        <svg class="shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-white dark:group-hover:text-white"
+                            aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 16">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M1 8h11m0 0L8 4m4 4-4 4m4-11h3a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-3" />
+                        </svg>
+                        <span class="flex-1 ms-3 whitespace-nowrap">Sign Out</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </aside>
+    <!-- End of Sidebar -->
+
+    <div class="p-4 sm:ml-64">
+        <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg">
+            <!-- Results Section -->
+            <div id="results-section" class="space-y-6">
+                <!-- Common Header Info -->
+                <div class="border-b border-gray-200 pb-4">
+                    <h1 id="student-name" class="text-xl font-semibold text-gray-900">Student Name: NA</h1>
+                    <p id="usn" class="text-sm text-gray-700 mt-1">USN: NA</p>
+                    <p id="programme" class="text-sm text-gray-700 mt-1">Programme: NA</p>
+                    <p id="college" class="text-sm text-gray-700 mt-1">College: NA</p>
+                </div>
+
+                <!-- Results List -->
+                <div id="results-list" class="space-y-4">
+                    <!-- Example Result Card (Template, will be populated dynamically) -->
+                    <div
+                        class="result-card border border-gray-200 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow duration-200">
+                        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                            <div class="space-y-1">
+                                <p class="text-sm text-green-800 font-medium">IV Semester</p>
+                                <p class="text-sm text-gray-800">
+                                    <span class="font-medium">Exam Session:</span> June 2025
+                                </p>
+                                <p class="text-sm text-gray-800">
+                                    <span class="font-medium">Result Date:</span> 23 July 2025
+                                </p>
+                                <p class="text-sm text-gray-800">
+                                    <span class="font-medium">Status:</span> Fail, Promoted
+                                </p>
+                                <p class="text-sm text-gray-800">
+                                    <span class="font-medium">MC No.:</span> D2521039
+                                </p>
+                            </div>
+                            <div>
+                                <button
+                                    class="bg-green-800 text-white text-sm font-medium px-4 py-2 rounded-lg hover:bg-green-900 transition-colors">
+                                    View
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <p id="results-error" class="hidden text-center text-red-600 font-medium">
+                    ⚠️ Failed to load results. Please try again later.
+                </p>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- End of Main Section -->
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
+</body>
+
+</html>
