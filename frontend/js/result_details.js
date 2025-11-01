@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", async () => {
-  const BASE_URL = "http://localhost:8000";
+  const BASE_URL = "";
   const LOGIN_PAGE = "/static/index.html";
 
   // Utility: Redirect to login
