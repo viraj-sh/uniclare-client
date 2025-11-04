@@ -77,3 +77,22 @@ class PasswordResetResponse(BaseModel):
     error: Optional[str] = None
     data: Optional[Dict[str, Any]] = None
     status_code: int
+
+
+class PasswordCheckRequest(BaseModel):
+    password: str = Field(
+        ...,
+        example="MyS3cretP@ssw0rd",
+        min_length=1,
+    )
+
+
+class StandardResponseModel(BaseModel):
+    success: bool = Field(...)
+    error: Optional[str] = Field(None)
+    data: Optional[Dict[str, Any]] = Field(None)
+    status_code: int = Field(...)
+
+
+class PasswordUpdateRequest(BaseModel):
+    new_password: str = Field(..., min_length=6, max_length=128)

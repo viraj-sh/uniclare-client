@@ -261,3 +261,129 @@ def reset_password(mobile: str, otp: str, new_password: str) -> Dict[str, Any]:
 
     except Exception as exc:
         return handle_exception(logger, exc)
+
+
+def check_current_password(password: str) -> Dict[str, Any]:
+    logger = setup_logging(name="core.check_current_password", level="INFO")
+
+    try:
+        session_id = EnvManager.get("PHPSESSID", default=None)
+        if not session_id:
+            logger.warning("Missing PHPSESSID in environment or function argument.")
+            return standard_response(
+                success=False,
+                error_msg="Missing PHPSESSID. User not authenticated.",
+                status_code=400,
+            )
+
+        url = "https://studentportal.universitysolutions.in/src/chngPassword.php?action=chkUser"
+        headers = {
+            "Host": "studentportal.universitysolutions.in",
+            "Referer": "https://studentportal.universitysolutions.in/MainPage.html",
+            "User-Agent": (
+                "Mozilla/5.0 (X11; Linux x86_64) "
+                "AppleWebKit/537.36 (KHTML, like Gecko) "
+                "Chrome/141.0.0.0 Safari/537.36"
+            ),
+            "Connection": "keep-alive",
+            "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+        }
+        cookies = {"PHPSESSID": session_id}
+        data = {"passwd": password}
+
+        logger.info("Sending password verification request to Uniclare API.")
+        response = requests.post(url, headers=headers, cookies=cookies, data=data)
+        response.raise_for_status()
+
+        raw = response.json()
+        logger.info(f"Received response: {raw}")
+
+        status = raw.get("status")
+        error_code = raw.get("error_code")
+
+        if status == "success" and error_code == 0:
+            return standard_response(
+                success=True,
+                data={"message": "Password is correct."},
+                status_code=200,
+            )
+
+        elif status == "failure" and error_code == -1:
+            return standard_response(
+                success=False,
+                error_msg="Incorrect password.",
+                status_code=400,
+            )
+
+        else:
+            logger.warning("Unexpected response format received from API.")
+            return standard_response(
+                success=False,
+                error_msg="Unexpected response format.",
+                status_code=400,
+            )
+
+    except Exception as exc:
+        return handle_exception(logger, exc, context="check_current_password")
+
+
+def update_password(new_password: str = "") -> Dict[str, Any]:
+
+    logger = setup_logging(name="core.update_password", level="INFO")
+    url = "https://studentportal.universitysolutions.in/src/chngPassword.php?action=updatePassword"
+
+    try:
+
+        phpsessid = EnvManager.get("PHPSESSID", default=None)
+        logger.info("Fetched PHPSESSID from EnvManager")
+
+        if not phpsessid:
+            logger.warning("Missing PHPSESSID; cannot authenticate user.")
+            return standard_response(
+                success=False,
+                error_msg="Missing PHPSESSID. Please log in again.",
+                status_code=401,
+            )
+
+        headers = {
+            "Host": "studentportal.universitysolutions.in",
+            "Referer": "https://studentportal.universitysolutions.in/MainPage.html",
+            "User-Agent": (
+                "Mozilla/5.0 (X11; Linux x86_64) "
+                "AppleWebKit/537.36 (KHTML, like Gecko) "
+                "Chrome/141.0.0.0 Safari/537.36"
+            ),
+            "Connection": "keep-alive",
+            "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+        }
+
+        cookies = {"PHPSESSID": phpsessid}
+        data = {"passwd": new_password}
+
+        logger.info("Sending password update request to Uniclare API")
+        response = requests.post(url, headers=headers, cookies=cookies, data=data)
+        response.raise_for_status()
+
+        raw = response.json()
+        logger.info("Received response from API")
+
+        if raw.get("status") == "success" and raw.get("error_code") == 0:
+            msg = raw.get("msg", "Password updated successfully.")
+            logger.info("Password updated successfully for user session.")
+            return standard_response(
+                success=True,
+                data={"message": msg},
+                status_code=200,
+            )
+
+        msg = raw.get("msg", "Failed to update password.")
+        logger.warning(f"Password update failed: {msg}")
+        return standard_response(
+            success=False,
+            error_msg=msg,
+            data={"raw_response": raw},
+            status_code=400,
+        )
+
+    except Exception as exc:
+        return handle_exception(logger, exc, context="update_password")

@@ -9,6 +9,8 @@ from services.auth import (
     logout_user,
     send_password_reset_otp,
     reset_password,
+    check_current_password,
+    update_password,
 )
 from schema.pydantic_auth import (
     AuthRequest,
@@ -20,6 +22,9 @@ from schema.pydantic_auth import (
     PasswordResetRequest,
     PasswordResetResponse,
     PasswordResetResponseData,
+    PasswordCheckRequest,
+    StandardResponseModel,
+    PasswordUpdateRequest,
 )
 from fastapi.responses import JSONResponse
 
@@ -187,3 +192,93 @@ def password_reset_confirm(request: PasswordResetRequest = Body(...)):
 
     except Exception as exc:
         return handle_exception(logger, exc, context="password_reset_confirm")
+
+
+@router.post(
+    "/password-check",
+    response_model=StandardResponseModel,
+    operation_id="password_check_post",
+)
+async def password_check(
+    payload: PasswordCheckRequest = Body(...),
+) -> JSONResponse:
+
+    logger.info("Received password-check request.")
+    try:
+        result: Dict[str, Any] = check_current_password(
+            password=payload.password,
+        )
+
+        if not isinstance(result, dict):
+            logger.warning(
+                "check_current_password returned non-dict response. Wrapping into standard_response."
+            )
+            result = standard_response(
+                success=False,
+                error_msg="Internal error: invalid response from password check.",
+                status_code=500,
+            )
+
+        status_code = int(result.get("status_code", 500))
+        return JSONResponse(content=result, status_code=status_code)
+
+    except Exception as exc:
+        logger.exception("Unhandled exception in password_check endpoint.")
+        err_result = handle_exception(logger, exc, context="password_check_endpoint")
+
+        if isinstance(err_result, dict):
+            return JSONResponse(
+                content=err_result, status_code=int(err_result.get("status_code", 500))
+            )
+
+        fallback = standard_response(
+            success=False,
+            error_msg="Internal server error.",
+            status_code=500,
+        )
+        return JSONResponse(content=fallback, status_code=500)
+
+
+@router.post(
+    "/password-update",
+    operation_id="password_update_endpoint",
+    response_model=StandardResponseModel,
+)
+async def password_update(payload: PasswordUpdateRequest = Body(...)) -> JSONResponse:
+
+    try:
+        new_password: str = payload.new_password
+
+        logger.info("Received request to update password via FastAPI endpoint")
+
+        result: Dict[str, Any] = update_password(new_password=new_password)
+
+        if not isinstance(result, dict):
+            logger.error(
+                "core.update_password returned a non-dict response; wrapping with standard_response."
+            )
+            result = standard_response(
+                success=False,
+                error_msg="Internal error: Invalid response format.",
+                status_code=500,
+            )
+
+        status_code: int = int(result.get("status_code", 200) or 200)
+
+        logger.info(f"Password update response prepared with status {status_code}")
+
+        return JSONResponse(content=result, status_code=status_code)
+
+    except Exception as exc:
+        logger.exception("Unhandled exception in password_update endpoint")
+        err_resp = handle_exception(logger, exc, context="password_update")
+
+        if isinstance(err_resp, dict):
+            return JSONResponse(
+                content=err_resp, status_code=int(err_resp.get("status_code", 500))
+            )
+
+        fallback = standard_response(
+            success=False, error_msg="Unexpected server error.", status_code=500
+        )
+        return JSONResponse(content=fallback, status_code=500)

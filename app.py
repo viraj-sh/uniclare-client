@@ -5,6 +5,8 @@ import logging
 from api.system import router as system_router
 from api.profile import router as profile_router
 from api.result import router as result_router
+from api.time_table import router as time_table_router
+from api.notifications import router as notification_router
 from api.auth import router as auth_router
 from core.logging import setup_logging
 from fastapi_mcp import FastApiMCP
@@ -45,6 +47,8 @@ app.include_router(system_router, prefix="/api")
 app.include_router(auth_router, prefix="/api")
 app.include_router(profile_router, prefix="/api")
 app.include_router(result_router, prefix="/api")
+app.include_router(time_table_router, prefix="/api")
+app.include_router(notification_router, prefix="/api")
 
 mcp = FastApiMCP(
     app,
@@ -62,6 +66,10 @@ mcp = FastApiMCP(
         "get_student_results",
         "fetchExamResult",
         "get_detailed_exam_results",
+        "password_check_post",
+        "password_update_endpoint",
+        "get_notifications",
+        "get_practical_timetable",
     ],
 )
 mcp.mount_http()
