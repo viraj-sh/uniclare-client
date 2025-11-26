@@ -20,12 +20,13 @@ An unofficial [Uniclare](https://play.google.com/store/apps/details?id=com.unicl
 
 ### What Makes This Client Better than the Official [Uniclare App](https://play.google.com/store/apps/details?id=com.uniclarepro&hl=en_IN&pli=1) or [Student Uni Portal](https://studentportal.universitysolutions.in/)
 
-* **End-semester marks**: Shows full ESE marks for every subject, which the official client hides even though the backend provides them.
-* **Complete marks breakdown**: Displays all components returned by the API — end marks, IA marks, viva/practical marks, and totals.
-* **Additional result fields**: Reveals extra data like percentage, credits, grade points, credit points, and more that the official portal doesn’t show.
-* **MCP server support**: Allows integration with LLMs for automation, summarization, or custom result analysis.
+- **End-semester marks**: Shows full ESE marks for every subject, which the official client hides even though the backend provides them.
+- **Complete marks breakdown**: Displays all components returned by the API — end marks, IA marks, viva/practical marks, and totals.
+- **Additional result fields**: Reveals extra data like percentage, credits, grade points, credit points, and more that the official portal doesn’t show.
+- **MCP server support**: Allows integration with LLMs for automation, summarization, or custom result analysis.
 
 ---
+
 ## Overview
 
 This repository includes:
@@ -36,9 +37,31 @@ This repository includes:
 
 The client can be run using a **[prebuilt release](https://github.com/viraj-sh/uniclare-client/releases/latest)** (recommended), **[built from source](#option-1-building-from-source-without-docker)**, or **[Docker](#option-2-running-with-docker)**. Quick deployment is also supported on **Render**.
 
-<a href="https://render.com/deploy?repo=https://github.com/viraj-sh/uniclare-client" target="_blank">
-  <img src="https://render.com/images/deploy-to-render-button.svg" alt="Deploy to Render" width="180"/>
-</a>
+<!-- Download Latest Releases -->
+<div style="margin-bottom: 1em;">
+  <strong style="font-size:1.1em;">Download Latest Releases:</strong>
+  <div style="margin-top:0.5em;">
+    <a href="https://github.com/viraj-sh/uniclare-client/releases/download/v1.1.0/uniclare-client.exe" target="_blank">
+      <img src="https://img.shields.io/badge/Windows_(.exe)-x64-blue?style=flat-square" alt="Download Windows" />
+    </a>
+    <!-- <a href="https://github.com/viraj-sh/uniclare-client/releases/latest/download/uniclare-client-linux.tar.gz" target="_blank">
+      <img src="https://img.shields.io/badge/Linux-x64-orange?style=flat-square" alt="Download Linux" />
+    </a>
+    <a href="https://github.com/viraj-sh/uniclare-client/releases/latest/download/uniclare-client-macos.zip" target="_blank">
+      <img src="https://img.shields.io/badge/macOS-x64-ligvhtgrey?style=flat-square" alt="Download macOS" />
+    </a> -->
+  </div>
+</div>
+
+<!-- Quick Deployment -->
+<div style="margin-top:1.5em;">
+  <strong style="font-size:1.1em;">Quick Deployment:</strong>
+  <div style="margin-top:0.5em;">
+    <a href="https://render.com/deploy?repo=https://github.com/viraj-sh/uniclare-client" target="_blank">
+      <img src="https://render.com/images/deploy-to-render-button.svg" alt="Deploy to Render" width="180"/>
+    </a>
+  </div>
+</div>
 
 ---
 
@@ -54,7 +77,6 @@ Once the client is running, the following endpoints are accessible (the host may
 - **MCP Server:** [http://localhost:8000/mcp](http://localhost:8000/mcp)
 
 ---
-
 
 ## Option 1: Building from Source (Without Docker)
 
@@ -101,10 +123,10 @@ A [`docker-compose.yaml`](https://github.com/viraj-sh/uniclare-client/blob/main/
 
 ```bash
 # using curl
-curl -L -o docker-compose.yaml https://github.com/viraj-sh/uniclare-client/raw/main/docker-compose.yaml 
+curl -L -o docker-compose.yaml https://github.com/viraj-sh/uniclare-client/raw/main/docker-compose.yaml
 
 # using wget
-wget -O docker-compose.yaml https://github.com/viraj-sh/uniclare-client/raw/main/docker-compose.yaml 
+wget -O docker-compose.yaml https://github.com/viraj-sh/uniclare-client/raw/main/docker-compose.yaml
 
 docker-compose up -d
 ```
