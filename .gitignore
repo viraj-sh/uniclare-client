@@ -15,3 +15,5 @@ __pycache__
 frontend/hash.py
 imp.json
 student_ia_marks.html
+/build
+/dist

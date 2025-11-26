@@ -9,6 +9,7 @@ from api.time_table import router as time_table_router
 from api.notifications import router as notification_router
 from api.auth import router as auth_router
 from core.logging import setup_logging
+from core.utils import frontend_path
 from fastapi_mcp import FastApiMCP
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
@@ -32,12 +33,13 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.mount("/static", StaticFiles(directory="frontend"), name="frontend_static")
+static_dir = frontend_path()
 
+app.mount("/static", StaticFiles(directory=static_dir), name="static")
 
 @app.get("/", include_in_schema=False)
 def serve_frontend():
-    return FileResponse("frontend/index.html")
+    return FileResponse(os.path.join(static_dir, "index.html"))
 
 
 logger.info("Application startup complete")
