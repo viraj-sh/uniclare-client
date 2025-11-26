@@ -45,9 +45,7 @@ Anyone who wishes to use it may do so by following the instructions below.
 
 You can easily deploy this project to [Render](https://render.com) using the button below:
 
-[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy)
-
-_(Requires a valid `render.yaml` configuration in the repository.)_
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/viraj-sh/uniclare-client)
 
 ---
 
