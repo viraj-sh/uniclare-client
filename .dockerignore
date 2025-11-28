@@ -10,3 +10,9 @@ prompt.md
 readme.md
 requirements-dev.txt
 frontend/hash.py
+.mcp
+launcher.py
+winx64.spec
+render.yaml
+Dockerfile
+docker-compose.yaml

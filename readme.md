@@ -78,7 +78,8 @@ Once the client is running, the following endpoints are accessible (the host may
 
 ---
 
-## Option 1: Building from Source (Without Docker)
+<details open>
+<summary><span style="font-size:1.3rem; font-weight:bold;">Option 1: Building from Source (Without Docker)</span></summary>
 
 ```bash
 git clone https://github.com/viraj-sh/uniclare-client
@@ -95,18 +96,23 @@ pip install -r requirements.txt
 python app.py
 ```
 
----
+</details>
 
-## Option 2: Running with Docker
+<details open>
+<summary><span style="font-size:1.3rem; font-weight:bold;">Option 2: Running with Docker</span></summary>
 
-### 1. Use Prebuilt Image from Docker Hub (Recommended)
+<details>
+<summary><span style="font-size:1.1rem; font-weight:500;">1. Use Prebuilt Image from Docker Hub (Recommended)</span></summary>
 
 ```bash
 docker pull virajsh/uniclare-client:latest
 docker run -p 8000:8000 virajsh/uniclare-client:latest
 ```
 
-### 2. Build Locally
+</details>
+
+<details>
+<summary><span style="font-size:1.1rem; font-weight:500;">2. Build Locally</span></summary>
 
 A `Dockerfile` is included in the repository.
 
@@ -117,7 +123,10 @@ docker build -t uniclare-client .
 docker run -p 8000:8000 uniclare-client
 ```
 
-### 3. Docker Compose
+</details>
+
+<details>
+<summary><span style="font-size:1.0rem; font-weight:500;">3. Docker Compose</span></summary>
 
 A [`docker-compose.yaml`](https://github.com/viraj-sh/uniclare-client/blob/main/docker-compose.yaml) is included in the repository.
 
@@ -131,8 +140,13 @@ wget -O docker-compose.yaml https://github.com/viraj-sh/uniclare-client/raw/main
 docker-compose up -d
 ```
 
----
+</details>
 
+</details>
+
+
+
+---
 ## Disclaimer
 
 This project is **unofficial** and intended for **personal and educational use only**.
