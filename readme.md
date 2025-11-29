@@ -91,7 +91,7 @@ venv\Scripts\activate # Windows
 source venv/bin/activate # macOS/Linux
 
 pip install --upgrade pip
-pip install -r requirements.txt
+pip install -r requirements/base.txt
 
 python app.py
 ```

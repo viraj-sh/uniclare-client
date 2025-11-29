@@ -8,7 +8,7 @@ venv
 .gitignore
 prompt.md
 readme.md
-requirements-dev.txt
+requirements/dev.txt
 static/hash.py
 .mcp
 launcher.py
