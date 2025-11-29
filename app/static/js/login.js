@@ -57,7 +57,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       const rootOk =
         rootData?.success === true &&
-        rootData?.data?.message === "Unofficial uniclare API";
+        rootData?.data?.message === "Unofficial uniclare API - v1";
       const healthOk =
         healthData?.success === true && healthData?.data?.status === "OK";
 
