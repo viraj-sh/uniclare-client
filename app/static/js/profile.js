@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", async () => {
-  const API_BASE = "/api";
+  const API_BASE = "/api/v1";
 
   const profileError = document.getElementById("profile-error");
   const profileSection = document.getElementById("profile-section");

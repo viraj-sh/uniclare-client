@@ -20,7 +20,7 @@ router = APIRouter(tags=["System"])
 def home():
     return MessageResponse(
         success=True,
-        data=MessageData(message="Unofficial uniclare API"),
+        data=MessageData(message="Unofficial uniclare API - v1"),
         error=None,
         status_code=200,
     )

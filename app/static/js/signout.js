@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     try {
       // STEP 1: Validate session
-      const validateRes = await fetch(`${BASE_URL}/api/auth/validate-session`, {
+      const validateRes = await fetch(`${BASE_URL}/api/v1/auth/validate-session`, {
         method: "GET",
         credentials: "include",
         cache: "no-store",
@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
       console.log("✅ Active session found, proceeding to logout...");
 
       // STEP 2: Attempt logout
-      const logoutRes = await fetch(`${BASE_URL}/api/auth/logout`, {
+      const logoutRes = await fetch(`${BASE_URL}/api/v1/auth/logout`, {
         method: "POST",
         credentials: "include",
         cache: "no-store",

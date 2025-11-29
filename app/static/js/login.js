@@ -3,7 +3,7 @@
 // ==============================
 
 document.addEventListener("DOMContentLoaded", async () => {
-  const API_BASE_URL = "/api";
+  const API_BASE_URL = "/api/v1";
 
   const loginForm = document.getElementById("login-form");
   const feedback = document.getElementById("feedback-message");

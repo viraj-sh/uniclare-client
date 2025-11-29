@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // ✅ STEP 1: Validate Session
   try {
-    const sessionRes = await fetch(`${BASE_URL}/api/auth/validate-session`, {
+    const sessionRes = await fetch(`${BASE_URL}/api/v1/auth/validate-session`, {
       method: "GET",
       credentials: "include",
       cache: "no-store",
@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // ✅ STEP 3: Fetch Result Details
   try {
-    const res = await fetch(`${BASE_URL}/api/results/${examId}`, {
+    const res = await fetch(`${BASE_URL}/api/v1/results/${examId}`, {
       method: "GET",
       credentials: "include",
       cache: "no-store",

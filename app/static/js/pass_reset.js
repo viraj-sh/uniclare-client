@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", async () => {
-  const API_BASE = "/api";
+  const API_BASE = "/api/v1";
   const LOGIN_PAGE = "/static/index.html";
   const PROFILE_PAGE = "/static/pages/profile.html";
 

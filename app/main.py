@@ -2,12 +2,12 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import logging
 
-from api.system import router as system_router
-from api.profile import router as profile_router
-from api.result import router as result_router
-from api.time_table import router as time_table_router
-from api.notifications import router as notification_router
-from api.auth import router as auth_router
+from api.v1.system import router as system_router
+from api.v1.profile import router as profile_router
+from api.v1.result import router as result_router
+from api.v1.time_table import router as time_table_router
+from api.v1.notifications import router as notification_router
+from api.v1.auth import router as auth_router
 from core.logging import setup_logging
 from core.utils import frontend_path
 from fastapi_mcp import FastApiMCP
@@ -17,7 +17,7 @@ import os
 
 logger = setup_logging(name="app", level="INFO")
 
-app = FastAPI(title="Unofficial uniclare API")
+app = FastAPI(title="Unofficial uniclare API v1")
 
 origins = [
     "http://127.0.0.1:5500",
@@ -46,12 +46,12 @@ def serve_frontend():
 logger.info("Application startup complete")
 
 # Include routers
-app.include_router(system_router, prefix="/api")
-app.include_router(auth_router, prefix="/api")
-app.include_router(profile_router, prefix="/api")
-app.include_router(result_router, prefix="/api")
-app.include_router(time_table_router, prefix="/api")
-app.include_router(notification_router, prefix="/api")
+app.include_router(system_router, prefix="/api/v1")
+app.include_router(auth_router, prefix="/api/v1")
+app.include_router(profile_router, prefix="/api/v1")
+app.include_router(result_router, prefix="/api/v1")
+app.include_router(time_table_router, prefix="/api/v1")
+app.include_router(notification_router, prefix="/api/v1")
 
 mcp = FastApiMCP(
     app,

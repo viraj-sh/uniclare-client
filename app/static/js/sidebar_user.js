@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", async () => {
-  const API_BASE = "/api";
+  const API_BASE = "/api/v1";
   const usernameEl = document.getElementById("sidebar-username");
   if (!usernameEl) return; // Safety check
 
