@@ -5,7 +5,7 @@ from typing import Any, Optional
 import sys
 
 ENV_PATH = ".env"
-
+STATIC_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "static")
 
 class EnvManager:
     path: Path = Path(ENV_PATH).resolve()
@@ -63,7 +63,13 @@ def resource_path(path):
         return os.path.join(sys._MEIPASS, path)
     return os.path.join(os.path.abspath("."), path)
 
+
 def frontend_path():
+    # When running from PyInstaller bundle
     if hasattr(sys, "_MEIPASS"):
         return resource_path("frontend")
-    return "frontend"
+
+    # When running normally (source code)
+    # Return the absolute path to "app/frontend"
+    base_dir = os.path.dirname(os.path.dirname(__file__))  # core → app
+    return os.path.join(base_dir, "frontend")

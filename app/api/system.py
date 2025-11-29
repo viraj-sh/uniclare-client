@@ -6,7 +6,7 @@ from schema.pydantic_system import (
     HealthData,
 )
 from fastapi.responses import FileResponse
-
+from core.utils import STATIC_DIR
 
 router = APIRouter(tags=["System"])
 
@@ -43,4 +43,4 @@ def health_check():
 
 @router.get("/favicon.ico", include_in_schema=False)
 async def favicon():
-    return FileResponse("favicon.ico")
+    return FileResponse(os.path.join(STATIC_DIR, "favicon.ico"))
