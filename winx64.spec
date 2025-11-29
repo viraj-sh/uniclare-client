@@ -10,12 +10,12 @@ a = Analysis(
     pathex=['.'],
     binaries=[],
     datas=[
-        ('frontend', 'frontend'),
+        ('static', 'static'),
         ('services', 'services'),  
         ('core', 'core'),
         ('api', 'api'),                      
         ('schema', 'schema'),
-        ('frontend/src/favicon.ico', 'frontend/src'),
+        ('static/src/favicon.ico', 'static/src'),
     ],
     hiddenimports=hidden,
     hookspath=[],
@@ -39,5 +39,5 @@ exe = EXE(
     strip=False,
     upx=False,
     console=True,
-    icon='frontend/src/favicon.ico',
+    icon='static/src/favicon.ico',
 )

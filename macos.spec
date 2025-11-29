@@ -9,12 +9,12 @@ a = Analysis(
     pathex=["."],
     binaries=[],
     datas=[
-        ("frontend", "frontend"),
+        ("static", "static"),
         ("services", "services"),
         ("core", "core"),
         ("api", "api"),
         ("schema", "schema"),
-        ("frontend/src/favicon.ico", "frontend/src"),
+        ("static/src/favicon.ico", "static/src"),
     ],
     hiddenimports=hidden,
     hookspath=[],
@@ -32,6 +32,6 @@ exe = EXE(
     a.datas,
     name="uniclare-client",
     console=True,
-    icon="frontend/src/favicon.ico",
+    icon="static/src/favicon.ico",
 )
 

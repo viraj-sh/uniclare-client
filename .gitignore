@@ -12,7 +12,7 @@ dev
 prompt.md
 endpoints.md
 __pycache__
-frontend/hash.py
+static/hash.py
 imp.json
 student_ia_marks.html
 /build

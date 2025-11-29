@@ -9,7 +9,7 @@ venv
 prompt.md
 readme.md
 requirements-dev.txt
-frontend/hash.py
+static/hash.py
 .mcp
 launcher.py
 winx64.spec

@@ -67,9 +67,9 @@ def resource_path(path):
 def frontend_path():
     # When running from PyInstaller bundle
     if hasattr(sys, "_MEIPASS"):
-        return resource_path("frontend")
+        return resource_path("static")
 
     # When running normally (source code)
-    # Return the absolute path to "app/frontend"
+    # Return the absolute path to "app/static"
     base_dir = os.path.dirname(os.path.dirname(__file__))  # core → app
-    return os.path.join(base_dir, "frontend")
+    return os.path.join(base_dir, "static")
