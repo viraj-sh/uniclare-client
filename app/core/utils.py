@@ -58,18 +58,17 @@ def standard_response(
         "status_code": status_code,
     }
 
-def resource_path(path):
+def resource_path(relative_path: str) -> str:
     if hasattr(sys, "_MEIPASS"):
-        return os.path.join(sys._MEIPASS, path)
-    return os.path.join(os.path.abspath("."), path)
+        base_path = sys._MEIPASS
+    else:
+        base_path = os.path.dirname(os.path.abspath(__file__))
+    return os.path.join(base_path, relative_path)
 
 
-def frontend_path():
-    # When running from PyInstaller bundle
-    if hasattr(sys, "_MEIPASS"):
-        return resource_path("static")
-
-    # When running normally (source code)
-    # Return the absolute path to "app/static"
-    base_dir = os.path.dirname(os.path.dirname(__file__))  # core → app
-    return os.path.join(base_dir, "static")
+def frontend_path() -> str:
+    if getattr(sys, 'frozen', False):
+        base_dir = sys._MEIPASS
+    else:
+        base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    return os.path.join(base_dir, "app", "static")

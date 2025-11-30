@@ -1,21 +1,25 @@
 import sys
+import os
 from PyInstaller.utils.hooks import collect_submodules
+
+spec_dir = os.path.dirname(os.path.abspath(sys.argv[0]))
+project_root = os.path.abspath(os.path.join(spec_dir, '..'))
 
 hidden = collect_submodules('fastapi') + collect_submodules('uvicorn')
 
 block_cipher = None
 
 a = Analysis(
-    ['launcher.py'],
-    pathex=['.'],
+    [os.path.join(project_root, 'launcher.py')],
+    pathex=[project_root, os.path.join(project_root, 'app')],
     binaries=[],
     datas=[
-        ('static', 'static'),
-        ('services', 'services'),  
-        ('core', 'core'),
-        ('api', 'api'),                      
-        ('schema', 'schema'),
-        ('static/src/favicon.ico', 'static/src'),
+        (os.path.join(project_root, 'app/static'), 'app/static'),
+        (os.path.join(project_root, 'app/services'), 'app/services'),
+        (os.path.join(project_root, 'app/core'), 'app/core'),
+        (os.path.join(project_root, 'app/api'), 'app/api'),
+        (os.path.join(project_root, 'app/schema'), 'app/schema'),
+        (os.path.join(project_root, 'app/static/src/favicon.ico'), 'app/static/src'),
     ],
     hiddenimports=hidden,
     hookspath=[],
@@ -34,10 +38,11 @@ exe = EXE(
     a.binaries,
     a.zipfiles,
     a.datas,
+    [],
     name='uniclare-client',
     debug=False,
     strip=False,
     upx=False,
     console=True,
-    icon='static/src/favicon.ico',
+    icon=os.path.join(project_root, 'app/static/src/favicon.ico'),
 )
