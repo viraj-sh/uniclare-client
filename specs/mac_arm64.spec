@@ -20,7 +20,7 @@ a = Analysis(
         (os.path.join(project_root, 'app/core'), 'app/core'),
         (os.path.join(project_root, 'app/api'), 'app/api'),
         (os.path.join(project_root, 'app/schema'), 'app/schema'),
-        (os.path.join(project_root, 'app/static/src/favicon.ico'), 'app/static/src'),
+        (os.path.join(project_root, 'app/static/assets/favicon.ico'), 'app/static/src'),
     ],
     hiddenimports=hidden,
     hookspath=[],
@@ -43,5 +43,5 @@ exe = EXE(
     strip=False,
     upx=False,
     console=True,
-    icon=os.path.join(project_root, 'app/static/src/favicon.ico'),
+    icon=os.path.join(project_root, 'app/static/assets/favicon.ico'),
 )

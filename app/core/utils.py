@@ -5,7 +5,7 @@ from typing import Any, Optional
 import sys
 
 ENV_PATH = ".env"
-STATIC_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "static")
+ASSETS_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "static")
 
 class EnvManager:
     path: Path = Path(ENV_PATH).resolve()

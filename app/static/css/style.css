@@ -11,7 +11,7 @@ html {
     body {
         background-image: linear-gradient(rgba(30, 30, 30, 0.85),
                 rgba(30, 30, 30, 0.85)),
-            url('/static/src/images/bg.jpg') !important;
+            url('/static/assets/images/bg.jpg') !important;
     }
 
     main {
