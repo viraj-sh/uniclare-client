@@ -38,7 +38,7 @@ jobs:
             $version = "commit-$sha"
           }
           $exeName = "uniclare-client-$version-win-x64.exe"
-          Copy-Item "dist\uniclare-client\uniclare-client.exe" "build-output\$exeName"
+          Copy-Item "dist\uniclare-client.exe" "build-output\$exeName"
           echo "EXE_NAME=$exeName" >> $env:GITHUB_ENV
 
       - name: Upload artifact (for all commits)
