@@ -2,7 +2,7 @@
 
 # Unofficial Uniclare Client
 
-An unofficial [Uniclare](https://play.google.com/store/apps/details?id=com.uniclarepro&hl=en_IN&pli=1) / [Student Uni Portal](https://studentportal.universitysolutions.in/) client built to reveal full ESE marks and every hidden result field the official portal doesn’t display, supported by a lightweight frontend, API, and MCP server for extended use. Includes [API](#), [Frontend](#), [MCP Server](#), developed for personal educational purposes and not affiliated with Uniclare or Student Portal.
+An unofficial [Uniclare](https://play.google.com/store/apps/details?id=com.uniclarepro&hl=en_IN&pli=1) / [Student Uni Portal](https://studentportal.universitysolutions.in/) client built to reveal full ESE marks and every hidden result field the official portal doesn’t display. Includes [Frontend](https://github.com/viraj-sh/uniclare-client/wiki/Frontend-Documentation), [MCP Server](https://github.com/viraj-sh/uniclare-client/wiki/MCP-Documentation), [API](https://github.com/viraj-sh/uniclare-client/wiki/API-Documentation), developed for personal educational purposes and not affiliated with Uniclare or Student Portal.
 
 <a href="https://github.com/viraj-sh/uniclare-client/releases/latest">
   <img src="https://img.shields.io/github/v/release/viraj-sh/uniclare-client?label=Latest%20Release&color=green&style=flat-square&cacheSeconds=3600" alt="Release"/>
@@ -27,123 +27,75 @@ An unofficial [Uniclare](https://play.google.com/store/apps/details?id=com.unicl
 
 ---
 
-## Overview
+## Installation & Usage
 
-This repository includes:
+The client can be run in several ways. For detailed steps, see the **[Getting Started](https://github.com/viraj-sh/uniclare-client/wiki/Getting-Started)** wiki page.
 
-- **[API](https://github.com/viraj-sh/uniclare-client/wiki/API-Documentation):** FastAPI-based backend for authentication, semesters, subjects, documents, and attendance.
-- **[Frontend](https://github.com/viraj-sh/uniclare-client/wiki/Frontend-Documentation):** Static interface for interacting with the API.
-- **[MCP Server](https://github.com/viraj-sh/uniclare-client/wiki/MCP-Documentation):** Endpoint (`/mcp`) compatible with Model Context Protocol (MCP) clients such as LLM Clients, LangChain bots, etc.
+Option 1. **[Prebuilt Releases](https://github.com/viraj-sh/uniclare-client/wiki/Getting-Started#prebuilt-releases)** – Download and run the latest release for your platform:
 
-The client can be run using a **[prebuilt release](https://github.com/viraj-sh/uniclare-client/releases/latest)** (recommended), **[built from source](#option-1-building-from-source-without-docker)**, or **[Docker](#option-2-running-with-docker)**. Quick deployment is also supported on **Render**.
+   [![Windows (.exe)](https://img.shields.io/badge/Windows_\(.exe\)-x64-blue?style=flat-square)](https://github.com/viraj-sh/uniclare-client/releases/latest/uniclare-client.exe)
+   [![Linux (.tar.gz)](https://img.shields.io/badge/Linux-x86__64-orange?style=flat-square)](https://github.com/viraj-sh/uniclare-client/releases/latest/download/uniclare-client-linux)
+   [![macOS (.zip)](https://img.shields.io/badge/macOS-arm64-lightgrey?style=flat-square)](https://github.com/viraj-sh/uniclare-client/releases/latest/download/uniclare-client-macos)
 
-<!-- Download Latest Releases -->
-<div style="margin-bottom: 1em;">
-  <strong style="font-size:1.1em;">Download Latest Releases:</strong>
-  <div style="margin-top:0.5em;">
-    <a href="https://github.com/viraj-sh/uniclare-client/releases/download/v1.1.0/uniclare-client.exe" target="_blank">
-      <img src="https://img.shields.io/badge/Windows_(.exe)-x64-blue?style=flat-square" alt="Download Windows" />
-    </a>
-    <!-- <a href="https://github.com/viraj-sh/uniclare-client/releases/latest/download/uniclare-client-linux.tar.gz" target="_blank">
-      <img src="https://img.shields.io/badge/Linux-x64-orange?style=flat-square" alt="Download Linux" />
-    </a>
-    <a href="https://github.com/viraj-sh/uniclare-client/releases/latest/download/uniclare-client-macos.zip" target="_blank">
-      <img src="https://img.shields.io/badge/macOS-x64-ligvhtgrey?style=flat-square" alt="Download macOS" />
-    </a> -->
-  </div>
-</div>
+Option 2. **[One-Click Deployment](https://github.com/viraj-sh/uniclare-client/wiki/Getting-Started#one-click-deployment-render) (Render)** – Deploy the client instantly in the cloud:
 
-<!-- Quick Deployment -->
-<div style="margin-top:1.5em;">
-  <strong style="font-size:1.1em;">Quick Deployment:</strong>
-  <div style="margin-top:0.5em;">
-    <a href="https://render.com/deploy?repo=https://github.com/viraj-sh/uniclare-client" target="_blank">
-      <img src="https://render.com/images/deploy-to-render-button.svg" alt="Deploy to Render" width="180"/>
-    </a>
-  </div>
-</div>
+   [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/viraj-sh/uniclare-client)
+
+Option 3. **[Run from Source](https://github.com/viraj-sh/uniclare-client/wiki/Getting-Started#running-from-source)** – Clone the repository and run the client directly in development mode.
+
+  - For developers who want to modify the client.
+
+
+    ```bash
+    git clone https://github.com/viraj-sh/uniclare-client
+    cd uniclare-client
+
+    python -m venv venv
+    venv\Scripts\activate   # Windows
+    source venv/bin/activate   # macOS/Linux
+
+    pip install --upgrade pip
+    pip install -r requirements/base.txt
+
+    python app.py
+    ```
+
+Option 4. **[Build from Source](https://github.com/viraj-sh/uniclare-client/wiki/Getting-Started#building-from-source)** – For developers or contributors: clone the repo, install dependencies, and run locally.
+
+Option 5. **[Docker](https://github.com/viraj-sh/uniclare-client/wiki/Getting-Started#docker-deployment)** – Run the client in a consistent containerized environment.
+
+> For complete instructions, platform-specific steps, and Docker usage, see the **[Getting Started wiki](https://github.com/viraj-sh/uniclare-client/wiki/Getting-Started)**.
 
 ---
-
 ### Available Services
 
-Once the client is running, the following endpoints are accessible (the host may vary, but the paths remain the same):
+Once the client is running, these endpoints are accessible (host may vary):
 
-- **API:** [http://127.0.0.1:8000/api](http://127.0.0.1:8000/api)
+* **[Frontend](https://github.com/viraj-sh/uniclare-client/wiki/Frontend-Documentation)** [[http://localhost:8000/](http://localhost:8000/)] : Static interface to interact with the API.
+* **[MCP Server](https://github.com/viraj-sh/uniclare-client/wiki/MCP-Documentation)** [[http://localhost:8000/mcp](http://localhost:8000/mcp)] : Endpoint (`/mcp`) compatible with Model Context Protocol (MCP) clients like LLM Clients or LangChain bots.
+* **[API](https://github.com/viraj-sh/uniclare-client/wiki/API-Documentation)** [[http://localhost:8000/api](http://127.0.0.1:8000/api)] : FastAPI backend for authentication, semesters, subjects, documents, and attendance.
 
-  - **Swagger UI:** [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
-
-- **Frontend:** [http://localhost:8000](http://localhost:8000)
-- **MCP Server:** [http://localhost:8000/mcp](http://localhost:8000/mcp)
+  * **Interactive Docs:** [[http://localhost:8000/docs](http://127.0.0.1:8000/docs)] : API testing Swagger UI for developers.
 
 ---
 
-<details open>
-<summary><span style="font-size:1.3rem; font-weight:bold;">Option 1: Building from Source (Without Docker)</span></summary>
+## MCP Usage
 
-```bash
-git clone https://github.com/viraj-sh/uniclare-client
-cd uniclare-client
+> For full instructions on configuring the MCP server, check out the **[MCP Documentation](https://github.com/viraj-sh/uniclare-client/wiki/MCP-Documentation)**.
+<!-- 
+| Demo |
+| :------------: |
+| <img src="https://raw.githubusercontent.com/viraj-sh/uniclare-client/refs/heads/main/.github/assets/mcp_usage.gif" width="800"/> | -->
 
-python -m venv venv
+## Preview
 
-venv\Scripts\activate # Windows
-source venv/bin/activate # macOS/Linux
+| Detailed Result                                      | Login                                           |
+| :-------------------------------------------- | :-------------------------------------------- |
+| <img src="https://raw.githubusercontent.com/viraj-sh/uniclare-client/refs/heads/main/.github/assets/preview_result_detailed.png" width="500" height="300"/> | <img src="https://raw.githubusercontent.com/viraj-sh/uniclare-client/refs/heads/main/.github/assets/preview_login.png" width="500" height="300"/> |
 
-pip install --upgrade pip
-pip install -r requirements/base.txt
-
-python app.py
-```
-
-</details>
-
-<details open>
-<summary><span style="font-size:1.3rem; font-weight:bold;">Option 2: Running with Docker</span></summary>
-
-<details>
-<summary><span style="font-size:1.1rem; font-weight:500;">1. Use Prebuilt Image from Docker Hub (Recommended)</span></summary>
-
-```bash
-docker pull virajsh/uniclare-client:latest
-docker run -p 8000:8000 virajsh/uniclare-client:latest
-```
-
-</details>
-
-<details>
-<summary><span style="font-size:1.1rem; font-weight:500;">2. Build Locally</span></summary>
-
-A `Dockerfile` is included in the repository.
-
-```bash
-git clone https://github.com/viraj-sh/uniclare-client
-cd uniclare-client
-docker build -t uniclare-client .
-docker run -p 8000:8000 uniclare-client
-```
-
-</details>
-
-<details>
-<summary><span style="font-size:1.0rem; font-weight:500;">3. Docker Compose</span></summary>
-
-A [`docker-compose.yaml`](https://github.com/viraj-sh/uniclare-client/blob/main/docker-compose.yaml) is included in the repository.
-
-```bash
-# using curl
-curl -L -o docker-compose.yaml https://github.com/viraj-sh/uniclare-client/raw/main/docker-compose.yaml
-
-# using wget
-wget -O docker-compose.yaml https://github.com/viraj-sh/uniclare-client/raw/main/docker-compose.yaml
-
-docker-compose up -d
-```
-
-</details>
-
-</details>
-
+| Result List                                    | Profile                                         |
+| :------------------------------------------- | :-------------------------------------------- |
+| <img src="https://raw.githubusercontent.com/viraj-sh/uniclare-client/refs/heads/main/.github/assets/preview_results.png" width="500" height="300"/> | <img src="https://raw.githubusercontent.com/viraj-sh/uniclare-client/refs/heads/main/.github/assets/preview_profile.png" width="500" height="300"/> |
 
 
 ---
