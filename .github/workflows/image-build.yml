@@ -21,6 +21,14 @@ jobs:
           echo "GITHUB_REF_NAME=${GITHUB_REF##*/}"
           git --no-pager log -1 --pretty=oneline
 
+      - name: Install Python
+        run: sudo apt-get update && sudo apt-get install -y python3 python3-pip
+
+      - name: Hash JS/CSS Assets
+        run: |
+          cd app/static
+          python3 hash.py hash
+
       - name: Build latest image
         run: |
           docker build . -f Dockerfile -t $IMAGE:latest
