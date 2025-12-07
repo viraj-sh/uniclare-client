@@ -40,7 +40,7 @@ exe = EXE(
     name='uniclare-client',
     debug=False,
     strip=False,
-    upx=False,
+    upx=True,
     console=True,
     icon=os.path.join(project_root, 'app/static/assets/favicon.ico'),
 )
