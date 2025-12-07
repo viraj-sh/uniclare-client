@@ -4,20 +4,6 @@ from dotenv import load_dotenv, set_key
 from typing import Any, Optional
 import sys
 
-
-def get_assets_dir():
-    if getattr(sys, "frozen", False):
-        base_dir = sys._MEIPASS
-        return os.path.join(base_dir, "app", "static", "assets")
-    else:
-        return os.path.join(
-            os.path.dirname(os.path.dirname(os.path.dirname(__file__))),
-            "static",
-            "assets",
-        )
-
-
-ASSETS_DIR = get_assets_dir()
 ENV_PATH = ".env"
 
 # ASCII COLORS

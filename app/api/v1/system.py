@@ -1,4 +1,3 @@
-import os
 from fastapi import APIRouter
 from schema.pydantic_system import (
     MessageResponse,
@@ -6,8 +5,6 @@ from schema.pydantic_system import (
     HealthResponse,
     HealthData,
 )
-from fastapi.responses import FileResponse
-from core.utils import ASSETS_DIR
 
 router = APIRouter(tags=["System"])
 
@@ -40,8 +37,3 @@ def health_check():
         error=None,
         status_code=200,
     )
-
-
-@router.get("/favicon.ico", include_in_schema=False)
-async def favicon():
-    return FileResponse(os.path.join(ASSETS_DIR, "favicon.ico"))
