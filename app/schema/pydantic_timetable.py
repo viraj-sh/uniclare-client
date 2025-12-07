@@ -12,7 +12,6 @@ class SubjectModel(BaseModel):
 
 
 class PracticalDataModel(BaseModel):
-
     stud_name: Optional[str] = Field(None)
     degree_name: Optional[str] = Field(None)
     sem: Optional[str] = Field(None)

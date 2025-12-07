@@ -5,8 +5,6 @@ from core.exceptions import handle_exception
 from fastapi.responses import JSONResponse
 from typing import Optional
 from schema.pydantic_timetable import (
-    SubjectModel,
-    PracticalDataModel,
     StandardResponseModel,
 )
 from services.time_table import fetch_practical_timetable
@@ -32,9 +30,8 @@ logger = setup_logging(name="core.routes.practical")
 async def get_practical_timetable(
     refetch: Optional[bool] = Query(
         False, description="Force refetch and invalidate cached result"
-    )
+    ),
 ):
-
     logger.info("Incoming request to /practical with refetch=%s", refetch)
     try:
         result = fetch_practical_timetable(refetch=bool(refetch))

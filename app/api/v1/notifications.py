@@ -1,13 +1,11 @@
 from typing import Any, Dict
 from fastapi import APIRouter, Query
 from fastapi.responses import JSONResponse
-from pydantic import BaseModel, Field
 from core.utils import standard_response
 from core.logging import setup_logging
 from core.exceptions import handle_exception
 from services.notifications import fetch_notifications
 from schema.pydantic_notification import (
-    FetchNotificationsRequest,
     StandardResponseModel,
 )
 
@@ -33,9 +31,8 @@ def get_notifications(
     refetch: bool = Query(
         default=False,
         alias="refetch",
-    )
+    ),
 ) -> JSONResponse:
-
     try:
         logger.info(f"[NotificationEndpoint] Received request: refetch={refetch}")
 

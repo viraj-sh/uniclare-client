@@ -1,5 +1,5 @@
 from datetime import timedelta
-from typing import Optional, Any, Dict, List
+from typing import Any, Dict, List
 from core.utils import EnvManager, standard_response
 from core.logging import setup_logging
 from core.cache import cached_request, invalidate_cache
@@ -8,7 +8,6 @@ from .model.model_notifications import Notification
 
 
 def fetch_notifications(refetch: bool = False) -> Dict[str, Any]:
-
     logger = setup_logging(name="core.fetch_notifications", level="INFO")
     log_prefix = "[NotificationsAPI] "
 
@@ -53,7 +52,7 @@ def fetch_notifications(refetch: bool = False) -> Dict[str, Any]:
 
         try:
             raw_json = response.json()
-        except Exception as exc:
+        except Exception:
             invalidate_cache(response)
             logger.warning(f"{log_prefix}Malformed JSON response.")
             return standard_response(

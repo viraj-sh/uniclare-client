@@ -38,7 +38,6 @@ class StandardResponse(BaseModel):
 
 
 class LogoutResponse(BaseModel):
-
     success: bool = Field(...)
     error: Optional[str] = Field(None)
     data: Optional[Dict[str, Any]] = Field(None)

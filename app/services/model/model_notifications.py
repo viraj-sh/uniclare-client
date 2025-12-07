@@ -1,17 +1,15 @@
 from dataclasses import dataclass
-from typing import Optional, Any, Dict, List
+from typing import Optional, Any, Dict
 
 
 @dataclass
 class Notification:
-
     title: str
     body: str
     date: str
 
     @classmethod
     def from_json(cls, data: Dict[str, Any]) -> Optional["Notification"]:
-
         if not isinstance(data, dict):
             return None
 

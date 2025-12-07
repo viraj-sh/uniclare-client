@@ -1,6 +1,5 @@
-from fastapi import APIRouter, Query, Body, Path
+from fastapi import APIRouter, Query, Path
 from fastapi.responses import JSONResponse
-from typing import Optional
 from core.utils import standard_response
 from core.logging import setup_logging
 from core.exceptions import handle_exception
@@ -13,11 +12,7 @@ from schema.pydantic_result import (
     ResultsListResponse,
     ResultsQueryParams,
     StandardResponseModel1,
-    ExamResultModel,
     StandardResponseModel2,
-    DataModel,
-    SubjectItemModel,
-    ExamDetailModel,
 )
 
 logger = setup_logging(name="api.result")
@@ -73,7 +68,6 @@ async def get_detailed_exam_result(
     exam_code: str = Path(...),
     refetch: bool = Query(False),
 ):
-
     try:
         if not exam_code or not exam_code.strip():
             result = standard_response(

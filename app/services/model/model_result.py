@@ -1,6 +1,5 @@
 from dataclasses import dataclass, asdict
 from typing import Optional, Any, Dict, List
-from dataclasses import dataclass
 import re
 
 
@@ -89,7 +88,6 @@ class ExamResult:
     @classmethod
     def from_json(cls, data: Dict[str, Any]) -> Optional["ExamResult"]:
         try:
-
             if "studDet" not in data or "body" not in data:
                 return None
 
@@ -201,7 +199,7 @@ class SubjectsResult:
     @classmethod
     def from_json(
         cls, sub_name: str, data: Dict[str, Any]
-    ) -> Optional["SubjectResults"]:
+    ) -> Optional["SubjectResult"]:
         try:
             exams = {}
             for exam_code, exam_info in data.items():

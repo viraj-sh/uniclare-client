@@ -3,7 +3,7 @@ import sys
 import ctypes
 import uvicorn
 
-if getattr(sys, 'frozen', False):
+if getattr(sys, "frozen", False):
     base_dir = sys._MEIPASS
 else:
     base_dir = os.path.dirname(os.path.abspath(__file__))
@@ -12,6 +12,7 @@ if app_dir not in sys.path:
     sys.path.insert(0, app_dir)
 
 from app.main import app
+
 
 def enable_vt100():
     if os.name == "nt":
@@ -23,6 +24,7 @@ def enable_vt100():
             kernel32.SetConsoleMode(handle, mode.value | 0x0004)
         except Exception:
             pass
+
 
 os.environ["NO_COLOR"] = "1"
 os.environ["UVICORN_NO_COLOR"] = "1"

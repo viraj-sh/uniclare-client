@@ -1,5 +1,5 @@
-from typing import Any, Dict, Optional
-from fastapi import APIRouter, Body, Query
+from typing import Any, Dict
+from fastapi import APIRouter, Body
 from core.utils import standard_response
 from core.logging import setup_logging
 from core.exceptions import handle_exception
@@ -21,7 +21,6 @@ from schema.pydantic_auth import (
     PasswordResetOTPResponse,
     PasswordResetRequest,
     PasswordResetResponse,
-    PasswordResetResponseData,
     PasswordCheckRequest,
     StandardResponseModel,
     PasswordUpdateRequest,
@@ -40,7 +39,7 @@ router = APIRouter(prefix="/auth", tags=["Auth"])
     summary="Authenticate student (phone + password)",
 )
 async def login_student(
-    body: AuthRequest = Body(..., description="Phone number and password")
+    body: AuthRequest = Body(..., description="Phone number and password"),
 ):
     try:
         logger.info(
@@ -166,7 +165,7 @@ def logout_user_endpoint() -> JSONResponse:
 def send_password_reset_otp_endpoint(
     request: PasswordResetOTPRequest = Body(
         ..., description="Request body containing the phone number"
-    )
+    ),
 ) -> JSONResponse:
     logger = setup_logging(name="routes.auth_router.send_password_reset_otp_endpoint")
     try:
@@ -202,7 +201,6 @@ def password_reset_confirm(request: PasswordResetRequest = Body(...)):
 async def password_check(
     payload: PasswordCheckRequest = Body(...),
 ) -> JSONResponse:
-
     logger.info("Received password-check request.")
     try:
         result: Dict[str, Any] = check_current_password(
@@ -245,7 +243,6 @@ async def password_check(
     response_model=StandardResponseModel,
 )
 async def password_update(payload: PasswordUpdateRequest = Body(...)) -> JSONResponse:
-
     try:
         new_password: str = payload.new_password
 

@@ -4,7 +4,6 @@ from core.utils import EnvManager, standard_response
 from core.logging import setup_logging
 from core.cache import clear_cache
 import json
-from pathlib import Path
 from core.exceptions import handle_exception
 
 
@@ -328,12 +327,10 @@ def check_current_password(password: str) -> Dict[str, Any]:
 
 
 def update_password(new_password: str = "") -> Dict[str, Any]:
-
     logger = setup_logging(name="core.update_password", level="INFO")
     url = "https://studentportal.universitysolutions.in/src/chngPassword.php?action=updatePassword"
 
     try:
-
         phpsessid = EnvManager.get("PHPSESSID", default=None)
         logger.info("Fetched PHPSESSID from EnvManager")
 

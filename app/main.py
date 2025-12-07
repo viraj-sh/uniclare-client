@@ -1,7 +1,5 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-import logging
-
 from api.v1.system import router as system_router
 from api.v1.profile import router as profile_router
 from api.v1.result import router as result_router

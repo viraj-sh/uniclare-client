@@ -4,6 +4,7 @@ from dotenv import load_dotenv, set_key
 from typing import Any, Optional
 import sys
 
+
 def get_assets_dir():
     if getattr(sys, "frozen", False):
         base_dir = sys._MEIPASS
@@ -15,8 +16,10 @@ def get_assets_dir():
             "assets",
         )
 
+
 ASSETS_DIR = get_assets_dir()
 ENV_PATH = ".env"
+
 
 class EnvManager:
     path: Path = Path(ENV_PATH).resolve()
@@ -69,6 +72,7 @@ def standard_response(
         "status_code": status_code,
     }
 
+
 def resource_path(relative_path: str) -> str:
     if hasattr(sys, "_MEIPASS"):
         base_path = sys._MEIPASS
@@ -78,7 +82,7 @@ def resource_path(relative_path: str) -> str:
 
 
 def frontend_path() -> str:
-    if getattr(sys, 'frozen', False):
+    if getattr(sys, "frozen", False):
         base_dir = sys._MEIPASS
     else:
         base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))

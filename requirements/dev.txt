@@ -1,3 +1,4 @@
 -r base.txt
 black==25.9.0
 pyinstaller==6.17.0
+pre_commit==4.5.0

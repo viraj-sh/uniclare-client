@@ -82,7 +82,7 @@ Once the client is running, these endpoints are accessible (host may vary):
 ## MCP Usage
 
 > For full instructions on configuring the MCP server, check out the **[MCP Documentation](https://github.com/viraj-sh/uniclare-client/wiki/MCP-Documentation)**.
-<!-- 
+<!--
 | Demo |
 | :------------: |
 | <img src="https://raw.githubusercontent.com/viraj-sh/uniclare-client/refs/heads/main/.github/assets/mcp_usage.gif" width="800"/> | -->

@@ -1,11 +1,10 @@
 from datetime import timedelta
-from typing import Optional, Dict, Any
+from typing import Dict, Any
 from core.utils import EnvManager, standard_response
 from core.logging import setup_logging
 from core.cache import cached_request, invalidate_cache
 from core.exceptions import handle_exception
 import json
-import requests
 from .model.model_time_table import PracticalTimetable
 
 
@@ -13,7 +12,6 @@ def fetch_practical_timetable(refetch: bool = False) -> Dict[str, Any]:
     logger = setup_logging(name="core.fetch_practical_timetable", level="INFO")
 
     try:
-
         phpsessid = EnvManager.get("PHPSESSID", default=None)
         logger.info("Fetched PHPSESSID from EnvManager")
 

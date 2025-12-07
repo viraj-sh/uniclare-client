@@ -13,7 +13,6 @@ def fetch_profile(refetch: bool = False) -> Dict[str, any]:
     log_prefix = "[StudentProfile] "
 
     try:
-
         phpsessid = EnvManager.get("PHPSESSID", default=None)
         if not phpsessid:
             logger.warning(f"{log_prefix}No PHPSESSID found in environment")
@@ -67,7 +66,6 @@ def fetch_editable_profile(refetch: bool = False) -> Dict[str, Any]:
     logger = setup_logging(name="core.fetch_editable_profile", level="INFO")
 
     try:
-
         phpsessid = EnvManager.get("PHPSESSID", default=None)
         if not phpsessid:
             return standard_response(
@@ -161,7 +159,6 @@ def update_editable_profile(
         data = response.json()
 
         if data.get("status") == "success":
-
             result = {
                 "ffatname": payload["ffatname"],
                 "fmotname": payload["fmotname"],
