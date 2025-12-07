@@ -77,13 +77,13 @@ def apply_hashes():
 
     html_files = find_html_files()
     for hf in html_files:
-        s = hf.read_text()
+        s = hf.read_text(encoding="utf-8")
         orig_s = s
         for orig, new in mapping.items():
             s = re.sub(rf"(/js/{orig}|js/{orig})", f"/js/{new}", s)
             s = re.sub(rf"(/static/css/{orig}|css/{orig})", f"/static/css/{new}", s)
         if s != orig_s:
-            hf.write_text(s)
+            hf.write_text(s, encoding="utf-8")
             print(f"Updated HTML references in {hf}")
 
     saved_map = load_map()
@@ -132,13 +132,13 @@ def remove_hashes():
 
     html_files = find_html_files()
     for hf in html_files:
-        s = hf.read_text()
+        s = hf.read_text(encoding="utf-8")
         orig_s = s
         for orig, new in mapping.items():
             s = re.sub(rf"(/js/{new}|js/{new})", f"/js/{orig}", s)
             s = re.sub(rf"(/static/css/{new}|css/{new})", f"/static/css/{orig}", s)
         if s != orig_s:
-            hf.write_text(s)
+            hf.write_text(s, encoding="utf-8")
             print(f"Updated HTML references in {hf}")
 
     if Path(MAP_FILE).exists() and not inferred:
