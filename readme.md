@@ -33,9 +33,9 @@ The client can be run in several ways. For detailed steps, see the **[Getting St
 
 Option 1. **[Prebuilt Releases](https://github.com/viraj-sh/uniclare-client/wiki/Getting-Started#prebuilt-releases)** – Download and run the latest release for your platform:
 
-   [![Windows (.exe)](https://img.shields.io/badge/Windows_\(.exe\)-x64-blue?style=flat-square)](https://github.com/viraj-sh/uniclare-client/releases/latest/uniclare-client.exe)
-   [![Linux (.tar.gz)](https://img.shields.io/badge/Linux-x86__64-orange?style=flat-square)](https://github.com/viraj-sh/uniclare-client/releases/latest/download/uniclare-client-linux)
-   [![macOS (.zip)](https://img.shields.io/badge/macOS-arm64-lightgrey?style=flat-square)](https://github.com/viraj-sh/uniclare-client/releases/latest/download/uniclare-client-macos)
+   [![Windows (.exe)](https://img.shields.io/badge/Windows_\(.exe\)-x64-blue?style=flat-square)](https://github.com/viraj-sh/uniclare-client/releases/download/v1.0.0/uniclare-client-v1.0.0-win-x64.exe)
+   [![Linux (.tar.gz)](https://img.shields.io/badge/Linux-x86__64-orange?style=flat-square)](https://github.com/viraj-sh/uniclare-client/releases/download/v1.0.0/uniclare-client-v1.0.0-linux-x86__64)
+   [![macOS (.zip)](https://img.shields.io/badge/macOS-arm64-lightgrey?style=flat-square)](https://github.com/viraj-sh/uniclare-client/releases/download/v1.0.0/uniclare-client-v1.0.0-macos-arm64)
 
 Option 2. **[One-Click Deployment](https://github.com/viraj-sh/uniclare-client/wiki/Getting-Started#one-click-deployment-render) (Render)** – Deploy the client instantly in the cloud:
 

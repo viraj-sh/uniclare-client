@@ -22,7 +22,7 @@ body:
         - Frontend / UI
         - Docker (local build)
         - Docker Hub image
-        - Release build (Windows, MacOS, Linux)        
+        - Release build (Windows, MacOS, Linux)
         - Deployment (Render / Other)
         - CLI / Local Scripts
         - Other / Not Sure
