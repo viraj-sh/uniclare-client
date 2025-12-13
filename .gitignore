@@ -6,4 +6,6 @@ venv
 __pycache__
 app/data
 app/logs
-app/.env
+*/.env
+*.log
+.env
