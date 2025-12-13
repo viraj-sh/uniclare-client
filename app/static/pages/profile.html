@@ -11,7 +11,31 @@
     <script src="/static/js/profile.js"></script>
     <script src="/static/js/sidebar_user.js"></script>
     <script src="/static/js/signout.js"></script>
-
+    <!-- Skeleton utility -->
+    <style>
+      .skeleton {
+        position: relative;
+      }
+      .skeleton:empty::after {
+        content: "";
+        display: block;
+        width: 100%;
+        height: 1em;
+        border-radius: 0.25rem;
+        background-color: rgb(229 231 235); /* gray-200 light */
+      }
+      .dark .skeleton:empty::after {
+        background-color: rgb(38 38 38); /* neutral-800 dark */
+      }
+      .pulse {
+        animation: pulse 1.5s ease-in-out infinite;
+      }
+      @keyframes pulse {
+        0% { opacity: 1; }
+        50% { opacity: 0.6; }
+        100% { opacity: 1; }
+      }
+    </style>
 </head>
 
 <body>
@@ -148,19 +172,15 @@
                 <!-- Header -->
                 <div class="flex items-center gap-6 border-b border-gray-200 pb-4">
                     <div
-                        class="w-24 h-24 rounded-full overflow-hidden border-2 border-green-800 shadow-sm flex-shrink-0 bg-gray-100">
-                        <img id="student-photo" src="" alt="Student Photo" class="object-cover w-full h-full" />
+                        class="w-24 h-24 rounded-full overflow-hidden border-2 border-green-800 shadow-sm flex-shrink-0 bg-gray-100 relative">
+                        <!-- Photo skeleton -->
+                        <div id="student-photo-skeleton" class="absolute inset-0 bg-gray-200 pulse"></div>
+                        <img id="student-photo" src="" alt="Student Photo" class="object-cover w-full h-full hidden" />
                     </div>
-                    <div>
-                        <h1 id="student-name" class="text-xl font-semibold text-gray-900">
-                            <!-- Full Name -->
-                        </h1>
-                        <p id="degree-name" class="text-sm text-gray-600">
-                            <!-- Degree Name -->
-                        </p>
-                        <p id="college-name" class="text-sm text-gray-600">
-                            <!-- College Name -->
-                        </p>
+                    <div class="w-full max-w-md">
+                        <h1 id="student-name" class="text-xl font-semibold text-gray-900 skeleton pulse"></h1>
+                        <p id="degree-name" class="text-sm text-gray-600 mt-1 skeleton pulse"></p>
+                        <p id="college-name" class="text-sm text-gray-600 mt-1 skeleton pulse"></p>
                     </div>
                 </div>
 
@@ -168,47 +188,47 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-4 text-gray-800">
                     <div>
                         <p class="text-xs uppercase text-green-800 tracking-wide font-medium">Registration No.</p>
-                        <p id="reg-no" class="text-sm mt-1">NA</p>
+                        <p id="reg-no" class="text-sm mt-1 skeleton pulse"></p>
                     </div>
                     <div>
                         <p class="text-xs uppercase text-green-800 tracking-wide font-medium">Father’s Name</p>
-                        <p id="father-name" class="text-sm mt-1">NA</p>
+                        <p id="father-name" class="text-sm mt-1 skeleton pulse"></p>
                     </div>
                     <div>
                         <p class="text-xs uppercase text-green-800 tracking-wide font-medium">Mother’s Name</p>
-                        <p id="mother-name" class="text-sm mt-1">NA</p>
+                        <p id="mother-name" class="text-sm mt-1 skeleton pulse"></p>
                     </div>
                     <div>
                         <p class="text-xs uppercase text-green-800 tracking-wide font-medium">Category</p>
-                        <p id="category" class="text-sm mt-1">NA</p>
+                        <p id="category" class="text-sm mt-1 skeleton pulse"></p>
                     </div>
                     <div>
                         <p class="text-xs uppercase text-green-800 tracking-wide font-medium">Degree ID</p>
-                        <p id="degree-id" class="text-sm mt-1">NA</p>
+                        <p id="degree-id" class="text-sm mt-1 skeleton pulse"></p>
                     </div>
                     <div>
                         <p class="text-xs uppercase text-green-800 tracking-wide font-medium">College ID</p>
-                        <p id="college-id" class="text-sm mt-1">NA</p>
+                        <p id="college-id" class="text-sm mt-1 skeleton pulse"></p>
                     </div>
                     <div>
                         <p class="text-xs uppercase text-green-800 tracking-wide font-medium">Exam Session</p>
-                        <p id="exam-date" class="text-sm mt-1">NA</p>
+                        <p id="exam-date" class="text-sm mt-1 skeleton pulse"></p>
                     </div>
                     <div>
                         <p class="text-xs uppercase text-green-800 tracking-wide font-medium">Student Mobile</p>
-                        <p id="student-mobile" class="text-sm mt-1">NA</p>
+                        <p id="student-mobile" class="text-sm mt-1 skeleton pulse"></p>
                     </div>
                     <div>
                         <p class="text-xs uppercase text-green-800 tracking-wide font-medium">Parent Mobile</p>
-                        <p id="parent-mobile" class="text-sm mt-1">NA</p>
+                        <p id="parent-mobile" class="text-sm mt-1 skeleton pulse"></p>
                     </div>
                     <div>
                         <p class="text-xs uppercase text-green-800 tracking-wide font-medium">Email</p>
-                        <p id="student-email" class="text-sm mt-1 break-all">NA</p>
+                        <p id="student-email" class="text-sm mt-1 break-all skeleton pulse"></p>
                     </div>
                     <div>
                         <p class="text-xs uppercase text-green-800 tracking-wide font-medium">Fee Type</p>
-                        <p id="fee-type" class="text-sm mt-1">NA</p>
+                        <p id="fee-type" class="text-sm mt-1 skeleton pulse"></p>
                     </div>
                 </div>
 

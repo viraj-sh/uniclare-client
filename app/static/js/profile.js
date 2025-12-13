@@ -7,8 +7,48 @@ document.addEventListener("DOMContentLoaded", async () => {
   // Utility to safely set text content
   const setText = (id, value) => {
     const el = document.getElementById(id);
-    if (el) el.textContent = value && value !== "" ? value : "NA";
+    if (!el) return;
+    el.textContent = value && value !== "" ? value : "NA";
+    // remove skeleton once populated
+    el.classList.remove("skeleton", "pulse");
   };
+
+  const photoImg = document.getElementById("student-photo");
+  const photoSkeleton = document.getElementById("student-photo-skeleton");
+
+  function startSkeleton() {
+    // all dynamic IDs
+    const ids = [
+      "student-name","degree-name","college-name","reg-no","father-name","mother-name",
+      "category","degree-id","college-id","exam-date","student-mobile","parent-mobile",
+      "student-email","fee-type"
+    ];
+    ids.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) {
+        // clear content to show :empty skeleton bar
+        el.textContent = "";
+        el.classList.add("skeleton", "pulse");
+      }
+    });
+    // image: show skeleton, hide img
+    if (photoSkeleton) photoSkeleton.classList.remove("hidden");
+    if (photoImg) photoImg.classList.add("hidden");
+  }
+
+  function stopSkeleton() {
+    const ids = [
+      "student-name","degree-name","college-name","reg-no","father-name","mother-name",
+      "category","degree-id","college-id","exam-date","student-mobile","parent-mobile",
+      "student-email","fee-type"
+    ];
+    ids.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.classList.remove("skeleton", "pulse");
+    });
+    if (photoSkeleton) photoSkeleton.classList.add("hidden");
+    if (photoImg) photoImg.classList.remove("hidden");
+  }
 
   // Validate user session before loading anything
   async function validateSession() {
@@ -33,6 +73,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // Fetch and display profile details
   async function loadProfile() {
+    startSkeleton();
     try {
       const res = await fetch(`${API_BASE}/profile`, {
         method: "GET",
@@ -49,7 +90,15 @@ document.addEventListener("DOMContentLoaded", async () => {
       const data = result.data;
 
       // Populate UI fields
-      document.getElementById("student-photo").src = data.photo || "";
+      if (photoImg) {
+        if (data.photo && data.photo !== "") {
+          photoImg.src = data.photo;
+        } else {
+          // keep skeleton, don't show broken image
+          photoImg.removeAttribute("src");
+        }
+      }
+
       setText("student-name", data.full_name);
       setText("degree-name", data.degree_name);
       setText("college-name", data.coll_name);
@@ -68,8 +117,13 @@ document.addEventListener("DOMContentLoaded", async () => {
       // Hide error message if previously shown
       profileError.classList.add("hidden");
       profileSection.classList.remove("hidden");
+
+      // stop skeletons and reveal image
+      stopSkeleton();
     } catch (err) {
       console.error("Error loading profile:", err);
+      // stop skeletons and show error
+      stopSkeleton();
       profileSection.classList.add("hidden");
       profileError.classList.remove("hidden");
     }
