@@ -8,10 +8,10 @@
     <link rel="icon" href="/static/assets/favicon.ico" type="image/x-icon" />
     <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="/static/css/edit_profile.css" />
     <script src="/static/js/sidebar_user.js"></script>
     <script src="/static/js/edit_profile.js"></script>
     <script src="/static/js/signout.js"></script>
-
 
 </head>
 
@@ -150,11 +150,20 @@
                 <div class="flex items-center gap-6 border-b border-gray-200 pb-4">
                     <div
                         class="w-24 h-24 rounded-full overflow-hidden border-2 border-green-800 shadow-sm bg-gray-100 flex-shrink-0">
-                        <img id="student-photo" src="" alt="Student Photo" class="object-cover w-full h-full" />
+                        <!-- image skeleton + img (hidden until loaded) -->
+                        <div id="student-photo-skeleton" class="w-full h-full bg-gray-200 pulse"></div>
+                        <img id="student-photo" src="" alt="Student Photo" class="hidden object-cover w-full h-full" />
                     </div>
                     <div>
-                        <h1 id="full-name" class="text-xl font-semibold text-gray-900">Loading...</h1>
-                        <p id="reg-no" class="text-sm text-gray-600">—</p>
+                        <!-- Empty initially to show skeleton bars -->
+                        <h1 id="full-name" class="text-xl font-semibold text-gray-900">
+                            <!-- skeleton placeholder -->
+                            <span class="skeleton pulse block w-48 h-5 rounded"></span>
+                        </h1>
+                        <p id="reg-no" class="text-sm text-gray-900 mt-1">
+                            <!-- skeleton placeholder -->
+                            <span class="skeleton pulse block w-32 h-4 rounded"></span>
+                        </p>
                     </div>
                 </div>
 
@@ -162,44 +171,45 @@
                 <form id="edit-profile-form"
                     class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-6 text-gray-800">
 
-
-
-                    <!-- Father’s Name (Editable) -->
+                    <!-- Father’s Name -->
                     <div>
                         <label for="father-name"
-                            class="text-xs uppercase text-green-800 tracking-wide font-medium">Father’s
-                            Name</label>
+                            class="text-xs uppercase text-green-800 tracking-wide font-medium">Father’s Name</label>
+                        <!-- skeleton bar shown until JS populates -->
+                        <p id="father-name-skeleton" class="mt-1 skeleton pulse"></p>
                         <input id="father-name" type="text" name="fath_name" required
-                            class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:ring-2 focus:ring-green-800 focus:border-green-800 outline-none transition-colors"
+                            class="hidden mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:ring-2 focus:ring-green-800 focus:border-green-800 outline-none transition-colors"
                             placeholder="Enter father's name" />
                     </div>
 
-                    <!-- Mother’s Name (Editable) -->
+                    <!-- Mother’s Name -->
                     <div>
                         <label for="mother-name"
-                            class="text-xs uppercase text-green-800 tracking-wide font-medium">Mother’s
-                            Name</label>
+                            class="text-xs uppercase text-green-800 tracking-wide font-medium">Mother’s Name</label>
+                        <p id="mother-name-skeleton" class="mt-1 skeleton pulse"></p>
                         <input id="mother-name" type="text" name="mot_name" required
-                            class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:ring-2 focus:ring-green-800 focus:border-green-800 outline-none transition-colors"
+                            class="hidden mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:ring-2 focus:ring-green-800 focus:border-green-800 outline-none transition-colors"
                             placeholder="Enter mother's name" />
                     </div>
 
-                    <!-- ABC ID (Editable) -->
+                    <!-- ABC ID -->
                     <div>
                         <label for="abc-id" class="text-xs uppercase text-green-800 tracking-wide font-medium">ABC
                             ID</label>
+                        <p id="abc-id-skeleton" class="mt-1 skeleton pulse"></p>
                         <input id="abc-id" type="text" name="abc_id" required
-                            class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:ring-2 focus:ring-green-800 focus:border-green-800 outline-none transition-colors"
+                            class="hidden mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:ring-2 focus:ring-green-800 focus:border-green-800 outline-none transition-colors"
                             placeholder="Enter ABC ID" />
                     </div>
-
 
                 </form>
 
                 <!-- Save Button -->
                 <div class="pt-4 border-t border-gray-200 flex justify-end">
+                    <!-- skeleton bar for button -->
+                    <p id="save-btn-skeleton" class="skeleton pulse w-40 h-9 rounded-lg"></p>
                     <button id="save-profile-btn" type="button" disabled
-                        class="bg-green-800 text-white font-medium px-5 py-2.5 rounded-lg hover:bg-green-900 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2">
+                        class="hidden bg-green-800 text-white font-medium px-5 py-2.5 rounded-lg hover:bg-green-900 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2">
                         <svg id="save-spinner" class="hidden animate-spin w-4 h-4 text-white"
                             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4">

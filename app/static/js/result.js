@@ -35,6 +35,41 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
+  // Skeleton: start and stop (consistent with profile.js)
+  function startSkeleton() {
+    [studentNameEl, usnEl, programmeEl, collegeEl].forEach((el) => {
+      if (el) {
+        el.textContent = "";
+        el.classList.add("skeleton", "pulse");
+      }
+    });
+
+    const skeletonCard = `
+      <div class="result-card border border-gray-200 rounded-lg p-4 shadow-sm">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div class="space-y-2">
+            <p class="skeleton pulse w-24"></p>
+            <p class="skeleton pulse w-48"></p>
+            <p class="skeleton pulse w-40"></p>
+            <p class="skeleton pulse w-32"></p>
+            <p class="skeleton pulse w-28"></p>
+          </div>
+          <div>
+            <div class="skeleton pulse w-24"></div>
+          </div>
+        </div>
+      </div>
+    `;
+    resultsListEl.innerHTML = skeletonCard + skeletonCard + skeletonCard;
+    resultsErrorEl.classList.add("hidden");
+  }
+
+  function stopSkeleton() {
+    [studentNameEl, usnEl, programmeEl, collegeEl].forEach((el) => {
+      if (el) el.classList.remove("skeleton", "pulse");
+    });
+  }
+
   // Utility: Create a result card
   function createResultCard(result) {
     const card = document.createElement("div");
@@ -96,6 +131,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // Fetch and populate results
   async function loadResults() {
+    startSkeleton();
     try {
       const res = await fetch(`${API_BASE}/results`, {
         method: "GET",
@@ -111,8 +147,10 @@ document.addEventListener("DOMContentLoaded", async () => {
       const results = data.data;
 
       if (!Array.isArray(results) || results.length === 0) {
+        resultsListEl.innerHTML = "";
         resultsErrorEl.textContent = "No results available yet.";
         resultsErrorEl.classList.remove("hidden");
+        stopSkeleton();
         return;
       }
 
@@ -136,18 +174,20 @@ document.addEventListener("DOMContentLoaded", async () => {
         btn.addEventListener("click", () => {
           const yearId = btn.getAttribute("data-year-id");
           if (yearId) {
-            window.location.href = `/static/pages/result_details.html?exam_id=${encodeURIComponent(
-              yearId
-            )}`;
+            window.location.href = `/static/pages/result_details.html?exam_id=${encodeURIComponent(yearId)}`;
           } else {
             alert("Missing exam identifier!");
           }
         });
       });
+
+      stopSkeleton();
     } catch (err) {
       console.error("Error loading results:", err);
+      resultsListEl.innerHTML = "";
       resultsErrorEl.textContent = "⚠️ Failed to load results. Please try again later.";
       resultsErrorEl.classList.remove("hidden");
+      stopSkeleton();
     }
   }
 

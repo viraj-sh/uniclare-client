@@ -8,33 +8,66 @@ document.addEventListener("DOMContentLoaded", async () => {
   const fullNameEl = document.getElementById("full-name");
   const regNoEl = document.getElementById("reg-no");
   const profilePhoto = document.getElementById("student-photo");
+  const photoSkeleton = document.getElementById("student-photo-skeleton");
+  const fatherSkeleton = document.getElementById("father-name-skeleton");
+  const motherSkeleton = document.getElementById("mother-name-skeleton");
+  const abcSkeleton = document.getElementById("abc-id-skeleton");
+  const saveBtnSkeleton = document.getElementById("save-btn-skeleton");
   const saveBtn = document.getElementById("save-profile-btn");
   const feedback = document.getElementById("feedback-message");
 
   let originalData = {};
   let isEdited = false;
 
+  // Skeleton start/stop (consistent)
+  function startSkeleton() {
+    // header bars
+    fullNameEl.textContent = "";
+    regNoEl.textContent = "";
+    fullNameEl.classList.add("skeleton", "pulse");
+    regNoEl.classList.add("skeleton", "pulse");
+
+    // photo: show skeleton, hide img
+    if (photoSkeleton) photoSkeleton.classList.remove("hidden");
+    if (profilePhoto) profilePhoto.classList.add("hidden");
+
+    // inputs: show skeleton bars, hide inputs
+    [fatherSkeleton, motherSkeleton, abcSkeleton].forEach((sk) => sk && sk.classList.remove("hidden"));
+    [fatherInput, motherInput, abcInput].forEach((inp) => inp && inp.classList.add("hidden"));
+
+    // button skeleton
+    if (saveBtnSkeleton) saveBtnSkeleton.classList.remove("hidden");
+    if (saveBtn) saveBtn.classList.add("hidden");
+  }
+
+  function stopSkeleton() {
+    fullNameEl.classList.remove("skeleton", "pulse");
+    regNoEl.classList.remove("skeleton", "pulse");
+
+    if (photoSkeleton) photoSkeleton.classList.add("hidden");
+    if (profilePhoto) profilePhoto.classList.remove("hidden");
+
+    [fatherSkeleton, motherSkeleton, abcSkeleton].forEach((sk) => sk && sk.classList.add("hidden"));
+    [fatherInput, motherInput, abcInput].forEach((inp) => inp && inp.classList.remove("hidden"));
+
+    if (saveBtnSkeleton) saveBtnSkeleton.classList.add("hidden");
+    if (saveBtn) saveBtn.classList.remove("hidden");
+  }
+
   // Utility: Show message
   function showMessage(message, type = "info") {
     feedback.textContent = message;
     feedback.classList.remove("hidden", "text-red-600", "text-green-600", "text-blue-600");
-    const color =
-      type === "error"
-        ? "text-red-600"
-        : type === "success"
-        ? "text-green-600"
-        : "text-blue-600";
+    const color = type === "error" ? "text-red-600" : type === "success" ? "text-green-600" : "text-blue-600";
     feedback.classList.add(color);
   }
 
-  // Disable or enable UI
   function disableUI(state = true) {
     [fatherInput, motherInput, abcInput, saveBtn].forEach((el) => (el.disabled = state));
     saveBtn.classList.toggle("opacity-50", state);
     saveBtn.classList.toggle("cursor-not-allowed", state);
   }
 
-  // Validate session
   async function validateSession() {
     try {
       const res = await fetch(`${API_BASE}/auth/validate-session`, {
@@ -55,11 +88,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
-  // Load editable profile data
   async function loadProfileData() {
     try {
+      startSkeleton();
       disableUI(true);
-      showMessage("Loading profile information...", "info");
+      // showMessage("Loading profile information...", "info");
 
       const res = await fetch(`${API_BASE}/profile/editable`, {
         method: "GET",
@@ -80,16 +113,18 @@ document.addEventListener("DOMContentLoaded", async () => {
         abc_no: data.abc_id || "",
       };
 
-      // Populate non-editable fields
+      // Populate header
       fullNameEl.textContent = data.full_name || "NA";
       regNoEl.textContent = data.reg_no || "NA";
+
+      // Photo
       if (profilePhoto && data.sphoto) {
         profilePhoto.src = data.sphoto.startsWith("http")
           ? data.sphoto
           : `https://university-student-photos.s3.ap-south-1.amazonaws.com/051/${data.sphoto}`;
       }
 
-      // Populate editable inputs
+      // Inputs
       fatherInput.value = originalData.father_name;
       motherInput.value = originalData.mother_name;
       abcInput.value = originalData.abc_no;
@@ -100,11 +135,11 @@ document.addEventListener("DOMContentLoaded", async () => {
       console.error("Failed to load editable profile:", err);
       showMessage("Network error while fetching profile.", "error");
     } finally {
+      stopSkeleton();
       disableUI(false);
     }
   }
 
-  // Detect changes
   function detectChanges() {
     const currentData = {
       father_name: fatherInput.value.trim(),
@@ -117,15 +152,13 @@ document.addEventListener("DOMContentLoaded", async () => {
       currentData.mother_name !== originalData.mother_name ||
       currentData.abc_no !== originalData.abc_no;
 
-    const allFilled =
-      currentData.father_name && currentData.mother_name && currentData.abc_no;
+    const allFilled = currentData.father_name && currentData.mother_name && currentData.abc_no;
 
     saveBtn.disabled = !(isEdited && allFilled);
     saveBtn.classList.toggle("opacity-50", !(isEdited && allFilled));
     saveBtn.classList.toggle("cursor-not-allowed", !(isEdited && allFilled));
   }
 
-  // Save edited profile
   async function saveProfileChanges() {
     if (!isEdited) return;
 
@@ -146,11 +179,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
-        body: JSON.stringify({
-          father_name,
-          mother_name,
-          abc_no,
-        }),
+        body: JSON.stringify({ father_name, mother_name, abc_no }),
       });
 
       const data = await res.json();
@@ -169,14 +198,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
-  // Attach listeners
   [fatherInput, motherInput, abcInput].forEach((input) => {
     input.addEventListener("input", detectChanges);
   });
 
   saveBtn.addEventListener("click", saveProfileChanges);
 
-  // Initialize
   if (await validateSession()) {
     await loadProfileData();
     detectChanges();

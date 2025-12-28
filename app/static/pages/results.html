@@ -7,6 +7,7 @@
     <title>Results</title>
     <link rel="icon" href="/static/assets/favicon.ico" type="image/x-icon" />
     <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/static/css/results.css" />
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script src="/static/js/sidebar_user.js"></script>
     <script src="/static/js/result.js"></script>
@@ -109,38 +110,55 @@
             <div id="results-section" class="space-y-6">
                 <!-- Common Header Info -->
                 <div class="border-b border-gray-200 pb-4">
-                    <h1 id="student-name" class="text-xl font-semibold text-gray-900">Student Name: NA</h1>
-                    <p id="usn" class="text-sm text-gray-700 mt-1">USN: NA</p>
-                    <p id="programme" class="text-sm text-gray-700 mt-1">Programme: NA</p>
-                    <p id="college" class="text-sm text-gray-700 mt-1">College: NA</p>
+                    <!-- Empty initially to show skeleton bars -->
+                    <h1 id="student-name" class="text-xl font-semibold text-gray-900 skeleton pulse"></h1>
+                    <p id="usn" class="text-sm text-gray-700 mt-1 skeleton pulse"></p>
+                    <p id="programme" class="text-sm text-gray-700 mt-1 skeleton pulse"></p>
+                    <p id="college" class="text-sm text-gray-700 mt-1 skeleton pulse"></p>
                 </div>
 
                 <!-- Results List -->
                 <div id="results-list" class="space-y-4">
-                    <!-- Example Result Card (Template, will be populated dynamically) -->
-                    <div
-                        class="result-card border border-gray-200 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow duration-200">
+                    <!-- Three skeleton cards shown until JS populates -->
+                    <div class="result-card border border-gray-200 rounded-lg p-4 shadow-sm">
                         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                            <div class="space-y-1">
-                                <p class="text-sm text-green-800 font-medium">IV Semester</p>
-                                <p class="text-sm text-gray-800">
-                                    <span class="font-medium">Exam Session:</span> June 2025
-                                </p>
-                                <p class="text-sm text-gray-800">
-                                    <span class="font-medium">Result Date:</span> 23 July 2025
-                                </p>
-                                <p class="text-sm text-gray-800">
-                                    <span class="font-medium">Status:</span> Fail, Promoted
-                                </p>
-                                <p class="text-sm text-gray-800">
-                                    <span class="font-medium">MC No.:</span> D2521039
-                                </p>
+                            <div class="space-y-2">
+                                <p class="skeleton pulse w-24"></p>
+                                <p class="skeleton pulse w-48"></p>
+                                <p class="skeleton pulse w-40"></p>
+                                <p class="skeleton pulse w-32"></p>
+                                <p class="skeleton pulse w-28"></p>
                             </div>
                             <div>
-                                <button
-                                    class="bg-green-800 text-white text-sm font-medium px-4 py-2 rounded-lg hover:bg-green-900 transition-colors">
-                                    View
-                                </button>
+                                <div class="skeleton pulse w-24"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="result-card border border-gray-200 rounded-lg p-4 shadow-sm">
+                        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                            <div class="space-y-2">
+                                <p class="skeleton pulse w-24"></p>
+                                <p class="skeleton pulse w-52"></p>
+                                <p class="skeleton pulse w-44"></p>
+                                <p class="skeleton pulse w-36"></p>
+                                <p class="skeleton pulse w-28"></p>
+                            </div>
+                            <div>
+                                <div class="skeleton pulse w-24"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="result-card border border-gray-200 rounded-lg p-4 shadow-sm">
+                        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                            <div class="space-y-2">
+                                <p class="skeleton pulse w-24"></p>
+                                <p class="skeleton pulse w-40"></p>
+                                <p class="skeleton pulse w-48"></p>
+                                <p class="skeleton pulse w-32"></p>
+                                <p class="skeleton pulse w-28"></p>
+                            </div>
+                            <div>
+                                <div class="skeleton pulse w-24"></div>
                             </div>
                         </div>
                     </div>

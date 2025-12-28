@@ -2,6 +2,59 @@ document.addEventListener("DOMContentLoaded", async () => {
   const BASE_URL = "";
   const LOGIN_PAGE = "/static/index.html";
 
+  // Elements
+  const ids = [
+    "student-name",
+    "student-usn",
+    "college-name",
+    "exam-name",
+    "exam-date",
+    "result-date",
+    "sgpa",
+    "percentage",
+    "cgpa",
+    "credits",
+    "final-result",
+    "reval-date",
+    "retot-date",
+    "pc-date",
+  ];
+  const getEl = (id) => document.getElementById(id);
+  const subjectsTbody = document.getElementById("subjects-table-body");
+
+  // Skeleton: start and stop (consistent with profile/results)
+  function renderTableSkeleton(rows = 5) {
+    let html = "";
+    for (let r = 0; r < rows; r++) {
+      html += "<tr>";
+      for (let c = 0; c < 12; c++) {
+        html += `<td class="px-4 py-3"><span class="skeleton pulse block"></span></td>`;
+      }
+      html += "</tr>";
+    }
+    subjectsTbody.innerHTML = html;
+  }
+
+  function startSkeleton() {
+    ids.forEach((id) => {
+      const el = getEl(id);
+      if (el) {
+        el.textContent = "";
+        el.classList.add("skeleton", "pulse");
+      }
+    });
+    renderTableSkeleton(5);
+  }
+
+  function stopSkeleton() {
+    ids.forEach((id) => {
+      const el = getEl(id);
+      if (el) el.classList.remove("skeleton", "pulse");
+    });
+    // Do NOT clear the tbody here; it would erase the populated rows
+    // subjectsTbody.innerHTML = "";
+  }
+
   // Utility: Redirect to login
   const redirectToLogin = () => {
     window.location.href = LOGIN_PAGE;
@@ -41,6 +94,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     return;
   }
 
+  // Begin skeleton before fetching
+  startSkeleton();
+
   // ✅ STEP 3: Fetch Result Details
   try {
     const res = await fetch(`${BASE_URL}/api/v1/results/${examId}`, {
@@ -55,48 +111,37 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if (!resultData.success || !resultData.data) {
       alert("No result data found for this exam.");
+      stopSkeleton();
       return;
     }
 
     const data = resultData.data;
 
     // ✅ STEP 4: Populate Header Info
-    document.getElementById("student-name").textContent = data.full_name || "N/A";
-    document.getElementById("student-usn").textContent = data.reg_no || "N/A";
-    document.getElementById("college-name").textContent = data.col_name || "N/A";
-    document.getElementById("exam-name").textContent = data.full_sem || "N/A";
-    document.getElementById("exam-date").textContent = data.exam_date
-      ? `Exam: ${data.exam_date}`
-      : "";
-    document.getElementById("result-date").textContent = data.result_date
-      ? `Result Date: ${data.result_date}`
-      : "";
+    getEl("student-name").textContent = data.full_name || "N/A";
+    getEl("student-usn").textContent = data.reg_no || "N/A";
+    getEl("college-name").textContent = data.col_name || "N/A";
+    getEl("exam-name").textContent = data.full_sem || "N/A";
+    getEl("exam-date").textContent = data.exam_date ? `Exam: ${data.exam_date}` : "";
+    getEl("result-date").textContent = data.result_date ? `Result Date: ${data.result_date}` : "";
 
     // ✅ STEP 5: Summary Cards (with Percentage)
-    document.getElementById("sgpa").textContent = data.sgpa || "--";
-    document.getElementById("cgpa").textContent = data.cgpa || "--";
-    document.getElementById("credits").textContent = data.total_credits || "--";
-    document.getElementById("percentage").textContent =
+    getEl("sgpa").textContent = data.sgpa || "--";
+    getEl("cgpa").textContent = data.cgpa || "--";
+    getEl("credits").textContent = data.total_credits || "--";
+    getEl("percentage").textContent =
       data.percentage && data.percentage !== "0"
         ? `${parseFloat(data.percentage).toFixed(2)}%`
         : "--";
-    document.getElementById("final-result").textContent = data.result || "--";
+    getEl("final-result").textContent = data.result || "--";
 
     // ✅ STEP 6: Additional Dates
-    document.getElementById("reval-date").innerHTML = `<span class="font-semibold">Revaluation Date:</span> ${
-      data.rv_date || "--"
-    }`;
-    document.getElementById("retot-date").innerHTML = `<span class="font-semibold">Re-totaling Date:</span> ${
-      data.rt_date || "--"
-    }`;
-    document.getElementById("pc-date").innerHTML = `<span class="font-semibold">Provisional Certificate Date:</span> ${
-      data.pc_date || "--"
-    }`;
+    getEl("reval-date").innerHTML = `<span class="font-semibold">Revaluation Date:</span> ${data.rv_date || "--"}`;
+    getEl("retot-date").innerHTML = `<span class="font-semibold">Re-totaling Date:</span> ${data.rt_date || "--"}`;
+    getEl("pc-date").innerHTML = `<span class="font-semibold">Provisional Certificate Date:</span> ${data.pc_date || "--"}`;
 
     // ✅ STEP 7: Subjects Table (Fixed column mapping)
-    const tbody = document.getElementById("subjects-table-body");
-    tbody.innerHTML = "";
-
+    subjectsTbody.innerHTML = "";
     if (Array.isArray(data.subjects) && data.subjects.length > 0) {
       data.subjects.forEach((subject) => {
         const tr = document.createElement("tr");
@@ -111,21 +156,17 @@ document.addEventListener("DOMContentLoaded", async () => {
           <td class="px-4 py-3">${subject.credit_hrs || "-"}</td>
           <td class="px-4 py-3">${subject.grade_points || "-"}</td>
           <td class="px-4 py-3">${subject.credit_points || "-"}</td>
-          <td class="px-4 py-3 font-semibold ${
-            subject.grade === "F" ? "text-red-600" : "text-green-700"
-          }">${subject.grade || "-"}</td>
-          <td class="px-4 py-3 ${
-            subject.remarks === "Fail" ? "text-red-600" : "text-gray-800"
-          }">${subject.remarks || "-"}</td>
+          <td class="px-4 py-3 font-semibold ${subject.grade === "F" ? "text-red-600" : "text-green-700"}">${subject.grade || "-"}</td>
+          <td class="px-4 py-3 ${subject.remarks === "Fail" ? "text-red-600" : "text-gray-800"}">${subject.remarks || "-"}</td>
         `;
-        tbody.appendChild(tr);
+        subjectsTbody.appendChild(tr);
       });
     } else {
-      tbody.innerHTML = `<tr><td colspan="12" class="text-center py-4 text-gray-500">No subjects found</td></tr>`;
+      subjectsTbody.innerHTML = `<tr><td colspan="12" class="text-center py-4 text-gray-500">No subjects found</td></tr>`;
     }
 
     // ✅ STEP 8: Feedback if Fail
-    const feedback = document.getElementById("result-feedback");
+    const feedback = getEl("result-feedback");
     const hasFail = data.subjects?.some((sub) => sub.remarks === "Fail");
     if (hasFail) {
       feedback.classList.remove("hidden");
@@ -133,8 +174,12 @@ document.addEventListener("DOMContentLoaded", async () => {
         "⚠ Some subjects are marked as 'Fail'. Please apply for revaluation if applicable.";
       feedback.classList.add("text-red-600");
     }
+
+    // Stop skeleton after populate
+    stopSkeleton();
   } catch (err) {
     console.error("Error fetching result details:", err);
     alert("An error occurred while fetching result details.");
+    stopSkeleton();
   }
 });
