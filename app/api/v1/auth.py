@@ -81,7 +81,7 @@ def validate_session_endpoint() -> JSONResponse:
             logger.error("validate_session returned unexpected type: %s", type(result))
             fallback = standard_response(
                 success=False,
-                error_msg="Session validation returned unexpected result.",
+                error="Session validation returned unexpected result.",
                 status_code=500,
             )
             return JSONResponse(
@@ -94,7 +94,7 @@ def validate_session_endpoint() -> JSONResponse:
             )
             normalized = standard_response(
                 success=result.get("success", False),
-                error_msg=(
+                error=(
                     result.get("error")
                     if isinstance(result.get("error"), str)
                     else None
@@ -119,7 +119,7 @@ def validate_session_endpoint() -> JSONResponse:
 
         fallback = standard_response(
             success=False,
-            error_msg="Unexpected error while validating session.",
+            error="Unexpected error while validating session.",
             status_code=500,
         )
         return JSONResponse(
@@ -143,7 +143,7 @@ def logout_user_endpoint() -> JSONResponse:
             logger.warning("Unexpected response format from logout_user()")
             result = standard_response(
                 success=False,
-                error_msg="Unexpected response format from internal function",
+                error="Unexpected response format from internal function",
                 status_code=500,
             )
 
@@ -213,7 +213,7 @@ async def password_check(
             )
             result = standard_response(
                 success=False,
-                error_msg="Internal error: invalid response from password check.",
+                error="Internal error: invalid response from password check.",
                 status_code=500,
             )
 
@@ -231,7 +231,7 @@ async def password_check(
 
         fallback = standard_response(
             success=False,
-            error_msg="Internal server error.",
+            error="Internal server error.",
             status_code=500,
         )
         return JSONResponse(content=fallback, status_code=500)
@@ -256,7 +256,7 @@ async def password_update(payload: PasswordUpdateRequest = Body(...)) -> JSONRes
             )
             result = standard_response(
                 success=False,
-                error_msg="Internal error: Invalid response format.",
+                error="Internal error: Invalid response format.",
                 status_code=500,
             )
 
@@ -276,6 +276,6 @@ async def password_update(payload: PasswordUpdateRequest = Body(...)) -> JSONRes
             )
 
         fallback = standard_response(
-            success=False, error_msg="Unexpected server error.", status_code=500
+            success=False, error="Unexpected server error.", status_code=500
         )
         return JSONResponse(content=fallback, status_code=500)

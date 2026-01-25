@@ -57,7 +57,7 @@ def get_notifications(
             return JSONResponse(content=err, status_code=err.get("status_code", 500))
         return JSONResponse(
             content=standard_response(
-                False, error_msg="Internal server error", status_code=500
+                False, error="Internal server error", status_code=500
             ),
             status_code=500,
         )

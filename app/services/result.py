@@ -19,7 +19,7 @@ def fetch_student_results(refetch: bool = False) -> Dict[str, Any]:
             logger.warning(f"{log_prefix}Missing PHPSESSID. Cannot fetch results.")
             return standard_response(
                 success=False,
-                error_msg="Missing session ID. Please log in again.",
+                error="Missing session ID. Please log in again.",
                 status_code=401,
             )
 
@@ -50,7 +50,7 @@ def fetch_student_results(refetch: bool = False) -> Dict[str, Any]:
                 invalidate_cache(response)
             return standard_response(
                 success=False,
-                error_msg="Failed to fetch results from the student portal.",
+                error="Failed to fetch results from the student portal.",
                 status_code=400,
             )
 
@@ -61,7 +61,7 @@ def fetch_student_results(refetch: bool = False) -> Dict[str, Any]:
             invalidate_cache(response)
             return standard_response(
                 success=False,
-                error_msg="Invalid response format from the server.",
+                error="Invalid response format from the server.",
                 status_code=502,
             )
 
@@ -74,7 +74,7 @@ def fetch_student_results(refetch: bool = False) -> Dict[str, Any]:
             invalidate_cache(response)
             return standard_response(
                 success=False,
-                error_msg="Invalid or expired session. Please log in again.",
+                error="Invalid or expired session. Please log in again.",
                 status_code=403,
             )
 
@@ -93,7 +93,7 @@ def fetch_student_results(refetch: bool = False) -> Dict[str, Any]:
             invalidate_cache(response)
             return standard_response(
                 success=False,
-                error_msg="Unexpected data structure received. Cache invalidated.",
+                error="Unexpected data structure received. Cache invalidated.",
                 status_code=422,
             )
 
@@ -119,7 +119,7 @@ def fetch_exam_result(
         if not exam_code:
             return standard_response(
                 success=False,
-                error_msg="Exam code is required.",
+                error="Exam code is required.",
                 status_code=400,
             )
 
@@ -128,7 +128,7 @@ def fetch_exam_result(
         if not phpsessid:
             return standard_response(
                 success=False,
-                error_msg="Missing or invalid PHPSESSID.",
+                error="Missing or invalid PHPSESSID.",
                 status_code=401,
             )
 
@@ -160,7 +160,7 @@ def fetch_exam_result(
             invalidate_cache(response)
             return standard_response(
                 success=False,
-                error_msg="Failed to fetch exam result.",
+                error="Failed to fetch exam result.",
                 status_code=response.status_code if response else 500,
             )
 
@@ -171,7 +171,7 @@ def fetch_exam_result(
             invalidate_cache(response)
             return standard_response(
                 success=False,
-                error_msg="Invalid JSON response.",
+                error="Invalid JSON response.",
                 status_code=502,
             )
 
@@ -183,7 +183,7 @@ def fetch_exam_result(
             invalidate_cache(response)
             return standard_response(
                 success=False,
-                error_msg="Unexpected or malformed data format.",
+                error="Unexpected or malformed data format.",
                 status_code=422,
             )
 
@@ -208,12 +208,12 @@ def fetch_detailed_exam_result(
         phpsessid = EnvManager.get("PHPSESSID", default=None)
         if phpsessid is None:
             return standard_response(
-                False, error_msg="PHPSESSID not found", status_code=400
+                False, error="PHPSESSID not found", status_code=400
             )
 
         if not exam_code:
             return standard_response(
-                False, error_msg="exam_code is required", status_code=400
+                False, error="exam_code is required", status_code=400
             )
 
         url = f"https://studentportal.universitysolutions.in/src/results_new.php?a=getResDet&examno={exam_code}"
@@ -240,7 +240,7 @@ def fetch_detailed_exam_result(
         if not data:
             invalidate_cache(response)
             return standard_response(
-                False, error_msg="No data found in response", status_code=404
+                False, error="No data found in response", status_code=404
             )
 
         subjects: List[Dict[str, Any]] = []

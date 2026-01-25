@@ -16,9 +16,7 @@ def fetch_practical_timetable(refetch: bool = False) -> Dict[str, Any]:
         logger.info("Fetched PHPSESSID from EnvManager")
 
         if not phpsessid:
-            return standard_response(
-                False, error_msg="Missing PHPSESSID", status_code=400
-            )
+            return standard_response(False, error="Missing PHPSESSID", status_code=400)
 
         url = "https://studentportal.universitysolutions.in/src/practicaltimetable.php"
         headers = {
@@ -46,7 +44,7 @@ def fetch_practical_timetable(refetch: bool = False) -> Dict[str, Any]:
 
         if not response or not hasattr(response, "text"):
             return standard_response(
-                False, error_msg="Empty or invalid response", status_code=400
+                False, error="Empty or invalid response", status_code=400
             )
 
         try:
@@ -59,7 +57,7 @@ def fetch_practical_timetable(refetch: bool = False) -> Dict[str, Any]:
             logger.warning("Invalid JSON response; invalidating cache.")
             invalidate_cache(response)
             return standard_response(
-                False, error_msg="Malformed JSON from server", status_code=400
+                False, error="Malformed JSON from server", status_code=400
             )
 
         parsed = PracticalTimetable.from_json(raw)
@@ -67,7 +65,7 @@ def fetch_practical_timetable(refetch: bool = False) -> Dict[str, Any]:
             invalidate_cache(response)
             return standard_response(
                 False,
-                error_msg="Invalid or expired session / malformed data",
+                error="Invalid or expired session / malformed data",
                 status_code=400,
             )
 

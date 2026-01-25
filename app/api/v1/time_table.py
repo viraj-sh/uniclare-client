@@ -39,7 +39,7 @@ async def get_practical_timetable(
         if not isinstance(result, dict):
             fallback = standard_response(
                 success=False,
-                error_msg="Internal: function returned invalid result type",
+                error="Internal: function returned invalid result type",
                 status_code=500,
             )
             logger.error(
@@ -63,7 +63,7 @@ async def get_practical_timetable(
         if not isinstance(err_resp, dict):
             fallback = standard_response(
                 success=False,
-                error_msg="Unhandled error while processing request",
+                error="Unhandled error while processing request",
                 status_code=500,
             )
             return JSONResponse(

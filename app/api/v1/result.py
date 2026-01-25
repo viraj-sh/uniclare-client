@@ -71,7 +71,7 @@ async def get_detailed_exam_result(
     try:
         if not exam_code or not exam_code.strip():
             result = standard_response(
-                success=False, error_msg="exam_code is required", status_code=400
+                success=False, error="exam_code is required", status_code=400
             )
             return JSONResponse(
                 content=result, status_code=result.get("status_code", 400)
@@ -84,7 +84,7 @@ async def get_detailed_exam_result(
                 "fetch_detailed_exam_result returned non-dict: %r", type(result)
             )
             result = standard_response(
-                success=False, error_msg="Internal error", status_code=500
+                success=False, error="Internal error", status_code=500
             )
 
         status_code = int(result.get("status_code", 200))

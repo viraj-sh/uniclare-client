@@ -15,9 +15,7 @@ def fetch_notifications(refetch: bool = False) -> Dict[str, Any]:
         session_id = EnvManager.get("PHPSESSID", default=None)
         if not session_id:
             logger.warning(f"{log_prefix}Missing PHPSESSID; cannot proceed.")
-            return standard_response(
-                False, error_msg="Missing PHPSESSID", status_code=400
-            )
+            return standard_response(False, error="Missing PHPSESSID", status_code=400)
         url = "https://studentportal.universitysolutions.in/src/notificationstatus.php"
         headers = {
             "Host": "studentportal.universitysolutions.in",
@@ -47,7 +45,7 @@ def fetch_notifications(refetch: bool = False) -> Dict[str, Any]:
                 f"{log_prefix}Invalid response (status={getattr(response, 'status_code', 'N/A')})."
             )
             return standard_response(
-                False, error_msg="Failed to fetch notifications", status_code=400
+                False, error="Failed to fetch notifications", status_code=400
             )
 
         try:
@@ -56,7 +54,7 @@ def fetch_notifications(refetch: bool = False) -> Dict[str, Any]:
             invalidate_cache(response)
             logger.warning(f"{log_prefix}Malformed JSON response.")
             return standard_response(
-                False, error_msg="Malformed response from server", status_code=400
+                False, error="Malformed response from server", status_code=400
             )
 
         if not isinstance(raw_json, list):
@@ -65,7 +63,7 @@ def fetch_notifications(refetch: bool = False) -> Dict[str, Any]:
                 f"{log_prefix}Unexpected response type (not list). Possibly expired session."
             )
             return standard_response(
-                False, error_msg="Invalid or expired session", status_code=400
+                False, error="Invalid or expired session", status_code=400
             )
 
         notifications: List[Notification] = []

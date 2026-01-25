@@ -37,7 +37,7 @@ def get_profile(refetch: bool = Query(False)):
         if not isinstance(result, dict):
             fallback = standard_response(
                 False,
-                error_msg="Unexpected response from fetch_profile",
+                error="Unexpected response from fetch_profile",
                 status_code=500,
             )
             return JSONResponse(
@@ -49,7 +49,7 @@ def get_profile(refetch: bool = Query(False)):
         if isinstance(err, dict):
             return JSONResponse(content=err, status_code=err.get("status_code", 500))
         fallback = standard_response(
-            False, error_msg="Internal server error", status_code=500
+            False, error="Internal server error", status_code=500
         )
         return JSONResponse(
             content=fallback, status_code=fallback.get("status_code", 500)
@@ -69,7 +69,7 @@ async def get_editable_profile(refetch: bool = Query(False)) -> JSONResponse:
 
         if not isinstance(result, dict):
             resp = standard_response(
-                False, error_msg="Unexpected response type", status_code=500
+                False, error="Unexpected response type", status_code=500
             )
             return JSONResponse(content=resp, status_code=500)
 
@@ -81,7 +81,7 @@ async def get_editable_profile(refetch: bool = Query(False)) -> JSONResponse:
         raw_data: Optional[Dict[str, Any]] = result.get("data")
         if not raw_data:
             resp = standard_response(
-                False, error_msg="No profile data found", status_code=500
+                False, error="No profile data found", status_code=500
             )
             return JSONResponse(content=resp, status_code=500)
 
@@ -96,7 +96,7 @@ async def get_editable_profile(refetch: bool = Query(False)) -> JSONResponse:
 
         profile_data = EditableProfileData(**filtered_data)
 
-        resp = standard_response(True, error_msg=None, status_code=status_code)
+        resp = standard_response(True, error=None, status_code=status_code)
         resp["data"] = profile_data.dict()
 
         return JSONResponse(content=resp, status_code=status_code)

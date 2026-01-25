@@ -26,7 +26,7 @@ def authenticate_student(registration_number: str, password: str) -> Dict[str, A
             logger.warning(f"Unexpected HTTP status: {response.status_code}")
             return standard_response(
                 success=False,
-                error_msg=f"Unexpected HTTP status: {response.status_code}",
+                error=f"Unexpected HTTP status: {response.status_code}",
                 status_code=response.status_code,
             )
 
@@ -35,7 +35,7 @@ def authenticate_student(registration_number: str, password: str) -> Dict[str, A
         except ValueError:
             logger.error("Invalid JSON response from server")
             return standard_response(
-                False, error_msg="Invalid JSON response from server", status_code=502
+                False, error="Invalid JSON response from server", status_code=502
             )
 
         error_code = int(payload.get("error_code", -1))
@@ -56,7 +56,7 @@ def authenticate_student(registration_number: str, password: str) -> Dict[str, A
             )
 
         logger.warning(f"Authentication failed: {msg}")
-        return standard_response(False, error_msg=msg, status_code=401)
+        return standard_response(False, error=msg, status_code=401)
 
     except Exception as e:
         return handle_exception(logger, e)
@@ -77,7 +77,7 @@ def validate_session(phpsessid: Optional[str] = None) -> Dict[str, Any]:
             logger.warning("Session validation skipped: No PHPSESSID available")
             return standard_response(
                 False,
-                error_msg="No active session found. Please log in again.",
+                error="No active session found. Please log in again.",
                 status_code=400,
             )
 
@@ -96,7 +96,7 @@ def validate_session(phpsessid: Optional[str] = None) -> Dict[str, Any]:
             )
             return standard_response(
                 False,
-                error_msg="Failed to validate session (non-200 response).",
+                error="Failed to validate session (non-200 response).",
                 status_code=400,
             )
 
@@ -117,7 +117,7 @@ def validate_session(phpsessid: Optional[str] = None) -> Dict[str, Any]:
 
         logger.warning("Session invalid or expired")
         return standard_response(
-            False, error_msg="Session expired or invalid.", status_code=401
+            False, error="Session expired or invalid.", status_code=401
         )
 
     except Exception as exc:
@@ -125,7 +125,7 @@ def validate_session(phpsessid: Optional[str] = None) -> Dict[str, Any]:
         if not isinstance(result, dict):
             return standard_response(
                 False,
-                error_msg="Unexpected error during session validation",
+                error="Unexpected error during session validation",
                 status_code=500,
             )
         return result
@@ -143,7 +143,7 @@ def logout_user() -> Dict[str, Any]:
     if not phpsessid:
         logger.warning("Logout skipped: No PHPSESSID available")
         return standard_response(
-            False, error_msg="No active session found. Cannot logout.", status_code=400
+            False, error="No active session found. Cannot logout.", status_code=400
         )
 
     headers = {
@@ -164,7 +164,7 @@ def logout_user() -> Dict[str, Any]:
             )
             return standard_response(
                 False,
-                error_msg="Logout request failed with non-200 response",
+                error="Logout request failed with non-200 response",
                 status_code=400,
             )
 
@@ -191,7 +191,7 @@ def logout_user() -> Dict[str, Any]:
         logger.warning("Logout unsuccessful: Session still valid")
         return standard_response(
             False,
-            error_msg="Session still active. Logout not confirmed.",
+            error="Session still active. Logout not confirmed.",
             status_code=400,
         )
 
@@ -221,9 +221,9 @@ def send_password_reset_otp(mobile: str) -> Dict[str, Any]:
                 status_code=200,
             )
 
-        error_msg = data.get("message", "Failed to send OTP")
-        logger.warning("OTP not sent", extra={"error": error_msg})
-        return standard_response(success=False, error_msg=error_msg, status_code=400)
+        error = data.get("message", "Failed to send OTP")
+        logger.warning("OTP not sent", extra={"error": error})
+        return standard_response(success=False, error=error, status_code=400)
 
     except Exception as exc:
         return handle_exception(logger, exc)
@@ -252,11 +252,11 @@ def reset_password(mobile: str, otp: str, new_password: str) -> Dict[str, Any]:
                 status_code=200,
             )
 
-        error_msg = data.get("message", "Failed to reset password")
+        error = data.get("message", "Failed to reset password")
         logger.warning(
-            "Password reset failed", extra={"mobile": mobile, "error": error_msg}
+            "Password reset failed", extra={"mobile": mobile, "error": error}
         )
-        return standard_response(success=False, error_msg=error_msg, status_code=400)
+        return standard_response(success=False, error=error, status_code=400)
 
     except Exception as exc:
         return handle_exception(logger, exc)
@@ -271,7 +271,7 @@ def check_current_password(password: str) -> Dict[str, Any]:
             logger.warning("Missing PHPSESSID in environment or function argument.")
             return standard_response(
                 success=False,
-                error_msg="Missing PHPSESSID. User not authenticated.",
+                error="Missing PHPSESSID. User not authenticated.",
                 status_code=400,
             )
 
@@ -291,7 +291,9 @@ def check_current_password(password: str) -> Dict[str, Any]:
         data = {"passwd": password}
 
         logger.info("Sending password verification request to Uniclare API.")
-        response = requests.post(url, headers=headers, cookies=cookies, data=data)
+        response = requests.post(
+            url, headers=headers, cookies=cookies, data=data, timeout=10
+        )
         response.raise_for_status()
 
         raw = response.json()
@@ -310,7 +312,7 @@ def check_current_password(password: str) -> Dict[str, Any]:
         elif status == "failure" and error_code == -1:
             return standard_response(
                 success=False,
-                error_msg="Incorrect password.",
+                error="Incorrect password.",
                 status_code=400,
             )
 
@@ -318,7 +320,7 @@ def check_current_password(password: str) -> Dict[str, Any]:
             logger.warning("Unexpected response format received from API.")
             return standard_response(
                 success=False,
-                error_msg="Unexpected response format.",
+                error="Unexpected response format.",
                 status_code=400,
             )
 
@@ -326,7 +328,7 @@ def check_current_password(password: str) -> Dict[str, Any]:
         return handle_exception(logger, exc, context="check_current_password")
 
 
-def update_password(new_password: str = "") -> Dict[str, Any]:
+def update_password(new_password: str = "") -> Dict[str, Any]:  # nosec
     logger = setup_logging(name="core.update_password", level="INFO")
     url = "https://studentportal.universitysolutions.in/src/chngPassword.php?action=updatePassword"
 
@@ -338,7 +340,7 @@ def update_password(new_password: str = "") -> Dict[str, Any]:
             logger.warning("Missing PHPSESSID; cannot authenticate user.")
             return standard_response(
                 success=False,
-                error_msg="Missing PHPSESSID. Please log in again.",
+                error="Missing PHPSESSID. Please log in again.",
                 status_code=401,
             )
 
@@ -358,7 +360,9 @@ def update_password(new_password: str = "") -> Dict[str, Any]:
         data = {"passwd": new_password}
 
         logger.info("Sending password update request to Uniclare API")
-        response = requests.post(url, headers=headers, cookies=cookies, data=data)
+        response = requests.post(
+            url, headers=headers, cookies=cookies, data=data, timeout=10
+        )
         response.raise_for_status()
 
         raw = response.json()
@@ -377,7 +381,7 @@ def update_password(new_password: str = "") -> Dict[str, Any]:
         logger.warning(f"Password update failed: {msg}")
         return standard_response(
             success=False,
-            error_msg=msg,
+            error=msg,
             data={"raw_response": raw},
             status_code=400,
         )

@@ -47,7 +47,7 @@ class EnvManager:
     def unset(cls, key: str) -> None:
         if cls.path.exists():
             lines = cls.path.read_text().splitlines()
-            new_lines = [l for l in lines if not l.startswith(f"{key}=")]
+            new_lines = [line for line in lines if not line.startswith(f"{key}=")]
             cls.path.write_text("\n".join(new_lines))
         os.environ.pop(key, None)
         cls._loaded = False
@@ -55,13 +55,13 @@ class EnvManager:
 
 def standard_response(
     success: bool,
-    error_msg: Optional[str] = None,
+    error: Optional[str] = None,
     data: Optional[Any] = None,
     status_code: int | None = None,
 ) -> dict[str, Any]:
     return {
         "success": bool(success),
-        "error": error_msg if not success else None,
+        "error": error if not success else None,
         "data": data if success else None,
         "status_code": status_code,
     }

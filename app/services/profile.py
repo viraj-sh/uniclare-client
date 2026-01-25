@@ -16,9 +16,7 @@ def fetch_profile(refetch: bool = False) -> Dict[str, any]:
         phpsessid = EnvManager.get("PHPSESSID", default=None)
         if not phpsessid:
             logger.warning(f"{log_prefix}No PHPSESSID found in environment")
-            return standard_response(
-                False, error_msg="Missing session ID", status_code=400
-            )
+            return standard_response(False, error="Missing session ID", status_code=400)
         logger.info(f"{log_prefix}Fetched PHPSESSID from EnvManager")
 
         url = "https://studentportal.universitysolutions.in/src/profile.php"
@@ -40,7 +38,7 @@ def fetch_profile(refetch: bool = False) -> Dict[str, any]:
             invalidate_cache(response)
             logger.warning(f"{log_prefix}Invalid JSON received, cache invalidated")
             return standard_response(
-                False, error_msg="Invalid response from server", status_code=400
+                False, error="Invalid response from server", status_code=400
             )
 
         profile = StudentProfile.from_json(data)
@@ -50,7 +48,7 @@ def fetch_profile(refetch: bool = False) -> Dict[str, any]:
                 f"{log_prefix}Profile data invalid or incomplete, cache invalidated"
             )
             return standard_response(
-                False, error_msg="Profile not found or invalid", status_code=404
+                False, error="Profile not found or invalid", status_code=404
             )
 
         logger.info(
@@ -68,9 +66,7 @@ def fetch_editable_profile(refetch: bool = False) -> Dict[str, Any]:
     try:
         phpsessid = EnvManager.get("PHPSESSID", default=None)
         if not phpsessid:
-            return standard_response(
-                False, error_msg="Missing PHPSESSID", status_code=400
-            )
+            return standard_response(False, error="Missing PHPSESSID", status_code=400)
         logger.info("Fetched PHPSESSID from EnvManager")
 
         url = "https://studentportal.universitysolutions.in/app.php?a=getStudDet&univcode=051"
@@ -90,7 +86,7 @@ def fetch_editable_profile(refetch: bool = False) -> Dict[str, Any]:
             invalidate_cache(response)
             return standard_response(
                 False,
-                error_msg=f"Invalid response status {response.status_code}",
+                error=f"Invalid response status {response.status_code}",
                 status_code=response.status_code,
             )
 
@@ -99,14 +95,14 @@ def fetch_editable_profile(refetch: bool = False) -> Dict[str, Any]:
         except Exception:
             invalidate_cache(response)
             return standard_response(
-                False, error_msg="Failed to parse response JSON", status_code=400
+                False, error="Failed to parse response JSON", status_code=400
             )
 
         profile = EditableProfile.from_json(data)
         if profile is None:
             invalidate_cache(response)
             return standard_response(
-                False, error_msg="Profile data missing or malformed", status_code=400
+                False, error="Profile data missing or malformed", status_code=400
             )
 
         return standard_response(True, data=profile.__dict__, status_code=200)
@@ -126,16 +122,14 @@ def update_editable_profile(
         phpsessid = EnvManager.get("PHPSESSID", default=None)
         if not phpsessid:
             logger.warning("PHPSESSID not provided or found in environment.")
-            return standard_response(
-                False, error_msg="Session ID missing", status_code=400
-            )
+            return standard_response(False, error="Session ID missing", status_code=400)
 
         current_profile_resp = fetch_editable_profile(phpsessid)
         current_profile = current_profile_resp.get("data", {})
         if not current_profile:
             logger.warning("Failed to fetch current editable profile.")
             return standard_response(
-                False, error_msg="Could not fetch current profile", status_code=404
+                False, error="Could not fetch current profile", status_code=404
             )
 
         payload = {
@@ -169,7 +163,7 @@ def update_editable_profile(
         else:
             logger.warning(f"Profile update failed: {data}")
             return standard_response(
-                False, error_msg="Profile update failed", status_code=400
+                False, error="Profile update failed", status_code=400
             )
 
     except Exception as exc:
