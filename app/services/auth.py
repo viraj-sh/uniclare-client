@@ -19,7 +19,7 @@ def authenticate_student(registration_number: str, password: str) -> Dict[str, A
             url,
             headers={"Content-Type": "application/x-www-form-urlencoded"},
             data={"regno": registration_number, "passwd": password},
-            timeout=10,
+            timeout=50,
         )
 
         if response.status_code != 200:
@@ -88,7 +88,7 @@ def validate_session(phpsessid: Optional[str] = None) -> Dict[str, Any]:
             "Connection": "keep-alive",
         }
 
-        response = requests.post(url, headers=headers, timeout=10)
+        response = requests.post(url, headers=headers, timeout=50)
 
         if response.status_code != 200:
             logger.warning(
@@ -156,7 +156,7 @@ def logout_user() -> Dict[str, Any]:
     logger.info(f"Logout initiated for PHPSESSID: {phpsessid}")
 
     try:
-        response = requests.post(url, headers=headers, timeout=10)
+        response = requests.post(url, headers=headers, timeout=50)
 
         if response.status_code != 200:
             logger.warning(
@@ -208,7 +208,7 @@ def send_password_reset_otp(mobile: str) -> Dict[str, Any]:
     logger.info("Attempting to send password reset OTP", extra={"mobile": mobile})
 
     try:
-        response = requests.post(url, data=payload, timeout=10)
+        response = requests.post(url, data=payload, timeout=50)
         response.raise_for_status()
         data = response.json()
         logger.info("Received response from OTP endpoint", extra={"response": data})
@@ -237,7 +237,7 @@ def reset_password(mobile: str, otp: str, new_password: str) -> Dict[str, Any]:
     logger.info("Attempting to reset password", extra={"mobile": mobile})
 
     try:
-        response = requests.post(url, data=payload, timeout=10)
+        response = requests.post(url, data=payload, timeout=50)
         response.raise_for_status()
         data = response.json()
         logger.info(
@@ -292,7 +292,7 @@ def check_current_password(password: str) -> Dict[str, Any]:
 
         logger.info("Sending password verification request to Uniclare API.")
         response = requests.post(
-            url, headers=headers, cookies=cookies, data=data, timeout=10
+            url, headers=headers, cookies=cookies, data=data, timeout=50
         )
         response.raise_for_status()
 
@@ -361,7 +361,7 @@ def update_password(new_password: str = "") -> Dict[str, Any]:  # nosec
 
         logger.info("Sending password update request to Uniclare API")
         response = requests.post(
-            url, headers=headers, cookies=cookies, data=data, timeout=10
+            url, headers=headers, cookies=cookies, data=data, timeout=50
         )
         response.raise_for_status()
 
