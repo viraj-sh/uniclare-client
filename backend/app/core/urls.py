@@ -7,3 +7,4 @@ class AuthUrls:
 
 class UserUrls:
     PROFILE = f"{API_BASE_URL}/src/profile.php"
+    NOTIFICATION = f"{API_BASE_URL}/src/notificationstatus.php"
