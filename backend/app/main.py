@@ -10,7 +10,19 @@ from app.routes import system, auth, user
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # Startup
-    http_state.client = httpx.AsyncClient()
+    http_state.client = httpx.AsyncClient(
+        timeout=httpx.Timeout(
+            connect=5.0,
+            read=50.0,
+            write=10.0,
+            pool=5.0,
+        ),
+        limits=httpx.Limits(
+            max_connections=100,
+            max_keepalive_connections=20,
+        ),
+        follow_redirects=True,
+    )
     yield
     # Shutdown
     await http_state.client.aclose()

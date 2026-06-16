@@ -45,7 +45,7 @@ async def result(
     client: HTTPClientDep,
 ):
     return await client.get(
-        url=UserUrls.RESULT_DETAIL,
+        url=UserUrls.RESULT,
         params={"a": "getResults", "examno": f"{exam_no}", "regno": f"{reg_no}"},
         headers=authenticated_headers(token.credentials),
     )
