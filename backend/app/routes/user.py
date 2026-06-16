@@ -4,13 +4,20 @@ from typing import Annotated
 from fastapi.security import HTTPAuthorizationCredentials
 
 from app.core.http import HTTPClientDep, security
-from app.services.user import profile, notification, result_list
-from app.schemas.user import UserResponse, NotificationResponse, ResultListResponse
+from app.services.user import profile, notification, result_list, result
+from app.schemas.user import (
+    UserResponse,
+    NotificationResponse,
+    ResultListResponse,
+    StudentDetail,
+    SubjectResult,
+    ResultResponse,
+)
 
 router = APIRouter()
 
 
-@router.post("/profile", status_code=status.HTTP_200_OK)
+@router.get("/profile", status_code=status.HTTP_200_OK)
 async def user_login(
     token: Annotated[HTTPAuthorizationCredentials, Depends(security)],
     client: HTTPClientDep,
@@ -98,6 +105,53 @@ async def user_result_list(
                 )
                 for result in response.json().get("data")
             ]
+        return response.json()
+    except HTTPException:
+        raise
+    except httpx.TimeoutException:
+        raise HTTPException(504, "External API timed out")
+    except httpx.NetworkError:
+        raise HTTPException(502, "Could not reach external API")
+    except Exception as exc:
+        raise HTTPException(500, f"Unexpected error: {exc}")
+
+
+@router.get("/result", status_code=status.HTTP_200_OK)
+async def user_result(
+    exam_no: str,
+    reg_no: str,
+    token: Annotated[HTTPAuthorizationCredentials, Depends(security)],
+    client: HTTPClientDep,
+):
+    try:
+        response = await result(exam_no, reg_no, token, client)
+
+        if response.status_code == 200:
+            return ResultResponse(
+                student_details=StudentDetail(
+                    sem=response.json().get("studDet").get("FEXAMNAME"),
+                    full_sem=response.json().get("studDet").get("FDESCPN"),
+                    exam_date=response.json().get("studDet").get("FRESEXAMDATE"),
+                    exam_no=response.json().get("studDet").get("FEXAMNO"),
+                ),
+                subjects=[
+                    SubjectResult(
+                        id=sub_result.get("sl_no"),
+                        sub=sub_result.get("subject"),
+                        exam_type=sub_result.get("mthprue"),
+                        ese_marks=sub_result.get("uni_exam"),
+                        viva_marks=sub_result.get("viva_exam"),
+                        ia_marks=sub_result.get("ia_exam"),
+                        total_marks=sub_result.get("thtot"),
+                        credits=sub_result.get("FCREDITS"),
+                        grade_points=sub_result.get("FGP"),
+                        credit_points=sub_result.get("FCP"),
+                        remarks=sub_result.get("remarks1"),
+                        grade=sub_result.get("remarks"),
+                    )
+                    for sub_result in response.json().get("body")
+                ],
+            )
         return response.json()
     except HTTPException:
         raise
