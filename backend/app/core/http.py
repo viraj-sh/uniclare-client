@@ -1,0 +1,14 @@
+import httpx
+
+
+class HTTPClientState:
+    client: httpx.AsyncClient | None = None
+
+
+http_state = HTTPClientState()
+
+
+async def get_http_client():
+    if http_state.client is None:
+        raise RuntimeError("HTTP client not initialized")
+    return http_state.client
