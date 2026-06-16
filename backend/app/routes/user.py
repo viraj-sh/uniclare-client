@@ -4,8 +4,8 @@ from typing import Annotated
 from fastapi.security import HTTPAuthorizationCredentials
 
 from app.core.http import HTTPClientDep, security
-from app.services.user import profile, notification
-from app.schemas.user import UserResponse, NotificationResponse
+from app.services.user import profile, notification, result_list
+from app.schemas.user import UserResponse, NotificationResponse, ResultListResponse
 
 router = APIRouter()
 
@@ -47,7 +47,7 @@ async def user_login(
         raise HTTPException(500, f"Unexpected error: {exc}")
 
 
-@router.post("/notifications", status_code=status.HTTP_200_OK)
+@router.get("/notifications", status_code=status.HTTP_200_OK)
 async def user_notifications(
     token: Annotated[HTTPAuthorizationCredentials, Depends(security)],
     client: HTTPClientDep,
@@ -64,6 +64,39 @@ async def user_notifications(
                     date=noti.get("fpushdate"),
                 )
                 for noti in data
+            ]
+        return response.json()
+    except HTTPException:
+        raise
+    except httpx.TimeoutException:
+        raise HTTPException(504, "External API timed out")
+    except httpx.NetworkError:
+        raise HTTPException(502, "Could not reach external API")
+    except Exception as exc:
+        raise HTTPException(500, f"Unexpected error: {exc}")
+
+
+@router.get("/result-list", status_code=status.HTTP_200_OK)
+async def user_result_list(
+    token: Annotated[HTTPAuthorizationCredentials, Depends(security)],
+    client: HTTPClientDep,
+):
+    try:
+        response = await result_list(token, client)
+
+        if response.status_code == 200:
+            return [
+                ResultListResponse(
+                    year=result.get("year"),
+                    exam_date=result.get("examdate"),
+                    exam_name=result.get("examname"),
+                    result_date=result.get("resultdate"),
+                    rv_result_date=result.get("rvresultdate"),
+                    reg_no=result.get("regno"),
+                    mc_no=result.get("mcnumber"),
+                    status=result.get("class"),
+                )
+                for result in response.json().get("data")
             ]
         return response.json()
     except HTTPException:

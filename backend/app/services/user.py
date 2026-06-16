@@ -25,3 +25,14 @@ async def notification(
     return await client.get(
         url=UserUrls.NOTIFICATION, headers=authenticated_headers(token.credentials)
     )
+
+
+async def result_list(
+    token: Annotated[HTTPAuthorizationCredentials, Depends(security)],
+    client: HTTPClientDep,
+):
+    return await client.get(
+        url=UserUrls.RESULT_LIST,
+        params={"a": "getResAll"},
+        headers=authenticated_headers(token.credentials),
+    )
