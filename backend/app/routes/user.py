@@ -4,8 +4,8 @@ from typing import Annotated
 from fastapi.security import HTTPAuthorizationCredentials
 
 from app.core.http import HTTPClientDep, security
-from app.services.user import profile
-from app.schemas.user import UserResponse
+from app.services.user import profile, notification
+from app.schemas.user import UserResponse, NotificationResponse
 
 router = APIRouter()
 
@@ -17,6 +17,7 @@ async def user_login(
 ):
     try:
         response = await profile(token, client)
+
         if response.status_code == 200:
             data = response.json()
             return UserResponse(
@@ -35,6 +36,35 @@ async def user_login(
                 email=data.get("strEmail"),
                 parent_mob_no=data.get("strParentMob"),
             )
+        return response.json()
+    except HTTPException:
+        raise
+    except httpx.TimeoutException:
+        raise HTTPException(504, "External API timed out")
+    except httpx.NetworkError:
+        raise HTTPException(502, "Could not reach external API")
+    except Exception as exc:
+        raise HTTPException(500, f"Unexpected error: {exc}")
+
+
+@router.post("/notifications", status_code=status.HTTP_200_OK)
+async def user_notifications(
+    token: Annotated[HTTPAuthorizationCredentials, Depends(security)],
+    client: HTTPClientDep,
+):
+    try:
+        response = await notification(token, client)
+
+        if response.status_code == 200:
+            data = response.json()
+            return [
+                NotificationResponse(
+                    title=noti.get("ftitle"),
+                    body=noti.get("fbody"),
+                    date=noti.get("fpushdate"),
+                )
+                for noti in data
+            ]
         return response.json()
     except HTTPException:
         raise

@@ -18,3 +18,9 @@ class UserResponse(BaseModel):
     mob_no: Optional[str] = Field(None)
     email: Optional[str] = Field(None)
     parent_mob_no: Optional[str] = Field(None)
+
+
+class NotificationResponse(BaseModel):
+    title: Optional[str] = Field(None)
+    body: Optional[str] = Field(None)
+    date: Optional[str] = Field(None)

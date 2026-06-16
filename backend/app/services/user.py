@@ -16,3 +16,12 @@ async def profile(
     return await client.get(
         url=UserUrls.PROFILE, headers=authenticated_headers(token.credentials)
     )
+
+
+async def notification(
+    token: Annotated[HTTPAuthorizationCredentials, Depends(security)],
+    client: HTTPClientDep,
+):
+    return await client.get(
+        url=UserUrls.NOTIFICATION, headers=authenticated_headers(token.credentials)
+    )
