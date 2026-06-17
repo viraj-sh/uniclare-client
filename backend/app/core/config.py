@@ -9,5 +9,8 @@ class Settings(BaseSettings):
     # App
     version: str = "2.0.0"
 
+    # Backend
+    cors_origin: str = "http://localhost:5173"
+
 
 settings = Settings()

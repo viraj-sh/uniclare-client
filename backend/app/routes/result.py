@@ -10,6 +10,7 @@ from app.schemas.result import (
     StudentDetail,
     SubjectResult,
     ResultResponse,
+    ResultInfo,
 )
 
 router = APIRouter()
@@ -65,6 +66,12 @@ async def fetch_result(
                     full_sem=response.json().get("studDet").get("FDESCPN"),
                     exam_date=response.json().get("studDet").get("FRESEXAMDATE"),
                     exam_no=response.json().get("studDet").get("FEXAMNO"),
+                ),
+                result=ResultInfo(
+                    result=response.json().get("body")[0].get("result"),
+                    cgpa=response.json().get("body")[0].get("FCGPA"),
+                    sgpa=response.json().get("body")[0].get("FSGPA"),
+                    percentage=response.json().get("body")[0].get("FPERCENT"),
                 ),
                 subjects=[
                     SubjectResult(

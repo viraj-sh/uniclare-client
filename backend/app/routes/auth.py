@@ -50,7 +50,7 @@ async def user_login(mobile_no: str, password: str, client: HTTPClientDep):
     try:
         response = await signin(mobile_no, password, client)
         data = extract_json(response.text)
-        if response.status_code == 200 and data.get("error_code") == "0":
+        if response.status_code == 200:
             if response.cookies.get("PHPSESSID") is not None:
                 return LoginResponse(
                     session_id=response.cookies.get("PHPSESSID"), msg=data.get("msg")

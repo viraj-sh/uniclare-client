@@ -36,6 +36,14 @@ class StudentDetail(BaseModel):
     exam_no: Optional[str] = None
 
 
+class ResultInfo(BaseModel):
+    result: Optional[str] = None
+    cgpa: Optional[str] = None
+    sgpa: Optional[str] = None
+    percentage: Optional[str] = None
+
+
 class ResultResponse(BaseModel):
     student_details: StudentDetail
+    result: ResultInfo
     subjects: List[SubjectResult]
