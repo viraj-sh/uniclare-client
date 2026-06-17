@@ -3,6 +3,7 @@ API_BASE_URL = "https://studentportal.universitysolutions.in"
 
 class AuthUrls:
     SIGNIN = f"{API_BASE_URL}/signin.php"
+    SIGNOUT = f"{API_BASE_URL}/src/logout.php"
 
 
 class MainUrls:
