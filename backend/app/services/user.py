@@ -4,7 +4,7 @@ from fastapi import Depends
 from fastapi.security import HTTPAuthorizationCredentials
 
 from app.core.http import HTTPClientDep, security
-from app.core.urls import UserUrls
+from app.core.urls import MainUrls
 from app.core.constants import authenticated_headers
 
 
@@ -14,5 +14,5 @@ async def profile(
 ):
 
     return await client.get(
-        url=UserUrls.PROFILE, headers=authenticated_headers(token.credentials)
+        url=MainUrls.PROFILE, headers=authenticated_headers(token.credentials)
     )

@@ -4,7 +4,7 @@ from typing import Annotated
 from fastapi.security import HTTPAuthorizationCredentials
 
 from app.core.http import HTTPClientDep, security
-from app.services.profile import profile
+from app.services.user import profile
 from app.schemas.user import (
     UserResponse,
 )

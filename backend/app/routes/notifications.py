@@ -5,7 +5,7 @@ from fastapi.security import HTTPAuthorizationCredentials
 
 from app.core.http import HTTPClientDep, security
 from app.services.notifications import notification
-from app.schemas.user import (
+from app.schemas.notification import (
     NotificationResponse,
 )
 

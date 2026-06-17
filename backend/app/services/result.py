@@ -4,7 +4,7 @@ from fastapi import Depends
 from fastapi.security import HTTPAuthorizationCredentials
 
 from app.core.http import HTTPClientDep, security
-from app.core.urls import UserUrls
+from app.core.urls import MainUrls
 from app.core.constants import authenticated_headers
 
 
@@ -13,7 +13,7 @@ async def result_list(
     client: HTTPClientDep,
 ):
     return await client.get(
-        url=UserUrls.RESULT_LIST,
+        url=MainUrls.RESULT_LIST,
         params={"a": "getResAll"},
         headers=authenticated_headers(token.credentials),
     )
@@ -26,7 +26,7 @@ async def result(
     client: HTTPClientDep,
 ):
     return await client.get(
-        url=UserUrls.RESULT,
+        url=MainUrls.RESULT,
         params={"a": "getResults", "examno": f"{exam_no}", "regno": f"{reg_no}"},
         headers=authenticated_headers(token.credentials),
     )

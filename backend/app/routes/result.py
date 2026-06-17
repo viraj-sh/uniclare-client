@@ -5,7 +5,7 @@ from fastapi.security import HTTPAuthorizationCredentials
 
 from app.core.http import HTTPClientDep, security
 from app.services.result import result_list, result
-from app.schemas.user import (
+from app.schemas.result import (
     ResultListResponse,
     StudentDetail,
     SubjectResult,
