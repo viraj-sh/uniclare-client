@@ -13,19 +13,22 @@ router = APIRouter()
 async def user_login(mobile_no: str, password: str, client: HTTPClientDep):
     try:
         response = await signin(mobile_no, password, client)
-        if response.status_code == 200:
+        data = extract_json(response.text)
+        if response.status_code == 200 and data.get("error_code") == "0":
             if response.cookies.get("PHPSESSID") is not None:
-                data = extract_json(response.text)
-
                 return LoginResponse(
                     session_id=response.cookies.get("PHPSESSID"), msg=data.get("msg")
                 )
             else:
                 raise HTTPException(
                     status_code=status.HTTP_400_BAD_REQUEST,
-                    detail="invalid registration number or password",
+                    detail=f"{data.get('error_code')} -> {data.get('msg')}",
                 )
-        return extract_json(response.text)
+        else:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"{data.get('error_code')} -> {data.get('msg')}",
+            )
     except HTTPException:
         raise
     except httpx.TimeoutException:

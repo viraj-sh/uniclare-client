@@ -8,25 +8,6 @@ from app.core.urls import UserUrls
 from app.core.constants import authenticated_headers
 
 
-async def profile(
-    token: Annotated[HTTPAuthorizationCredentials, Depends(security)],
-    client: HTTPClientDep,
-):
-
-    return await client.get(
-        url=UserUrls.PROFILE, headers=authenticated_headers(token.credentials)
-    )
-
-
-async def notification(
-    token: Annotated[HTTPAuthorizationCredentials, Depends(security)],
-    client: HTTPClientDep,
-):
-    return await client.get(
-        url=UserUrls.NOTIFICATION, headers=authenticated_headers(token.credentials)
-    )
-
-
 async def result_list(
     token: Annotated[HTTPAuthorizationCredentials, Depends(security)],
     client: HTTPClientDep,

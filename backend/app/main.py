@@ -4,7 +4,7 @@ from fastapi import FastAPI
 
 from app.core.http import http_state
 from app.core.config import settings
-from app.routes import system, auth, user
+from app.routes import notifications, profile, system, auth, result
 
 
 @asynccontextmanager
@@ -37,4 +37,8 @@ app = FastAPI(
 
 app.include_router(router=system.router, prefix="", tags=["system"])
 app.include_router(router=auth.router, prefix="/auth", tags=["auth"])
-app.include_router(router=user.router, prefix="/user", tags=["user"])
+app.include_router(router=profile.router, prefix="/profile", tags=["profile"])
+app.include_router(router=result.router, prefix="/result", tags=["result"])
+app.include_router(
+    router=notifications.router, prefix="/notifications", tags=["notifications"]
+)
