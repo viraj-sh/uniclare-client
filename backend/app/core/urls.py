@@ -2,6 +2,8 @@ API_BASE_URL = "https://studentportal.universitysolutions.in"
 
 
 class AuthUrls:
+    OTP = f"{API_BASE_URL}/forgot-password.php"
+    RESET_PASSWORD = f"{API_BASE_URL}/resetpassword.php"
     SIGNIN = f"{API_BASE_URL}/signin.php"
     SIGNOUT = f"{API_BASE_URL}/src/logout.php"
 

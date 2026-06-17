@@ -4,11 +4,45 @@ import httpx
 from typing import Annotated
 
 from app.core.http import HTTPClientDep, security
-from app.services.auth import signin, signout
+from app.services.auth import signin, signout, otp, reset_password
 from app.schemas.auth import LoginResponse
 from app.core.utils import extract_json
 
 router = APIRouter()
+
+
+@router.post("/send-otp", status_code=status.HTTP_200_OK)
+async def send_password_reset_otp(mobile_no: str, client: HTTPClientDep):
+    try:
+        resposne = await otp(mobile_no, client)
+        return resposne.json()
+
+    except HTTPException:
+        raise
+    except httpx.TimeoutException:
+        raise HTTPException(504, "External API timed out")
+    except httpx.NetworkError:
+        raise HTTPException(502, "Could not reach external API")
+    except Exception as exc:
+        raise HTTPException(500, f"Unexpected error: {exc}")
+
+
+@router.post("/reset-password", status_code=status.HTTP_200_OK)
+async def reset_password_using_otp(
+    mobile_no: str, otp: str, new_password: str, client: HTTPClientDep
+):
+    try:
+        resposne = await reset_password(mobile_no, otp, new_password, client)
+        return resposne.json()
+
+    except HTTPException:
+        raise
+    except httpx.TimeoutException:
+        raise HTTPException(504, "External API timed out")
+    except httpx.NetworkError:
+        raise HTTPException(502, "Could not reach external API")
+    except Exception as exc:
+        raise HTTPException(500, f"Unexpected error: {exc}")
 
 
 @router.post("/login", status_code=status.HTTP_200_OK)
