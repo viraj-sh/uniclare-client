@@ -1,6 +1,7 @@
 from fastapi import APIRouter, status, HTTPException, Depends
 from fastapi.security import HTTPAuthorizationCredentials
 import httpx
+import time
 from typing import Annotated
 
 from app.core.http import HTTPClientDep, security
@@ -13,9 +14,13 @@ router = APIRouter()
 
 @router.post("/send-otp", status_code=status.HTTP_200_OK)
 async def send_password_reset_otp(mobile_no: str, client: HTTPClientDep):
+    start_time = time.perf_counter()
     try:
-        resposne = await otp(mobile_no, client)
-        return resposne.json()
+        response = await otp(mobile_no, client)
+        print(
+            f"[send_password_reset_otp]: Time -> {(time.perf_counter() - start_time) * 1000:.3f}ms"
+        )
+        return response.json()
 
     except HTTPException:
         raise
@@ -31,9 +36,13 @@ async def send_password_reset_otp(mobile_no: str, client: HTTPClientDep):
 async def reset_password_using_otp(
     mobile_no: str, otp: str, new_password: str, client: HTTPClientDep
 ):
+    start_time = time.perf_counter()
     try:
-        resposne = await reset_password(mobile_no, otp, new_password, client)
-        return resposne.json()
+        response = await reset_password(mobile_no, otp, new_password, client)
+        print(
+            f"[reset_password_using_otp]: Time -> {(time.perf_counter() - start_time) * 1000:.3f}ms"
+        )
+        return response.json()
 
     except HTTPException:
         raise
@@ -47,11 +56,15 @@ async def reset_password_using_otp(
 
 @router.post("/login", status_code=status.HTTP_200_OK)
 async def user_login(mobile_no: str, password: str, client: HTTPClientDep):
+    start_time = time.perf_counter()
     try:
         response = await signin(mobile_no, password, client)
         data = extract_json(response.text)
         if response.status_code == 200:
             if response.cookies.get("PHPSESSID") is not None:
+                print(
+                    f"[user_login]: Time -> {(time.perf_counter() - start_time) * 1000:.3f}ms"
+                )
                 return LoginResponse(
                     session_id=response.cookies.get("PHPSESSID"), msg=data.get("msg")
                 )
@@ -80,9 +93,12 @@ async def user_logout(
     token: Annotated[HTTPAuthorizationCredentials, Depends(security)],
     client: HTTPClientDep,
 ):
+    start_time = time.perf_counter()
     try:
-        await signout(token, client)
-
+        response = await signout(token, client)
+        print(
+            f"[user_logout]: Time -> {(time.perf_counter() - start_time) * 1000:.3f}ms"
+        )
     except HTTPException:
         raise
     except httpx.TimeoutException:

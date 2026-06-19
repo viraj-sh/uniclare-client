@@ -10,7 +10,7 @@ class Settings(BaseSettings):
     version: str = "2.0.0"
 
     # Backend
-    cors_origin: str = "http://localhost:5173"
+    cors_origin: str = "*"
 
 
 settings = Settings()

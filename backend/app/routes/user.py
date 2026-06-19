@@ -3,6 +3,7 @@ from fastapi.responses import JSONResponse
 import httpx
 from typing import Annotated
 from fastapi.security import HTTPAuthorizationCredentials
+import time
 
 from app.core.http import HTTPClientDep, security
 from app.services.user import profile, update_password, verify_password
@@ -18,11 +19,15 @@ async def fetch_profile(
     token: Annotated[HTTPAuthorizationCredentials, Depends(security)],
     client: HTTPClientDep,
 ):
+    start_time = time.perf_counter()
     try:
         response = await profile(token, client)
 
         if response.status_code == 200:
             data = response.json()
+            print(
+                f"[fetch_profile]: Time -> {(time.perf_counter() - start_time) * 1000:.3f}ms"
+            )
             return UserResponse(
                 full_name=data.get("fname"),
                 fat_name=data.get("ffatname"),
@@ -57,6 +62,7 @@ async def change_user_password(
     token: Annotated[HTTPAuthorizationCredentials, Depends(security)],
     client: HTTPClientDep,
 ):
+    start_time = time.perf_counter()
     try:
         response = await verify_password(current_password, token, client)
 
@@ -66,6 +72,9 @@ async def change_user_password(
                 new_response.status_code == 200
                 and new_response.json().get("error_code") == 0
             ):
+                print(
+                    f"[change_user_password]: Time -> {(time.perf_counter() - start_time) * 1000:.3f}ms"
+                )
                 return JSONResponse(
                     {
                         "status": new_response.json().get("status"),

@@ -2,6 +2,7 @@ from fastapi import APIRouter, status, HTTPException, Depends
 import httpx
 from typing import Annotated
 from fastapi.security import HTTPAuthorizationCredentials
+import time
 
 from app.core.http import HTTPClientDep, security
 from app.services.result import result_list, result
@@ -21,10 +22,14 @@ async def fetch_result_list(
     token: Annotated[HTTPAuthorizationCredentials, Depends(security)],
     client: HTTPClientDep,
 ):
+    start_time = time.perf_counter()
     try:
         response = await result_list(token, client)
 
         if response.status_code == 200:
+            print(
+                f"[fetch_result_list]: Time -> {(time.perf_counter() - start_time) * 1000:.3f}ms"
+            )
             return [
                 ResultListResponse(
                     year=result.get("year"),
@@ -56,10 +61,14 @@ async def fetch_result(
     token: Annotated[HTTPAuthorizationCredentials, Depends(security)],
     client: HTTPClientDep,
 ):
+    start_time = time.perf_counter()
     try:
         response = await result(exam_no, reg_no, token, client)
 
         if response.status_code == 200:
+            print(
+                f"[fetch_result]: Time -> {(time.perf_counter() - start_time) * 1000:.3f}ms"
+            )
             return ResultResponse(
                 student_details=StudentDetail(
                     sem=response.json().get("studDet").get("FEXAMNAME"),

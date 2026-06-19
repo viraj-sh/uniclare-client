@@ -1,5 +1,6 @@
 from fastapi import APIRouter, status, HTTPException, Depends
 import httpx
+import time
 from typing import Annotated
 from fastapi.security import HTTPAuthorizationCredentials
 
@@ -17,11 +18,15 @@ async def fetch_notifications(
     token: Annotated[HTTPAuthorizationCredentials, Depends(security)],
     client: HTTPClientDep,
 ):
+    start_time = time.perf_counter()
     try:
         response = await notification(token, client)
 
         if response.status_code == 200:
             data = response.json()
+            print(
+                f"[fetch_notifications]: Time -> {(time.perf_counter() - start_time) * 1000:.3f}ms"
+            )
             return [
                 NotificationResponse(
                     title=noti.get("ftitle"),
