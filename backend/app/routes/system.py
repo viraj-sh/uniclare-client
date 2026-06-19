@@ -10,9 +10,7 @@ router = APIRouter()
 @router.get("/", status_code=status.HTTP_200_OK)
 async def root_endpoint():
     start_time = time.perf_counter()
-    print(
-        f"[root_endpoint]: Time -> {(time.perf_counter() - start_time) * 1000:.3f}ms | Cache -> {False}"
-    )
+    print(f"[root_endpoint]: Time -> {(time.perf_counter() - start_time) * 1000:.3f}ms")
     return JSONResponse(
         {
             "name": "uniclare-client-api",
@@ -25,7 +23,5 @@ async def root_endpoint():
 @router.get("/health", status_code=status.HTTP_200_OK)
 async def health_check():
     start_time = time.perf_counter()
-    print(
-        f"[health_check]: Time -> {(time.perf_counter() - start_time) * 1000:.3f}ms | Cache -> {False}"
-    )
+    print(f"[health_check]: Time -> {(time.perf_counter() - start_time) * 1000:.3f}ms")
     return JSONResponse({"status": "healthy"})
