@@ -1,5 +1,5 @@
 const BASE_URL =
-  (import.meta.env.VITE_API_BASE_URL ?? "https://uniclare-backend.vercel.app")
+  (import.meta.env.VITE_API_BASE_URL ?? "http://localhost:3000")
     .replace(/\/+$/, "") + "/api";
 
 function getToken(): string {

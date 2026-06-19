@@ -98,6 +98,16 @@ def find_available_port(
     sys.exit(f"✗ Could not find a free port after trying {start_port}-{port - 1}.")
 
 
+def run_server(cmd: list[str], cwd: Path, port: int) -> None:
+    header(f"Starting backend on port {port}")
+    print(f"\n\033[1;32m  ➜  Local:   http://localhost:{port}\033[0m\n")
+    if not DEBUG:
+        print("    (server logs hidden -- re-run with --debug to see them)\n")
+
+    stdio = None if DEBUG else subprocess.DEVNULL
+    subprocess.run(cmd, cwd=cwd, stdout=stdio, stderr=stdio)
+
+
 # Backend setup -- uv path
 
 
@@ -107,10 +117,8 @@ def setup_backend_uv() -> None:
 
 
 def start_backend_uv(port: int) -> None:
-    header(f"Starting backend on port {port} (uv run fastapi run app/main.py)")
-    print(f"    Serving at http://localhost:{port}\n")
     cmd = ["uv", "run", "fastapi", "run", "app/main.py", "--port", str(port)]
-    subprocess.run(cmd, cwd=BACKEND_DIR)
+    run_server(cmd, BACKEND_DIR, port)
 
 
 # Backend setup -- plain venv + pip fallback
@@ -154,10 +162,8 @@ def start_backend_pip(fastapi_bin: Path, port: int) -> None:
             "  Make sure backend/requirements.txt includes 'fastapi[standard]'."
         )
 
-    header(f"Starting backend on port {port} (fastapi run app/main.py)")
-    print(f"    Serving at http://localhost:{port}\n")
     cmd = [str(fastapi_bin), "run", "app/main.py", "--port", str(port)]
-    subprocess.run(cmd, cwd=BACKEND_DIR)
+    run_server(cmd, BACKEND_DIR, port)
 
 
 # Frontend
@@ -189,7 +195,8 @@ def parse_args() -> argparse.Namespace:
     verbosity.add_argument(
         "--debug",
         action="store_true",
-        help="Verbose output: show every command run and its full live output.",
+        help="Verbose output: show every command run, its full live output, "
+        "and live server logs.",
     )
     return parser.parse_args()
 
@@ -233,4 +240,8 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except KeyboardInterrupt:
+        print("\n\n==> Stopped.")
+        sys.exit(0)
