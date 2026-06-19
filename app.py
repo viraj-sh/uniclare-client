@@ -1,171 +1,247 @@
-import subprocess  # nosec: B404
-import sys
-import time
-import socket
-import requests
-import os
+#!/usr/bin/env python3
+
+from __future__ import annotations
+
 import argparse
-from app.core.utils import RESET, BOLD, FG_RED, FG_WHITE, FG_GREEN, FG_YELLOW
-from app.core.logging import setup_logging
+import platform
+import shutil
+import socket
+import subprocess
+import sys
+from pathlib import Path
 
-logger = setup_logging(name="app.py", level="INFO")
-app_dir = os.path.join(os.path.dirname(__file__), "app")
-sys.path.insert(0, app_dir)
+ROOT = Path(__file__).resolve().parent
+BACKEND_DIR = ROOT / "backend"
+FRONTEND_DIR = ROOT / "frontend"
+VENV_DIR = BACKEND_DIR / ".venv"
+IS_WINDOWS = platform.system() == "Windows"
+DEFAULT_PORT = 3000
+
+DEBUG = False
 
 
-def parse_args():
-    parser = argparse.ArgumentParser(description="Launch FastAPI server")
-    parser.add_argument(
+# Helpers
+
+
+def header(msg: str) -> None:
+    """Stage title -- always printed, in both quiet and debug mode."""
+    print(f"\n\033[1;36m==> {msg}\033[0m")
+
+
+def run(cmd: list[str], cwd: Path, label: str) -> None:
+    if DEBUG:
+        print(f"    $ {' '.join(cmd)}   (cwd: {cwd})")
+        try:
+            subprocess.run(cmd, cwd=cwd, check=True)
+        except FileNotFoundError as exc:
+            sys.exit(f"\n✗ {label} failed: command not found -> {exc}")
+        except subprocess.CalledProcessError as exc:
+            sys.exit(
+                f"\n✗ {label} failed (exit code {exc.returncode}). "
+                "Aborting -- backend will not start."
+            )
+    else:
+        try:
+            subprocess.run(
+                cmd,
+                cwd=cwd,
+                check=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
+                text=True,
+            )
+        except FileNotFoundError as exc:
+            sys.exit(f"\n✗ {label} failed: command not found -> {exc}")
+        except subprocess.CalledProcessError as exc:
+            print(f"\n--- output from: {' '.join(cmd)} ---")
+            print(exc.stdout)
+            print("--- end output ---")
+            sys.exit(
+                f"\n✗ {label} failed (exit code {exc.returncode}). "
+                "Aborting -- backend will not start. "
+                "(Re-run with --debug to see live output as it happens.)"
+            )
+
+
+def require_tool(name: str, install_hint: str | None = None) -> None:
+    if shutil.which(name) is None:
+        msg = f"✗ '{name}' was not found on PATH."
+        if install_hint:
+            msg += f"\n  {install_hint}"
+        sys.exit(msg)
+
+
+def venv_paths() -> tuple[Path, Path]:
+    """Return (python_executable, scripts_dir) inside the fallback venv."""
+    if IS_WINDOWS:
+        scripts_dir = VENV_DIR / "Scripts"
+        python_exe = scripts_dir / "python.exe"
+    else:
+        scripts_dir = VENV_DIR / "bin"
+        python_exe = scripts_dir / "python"
+    return python_exe, scripts_dir
+
+
+def find_available_port(
+    start_port: int, host: str = "0.0.0.0", max_tries: int = 50
+) -> int:
+    """Return the first free port at or after start_port."""
+    port = start_port
+    for _ in range(max_tries):
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
+            sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+            try:
+                sock.bind((host, port))
+                return port
+            except OSError:
+                port += 1
+    sys.exit(f"✗ Could not find a free port after trying {start_port}-{port - 1}.")
+
+
+def run_server(cmd: list[str], cwd: Path, port: int) -> None:
+    header(f"Starting backend on port {port}")
+    print(f"\n\033[1;32m  ➜  Local:   http://localhost:{port}\033[0m\n")
+    if not DEBUG:
+        print("    (server logs hidden -- re-run with --debug to see them)\n")
+
+    stdio = None if DEBUG else subprocess.DEVNULL
+    subprocess.run(cmd, cwd=cwd, stdout=stdio, stderr=stdio)
+
+
+# Backend setup -- uv path
+
+
+def setup_backend_uv() -> None:
+    header("Syncing backend dependencies (uv sync)")
+    run(["uv", "sync"], cwd=BACKEND_DIR, label="uv sync")
+
+
+def start_backend_uv(port: int) -> None:
+    cmd = ["uv", "run", "fastapi", "run", "app/main.py", "--port", str(port)]
+    run_server(cmd, BACKEND_DIR, port)
+
+
+# Backend setup -- plain venv + pip fallback
+
+
+def setup_backend_pip() -> Path:
+    """Returns the path to the fastapi CLI inside the fallback venv."""
+    python_exe, scripts_dir = venv_paths()
+
+    if not python_exe.exists():
+        header("uv not found -- creating a plain venv instead (backend/.venv)")
+        run(
+            [sys.executable, "-m", "venv", str(VENV_DIR)],
+            cwd=ROOT,
+            label="venv creation",
+        )
+    else:
+        header("Reusing existing backend/.venv")
+
+    header("Upgrading pip")
+    run(
+        [str(python_exe), "-m", "pip", "install", "--upgrade", "pip"],
+        cwd=BACKEND_DIR,
+        label="pip upgrade",
+    )
+
+    header("Installing backend requirements (requirements.txt)")
+    run(
+        [str(python_exe), "-m", "pip", "install", "-r", "requirements.txt"],
+        cwd=BACKEND_DIR,
+        label="backend dependency install",
+    )
+
+    return scripts_dir / ("fastapi.exe" if IS_WINDOWS else "fastapi")
+
+
+def start_backend_pip(fastapi_bin: Path, port: int) -> None:
+    if not fastapi_bin.exists():
+        sys.exit(
+            "✗ Could not find the 'fastapi' CLI in the venv.\n"
+            "  Make sure backend/requirements.txt includes 'fastapi[standard]'."
+        )
+
+    cmd = [str(fastapi_bin), "run", "app/main.py", "--port", str(port)]
+    run_server(cmd, BACKEND_DIR, port)
+
+
+# Frontend
+
+
+def build_frontend() -> None:
+    require_tool("npm")
+
+    header("Installing frontend dependencies (npm install)")
+    run(["npm", "install"], cwd=FRONTEND_DIR, label="npm install")
+
+    header("Building frontend (npm run build)")
+    run(["npm", "run", "build"], cwd=FRONTEND_DIR, label="frontend build")
+
+
+# Main
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(
+        description="Build the frontend and launch the uniclare-client backend with one command."
+    )
+    verbosity = parser.add_mutually_exclusive_group()
+    verbosity.add_argument(
+        "--quiet",
+        action="store_true",
+        help="Minimal output: only stage titles (default).",
+    )
+    verbosity.add_argument(
         "--debug",
         action="store_true",
-        help="Enable debug logs for uvicorn",
-    )
-    parser.add_argument(
-        "--port",
-        type=int,
-        default=None,
-        help="Optional port to run the server on (overrides auto-selection)",
+        help="Verbose output: show every command run, its full live output, "
+        "and live server logs.",
     )
     return parser.parse_args()
 
 
-def find_free_port(start=8000, end=8100):
-    for port in range(start, end + 1):
-        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-            try:
-                s.bind(("127.0.0.1", port))
-                return port
-            except OSError:
-                continue
-    raise RuntimeError("No free port available")
+def main() -> None:
+    global DEBUG
 
+    args = parse_args()
+    DEBUG = args.debug
 
-def wait_for_server(port, timeout=10):
-    url = f"http://127.0.0.1:{port}/docs"
-    start = time.time()
-    while time.time() - start < timeout:
-        try:
-            r = requests.head(url, timeout=0.5)
-            if r.status_code >= 200:
-                return True
-        except requests.RequestException:
-            try:
-                r = requests.get(url, timeout=0.5)
-                if r.status_code in (200, 404):
-                    return True
-            except requests.RequestException:
-                time.sleep(0.1)
-                continue
-        time.sleep(0.1)
-    return False
+    if not BACKEND_DIR.is_dir() or not FRONTEND_DIR.is_dir():
+        sys.exit(
+            "✗ Run this script from the project root "
+            "(backend/ and frontend/ must exist next to it)."
+        )
 
+    use_uv = shutil.which("uv") is not None
+    fastapi_bin: Path | None = None
 
-def open_browser(url):
-    try:
-        import webbrowser
+    if use_uv:
+        setup_backend_uv()
+    else:
+        print(
+            "\n(i) 'uv' not found on PATH -- falling back to venv + pip.\n"
+            "    For faster, more reliable installs, consider installing uv:\n"
+            "    https://docs.astral.sh/uv/getting-started/installation/"
+        )
+        fastapi_bin = setup_backend_pip()
 
-        webbrowser.open(url, new=2)
-    except Exception as e:
-        logger.warning(f"Failed to open browser: {e}")
+    build_frontend()
+
+    port = find_available_port(DEFAULT_PORT)
+    if port != DEFAULT_PORT:
+        header(f"Port {DEFAULT_PORT} is busy -- using {port} instead")
+
+    if use_uv:
+        start_backend_uv(port)
+    else:
+        assert fastapi_bin is not None
+        start_backend_pip(fastapi_bin, port)
 
 
 if __name__ == "__main__":
-    args = parse_args()
-    env_port = os.environ.get("PORT")
-    port = args.port or (
-        int(env_port) if env_port and env_port.isdigit() else find_free_port()
-    )
-
-    if args.debug:
-        print(
-            f"""
-{BOLD}{FG_RED}🚀 Starting application{RESET}
-{FG_WHITE}• URL:{RESET} {BOLD}http://127.0.0.1:{port}{RESET}
-{FG_WHITE}• Host:{RESET} 127.0.0.1
-{FG_WHITE}• Port:{RESET} {BOLD}{port}{RESET}
-{FG_WHITE}• Mode:{RESET} {BOLD}DEBUG{RESET}
-{FG_WHITE}• Reload:{RESET} enabled
-{FG_WHITE}• Log level:{RESET} info
-{FG_WHITE}• Access log:{RESET} enabled
-        """
-        )
-
-    else:
-        print(
-            f"""
-{BOLD}{FG_RED}🚀 Starting application{RESET}
-{FG_WHITE}• Mode:{RESET} {BOLD}QUIET{RESET}"""
-        )
-
-    env = os.environ.copy()
-    env["PYTHONPATH"] = app_dir + os.pathsep + env.get("PYTHONPATH", "")
-
-    if args.debug:
-        stdout_setting = None
-        stderr_setting = None
-        log_level = "info"
-        access_log_flag = []
-    else:
-        stdout_setting = subprocess.DEVNULL
-        stderr_setting = subprocess.DEVNULL
-        log_level = "critical"
-        access_log_flag = ["--no-access-log"]
-    uvicorn_proc = subprocess.Popen(
-        [
-            sys.executable,
-            "-m",
-            "uvicorn",
-            "main:app",
-            "--host",
-            "127.0.0.1",
-            "--port",
-            str(port),
-            "--reload",
-            "--log-level",
-            log_level,
-            *access_log_flag,
-        ],  # nosec: B603
-        stdout=stdout_setting,
-        stderr=stderr_setting,
-        env=env,
-        start_new_session=True,
-    )
-
-    if not args.debug and wait_for_server(port):
-        url = f"http://127.0.0.1:{port}"
-        print(
-            f"""
-{BOLD}{FG_GREEN}✅ Application is ready{RESET}
-{FG_WHITE}• URL:{RESET} {BOLD}{url}{RESET}
-{FG_WHITE}• Browser:{RESET} opening a new tab
-
-{FG_YELLOW}Tip:{RESET} use --debug for full logs and manual control
-{FG_YELLOW}GitHub:{RESET} https://github.com/viraj-sh/uniclare-client
-{FG_YELLOW}Docs:{RESET}   https://github.com/viraj-sh/uniclare-client/wiki
-
-{FG_RED}Note:{RESET} Keep this terminal open; closing it will stop the server."""
-        )
-        open_browser(url)
-    elif not args.debug:
-        print(
-            f"""
-{BOLD}{FG_RED}❌ Application failed to start{RESET}
-{FG_WHITE}• Port attempted:{RESET} {BOLD}{port}{RESET}
-{FG_WHITE}• Mode:{RESET} {BOLD}QUIET{RESET} (logs suppressed)
-
-{FG_YELLOW}Troubleshooting:{RESET}
-• Try: python app.py --debug
-• Check: port availability, app/main.py, Uvicorn errors
-
-{FG_YELLOW}GitHub:{RESET} https://github.com/viraj-sh/uniclare-client
-{FG_YELLOW}Docs:{RESET}   https://github.com/viraj-sh/uniclare-client/wiki
-        """
-        )
-        uvicorn_proc.terminate()
-        sys.exit(1)
-
     try:
-        uvicorn_proc.wait()
+        main()
     except KeyboardInterrupt:
-        uvicorn_proc.terminate()
-        uvicorn_proc.wait()
+        print("\n\n==> Stopped.")
+        sys.exit(0)

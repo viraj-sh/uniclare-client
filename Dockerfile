@@ -1,18 +1,28 @@
-FROM python:3.11-slim AS base
+FROM python:3.12-alpine AS backend_builder
 
 WORKDIR /app
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    build-essential \
-    && rm -rf /var/lib/apt/lists/*
+RUN apk add --no-cache nodejs npm && \
+    node -v && npm -v
+
+COPY backend/requirements.txt .
+RUN pip install --no-cache-dir --prefix=/install -r requirements.txt
 
 COPY . .
 
-RUN pip install --upgrade pip && \
-    pip install --no-cache-dir -r requirements/base.txt
+WORKDIR /app/frontend
+RUN npm install && npm run build
 
-WORKDIR /app/app
+FROM python:3.12-alpine AS runner
 
-EXPOSE 8000
+COPY --from=backend_builder /install /usr/local
+ENV PYTHONPATH=/usr/local/lib/python3.12/site-packages
+ENV PATH="/usr/local/bin:$PATH"
 
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+WORKDIR /app
+
+COPY --from=backend_builder /app/backend/app .
+
+CMD ["fastapi", "run", "main.py", "--port", "80"]
+
+EXPOSE 80

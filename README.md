@@ -1,43 +1,56 @@
-# ⚠️ Project Archived
+<div align="center">
 
-This project is now **archived and no longer functional**.
+# Unofficial Uniclare Client
 
-## What happened?
+An unofficial [Uniclare](https://play.google.com/store/apps/details?id=com.uniclarepro&hl=en_IN&pli=1) / [Student Uni Portal](https://studentportal.universitysolutions.in/) client that reveals full ESE marks and hidden result fields. Includes client, MCP Server, and API documentation. Built for personal educational use and not affiliated with Uniclare or Student Portal.
 
-This client relied on undocumented fields from the Uniclare / Student Portal APIs that exposed:
+</div>
 
-* End Semester Exam (ESE) marks
-* Internal assessment breakdown
-* Additional fields like percentage, credits, grade points, etc.
+---
 
-These fields are **no longer returned by the official APIs**, and the backend has been updated to restrict access.
+### Features Compared to the Official [Uniclare App](https://play.google.com/store/apps/details?id=com.uniclarepro&hl=en_IN&pli=1) and [Student Uni Portal](https://studentportal.universitysolutions.in/)
 
-## Current Status
+- Displays ESE, IA, viva/practical marks, and totals.
+- Reveals percentage, credits, grade points, and credit points.
+- Supports MCP server integration.
 
-* ❌ Hidden result fields are no longer accessible
-* ❌ Full marks breakdown is no longer available
-* ❌ This client no longer provides any advantage over the official portal
+---
 
-## Future Possibility
+## Getting Started
+**Prerequisites** – [Python 3.10+](https://www.python.org/) and [Node.js](https://nodejs.org/) (with npm) installed and available on your PATH.
 
-If the APIs start returning these fields again in the future, the project may be revived.
-As of now, there is **no known workaround or alternative endpoint**.
-## 🙏 Thanks
+### Run from Source
+```bash
+git clone https://github.com/viraj-sh/uniclare-client 
+cd uniclare-client 
+python app.py
+```
+`--debug` for verbose install/build/server logs. Available at http://localhost:3000.
 
-Thank you for using this client — if it helped you in any way, I really appreciate it!
+### Running with Docker
+**Prerequisites** – [Docker](https://www.docker.com/) installed and available on your PATH.
 
-If you discover anything useful or find a workaround in the future, feel free to:
+**Production** (latest Hub image):
+```bash
+wget https://raw.githubusercontent.com/viraj-sh/uniclare-client/main/compose.yaml 
+docker compose up -d
+# or
+docker run -d --name uniclare-client -p 3000:80 --restart unless-stopped virajsh/uniclare-client:latest
+```
+Available at http://localhost:3000.
 
-* Open an issue on this repo
-* Or email me at **[virajshirodkar45@gmail.com](mailto:virajshirodkar45@gmail.com)**
+**Development** (local build, hot reload):
+```bash
+git clone https://github.com/viraj-sh/uniclare-client 
+cd uniclare-client
+docker compose -f compose.dev.yaml up -d
+# or
+docker build -t uniclare-client . 
+docker run --rm -p 8080:80 -v ./backend/app:/app uniclare-client fastapi dev main.py --port 80
+```
+Available at http://localhost:8080.
 
-## 🔗 Related Projects
 
-* **mydylms-client**
-  Unofficial MyDYLMS client with full access across semesters, direct document downloads, and MCP/API support
-  👉 https://github.com/viraj-sh/mydylms-client
+---
 
-* **auto-dylms**
-  Automates MyDYLMS course completion (documents, assignments, forums, quizzes) using Selenium — reach 100% progress in minutes
-  👉 https://github.com/viraj-sh/auto-dylms
-
+> **Disclaimer:** Unofficial project for personal/educational use only. Not affiliated with or endorsed by Uniclare, the Student Portal, or the college. Use responsibly; the author is not liable for misuse, data loss, or policy violations.

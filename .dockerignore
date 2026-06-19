@@ -1,20 +1,39 @@
+# Python
 __pycache__
-.cache
-*/__pycache__
-*/*/__pycache__
-docker-compose.yaml
-app/data
-app/logs
-requirements/dev.txt
-specs/win_64.spec
-specs/mac_arm64.spec
-README.md
-launcher.py
-render.yaml
+*.pyc
+*.pyo
+.env
+.venv
+venv/
+backend/.venv
+backend/venv
+
+# Node
+node_modules/
+frontend/node_modules
+
+# Git
+.git
 .gitignore
+
+# Docker itself (optional)
+Dockerfile
+.dockerignore
+
+# IDE & OS junk
 .vscode
-.mcp
-.github
-app/.env
-venv
-test
+.idea
+*.swp
+.DS_Store
+Thumbs.db
+
+# Any local frontend build output that would conflict with the Docker build
+frontend/dist
+backend/app/static/*    # exclude old static files; they’ll be built fresh
+__pycache__
+*/__pycache__
+__pycache__/
+.vercel
+__pycache__/
+.env
+test*

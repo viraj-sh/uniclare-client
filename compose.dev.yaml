@@ -1,0 +1,11 @@
+services:
+  uniclare-client:
+    container_name: uniclare-client
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
+    volumes:
+      - ./backend/app:/app
+    command: [ "fastapi", "dev", "main.py", "--port", "80" ]
