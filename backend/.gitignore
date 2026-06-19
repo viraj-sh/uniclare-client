@@ -3,3 +3,6 @@ __pycache__/
 .env
 test*
 app/static/
+build
+dist
+*.spec
