@@ -1,7 +1,7 @@
 services:
-  uniclare-backend:
-    container_name: uniclare-backend
+  uniclare-client:
+    container_name: uniclare-client
     image: virajsh/uniclare-client:latest
     ports:
-      - "8080:80"
+      - "3000:80"
     restart: unless-stopped

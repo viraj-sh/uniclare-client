@@ -17,22 +17,38 @@ An unofficial [Uniclare](https://play.google.com/store/apps/details?id=com.unicl
 ---
 
 ## Getting Started
+**Prerequisites** – [Python 3.10+](https://www.python.org/) and [Node.js](https://nodejs.org/) (with npm) installed and available on your PATH.
 
-**Run from Source** – Clone and run the client in development mode for modification or contribution.
-
+### Run from Source
 ```bash
-git clone https://github.com/viraj-sh/uniclare-client
-cd uniclare-client/backend
-
-python -m venv venv
-venv\Scripts\activate   # Windows
-source venv/bin/activate   # macOS/Linux
-
-pip install --upgrade pip
-pip install -r requirements.txt
-
-fastapi dev app/main.py 
+git clone https://github.com/viraj-sh/uniclare-client 
+cd uniclare-client 
+python app.py
 ```
+`--debug` for verbose install/build/server logs. Available at http://localhost:3000.
+
+### Running with Docker
+**Prerequisites** – [Docker](https://www.docker.com/) installed and available on your PATH.
+
+**Production** (latest Hub image):
+```bash
+wget https://raw.githubusercontent.com/viraj-sh/uniclare-client/main/compose.yaml 
+docker compose up -d
+# or
+docker run -d --name uniclare-client -p 3000:80 --restart unless-stopped virajsh/uniclare-client:latest
+```
+Available at http://localhost:3000.
+
+**Development** (local build, hot reload):
+```bash
+git clone https://github.com/viraj-sh/uniclare-client 
+cd uniclare-client
+docker compose -f compose.dev.yaml up -d
+# or
+docker build -t uniclare-client . 
+docker run --rm -p 8080:80 -v ./backend/app:/app uniclare-client fastapi dev main.py --port 80
+```
+Available at http://localhost:8080.
 
 
 ---
