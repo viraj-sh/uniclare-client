@@ -5,3 +5,4 @@ src/imports/
 ATTRIBUTIONS.md
 .vercel
 dist
+shell.nix

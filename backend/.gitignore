@@ -6,3 +6,9 @@ app/static/
 build
 dist
 *.spec
+app.dist
+app.build
+launch.build
+result
+launch.bin
+shell.nix

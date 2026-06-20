@@ -57,6 +57,8 @@ app.include_router(
     router=notifications.router, prefix="/api/notifications", tags=["notifications"]
 )
 
+# print(f"static_dir -> {static_dir} | exists? -> {os.path.isdir(static_dir)} | index.html exists? -> {os.path.isfile(os.path.join(static_dir, 'index.html'))}")
+
 if os.path.isdir(static_dir) and os.path.isfile(os.path.join(static_dir, "index.html")):
     app.mount("/static", StaticFiles(directory=static_dir), name="static")
 

@@ -24,6 +24,9 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
+  server: {
+    port: 3000,
+  },
   base: '/static/',
   build: {
     outDir: '../backend/app/static', 

@@ -30,9 +30,15 @@ def extract_json(text: str) -> dict:
     raise ValueError("No valid JSON found in the response.")
 
 
+import sys
+import os
+
 def static_path() -> str:
-    if getattr(sys, "frozen", False):
-        base_dir = sys._MEIPASS  # type: ignore[attr-defined]
-    else:
+    if hasattr(sys, '_MEIPASS'):
+        base_dir = sys._MEIPASS
+    elif os.path.basename(sys.executable).startswith('python'):
         base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+    else:
+        base_dir = os.path.dirname(sys.executable)
     return os.path.join(base_dir, "static")
