@@ -1,9 +1,9 @@
+import { ChevronRight, FileText, Search } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
-import { Search, FileText, ChevronRight } from "lucide-react";
-import { Loader } from "../components/Loader";
-import { ErrorMessage } from "../components/ErrorMessage";
 import { EmptyState } from "../components/EmptyState";
+import { ErrorMessage } from "../components/ErrorMessage";
+import { Loader } from "../components/Loader";
 import { api } from "../lib/api";
 
 type ResultItem = Awaited<ReturnType<typeof api.getResults>>[number];
@@ -106,7 +106,7 @@ export function ResultsList() {
                     </td>
                     <td className="px-4 py-3">
                       <Link
-                        to={`/results/${encodeURIComponent(result.year)}`}
+                        to={`/results/${encodeURIComponent(result.year)}?reg_no=${encodeURIComponent(result.reg_no)}`}
                         className="inline-flex items-center gap-1 text-sm text-primary hover:text-primary/80 transition-colors"
                       >
                         View

@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
-import { useParams, Link } from "react-router";
 import { ArrowLeft } from "lucide-react";
-import { Loader } from "../components/Loader";
+import { useEffect, useState } from "react";
+import { Link, useParams, useSearchParams } from "react-router";
 import { ErrorMessage } from "../components/ErrorMessage";
+import { Loader } from "../components/Loader";
 import { api } from "../lib/api";
 
 type ResultData = Awaited<ReturnType<typeof api.getResult>>;
@@ -26,17 +26,18 @@ export function ResultDetail() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [result, setResult] = useState<ResultData | null>(null);
+   const [searchParams] = useSearchParams();
 
   useEffect(() => {
     fetchResultDetail();
-  }, [resultId]);
+  }, [resultId, searchParams]);
 
   const fetchResultDetail = async () => {
     setLoading(true);
     setError("");
     try {
       const year = decodeURIComponent(resultId || "");
-      const regNo = localStorage.getItem("reg_no") || "";
+      const regNo = searchParams.get("reg_no") || "";
       const data = await api.getResult(year, regNo);
       setResult(data);
     } catch (err: unknown) {

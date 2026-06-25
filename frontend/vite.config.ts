@@ -1,7 +1,7 @@
-import { defineConfig } from 'vite'
-import path from 'path'
 import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
+import path from 'path'
+import { defineConfig, loadEnv } from 'vite'
 
 
 function figmaAssetResolver() {
@@ -15,29 +15,27 @@ function figmaAssetResolver() {
     },
   }
 }
+export default defineConfig(({ mode }) => {  
+  const env = loadEnv(mode, process.cwd(), '')
+  const outDir = env.BUILD_OUT_DIR || '../backend/app/static'
+  const base = env.BASE_PATH ?? '/static/'
+  console.log(`📦 Build output directory: ${outDir}`)
 
-export default defineConfig({
-  plugins: [
-    figmaAssetResolver(),
-    // The React and Tailwind plugins are both required for Make, even if
-    // Tailwind is not being actively used – do not remove them
-    react(),
-    tailwindcss(),
-  ],
-  server: {
-    port: 3000,
-  },
-  base: '/static/',
-  build: {
-    outDir: '../backend/app/static', 
-  },
-  resolve: {
-    alias: {
-      // Alias @ to the src directory
-      '@': path.resolve(__dirname, './src'),
+  return {
+    plugins: [
+      figmaAssetResolver(),
+      react(),
+      tailwindcss(),
+    ],
+    base, 
+    build: {
+      outDir,
     },
-  },
-
-  // File types to support raw imports. Never add .css, .tsx, or .ts files to this.
-  assetsInclude: ['**/*.svg', '**/*.csv'],
+    resolve: {
+      alias: {
+        '@': path.resolve(__dirname, './src'),
+      },
+    },
+    assetsInclude: ['**/*.svg', '**/*.csv'],
+  }
 })
