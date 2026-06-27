@@ -4,9 +4,8 @@ import time
 
 import uvicorn
 import webview
-
-from app.main import app
 from app.core.config import settings
+from app.main import app
 
 HOST = settings.webview_host
 port = settings.webview_port
@@ -42,4 +41,4 @@ window = webview.create_window(
     width=1200,
     height=800,
 )
-webview.start(private_mode=False,debug=False)
+webview.start(private_mode=False, debug=False, gui="qt")

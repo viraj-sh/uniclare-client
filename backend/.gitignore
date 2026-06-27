@@ -12,3 +12,5 @@ launch.build
 result
 launch.bin
 shell.nix
+*dist/
+*.bin
