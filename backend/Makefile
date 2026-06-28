@@ -12,7 +12,9 @@ nuitka-linux:
 	--copyright="Copyright © 2025 github.com/viraj-sh" \
 	--file-version=2.0.0 \
 	--follow-imports \
+    --disable-console \
 	--no-deployment-flag=excluded-module-usage \
+	--disable-plugin=pywebview \
 	--enable-plugin=pyqt6 \
 	--include-package-data=fastapi \
 	--include-package-data=uvicorn \
@@ -21,6 +23,8 @@ nuitka-linux:
 	--include-package-data=qtpy \
 	--include-package-data=webview \
 	--include-data-dir=app/static=static \
+	--output-filename=UniclareClient \
+	--output-dir=dist \
 	desktop.py
 
 
@@ -41,8 +45,10 @@ nuitka-mac:
 	--file-version=2.0.0 \
 	--product-version=2.0.0 \
 	--follow-imports \
+    --disable-console \
 	--no-deployment-flag=excluded-module-usage \
-	--enable-plugin=pyqt6
+	--disable-plugin=pywebview \
+	--enable-plugin=pyqt6 \
 	--include-package-data=fastapi \
 	--include-package-data=uvicorn \
 	--include-package-data=pydantic_settings \
@@ -50,6 +56,8 @@ nuitka-mac:
 	--include-package-data=qtpy \
 	--include-package-data=webview \
 	--include-data-dir=app/static=static \
+	--output-filename=UniclareClient \
+	--output-dir=dist \
 	desktop.py
 
 
@@ -61,21 +69,27 @@ nuitka-win:
 	--jobs=4 \
 	--prefer-source-code \
 	--assume-yes-for-downloads \
-	--no-deployment-flag=excluded-module-usage \
 	--product-name="UniclareClient" \
 	--company-name="viraj-sh" \
 	--file-description="View end-semester marks from the Uniclare App" \
 	--copyright="Copyright © 2025 github.com/viraj-sh" \
 	--file-version=2.0.0 \
+	--product-version=2.0.0 \
 	--follow-imports \
-	--enable-plugin=pyqt6
+	--windows-console-mode=disable \
+	--no-deployment-flag=excluded-module-usage \
+	--windows-icon-from-ico=../.github/assets/icon.ico \
+	--disable-plugin=pywebview \
+	--include-module=webview.platforms.edgechromium \
+	--include-module=webview.platforms.win32 \
 	--include-package-data=fastapi \
 	--include-package-data=uvicorn \
 	--include-package-data=pydantic_settings \
 	--include-package-data=httpx \
-	--include-package-data=qtpy \
 	--include-package-data=webview \
 	--include-data-dir=app/static=static \
+	--output-filename=UniclareClient \
+	--output-dir=dist \
 	desktop.py
 
 desktop:
