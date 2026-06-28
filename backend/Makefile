@@ -15,7 +15,7 @@ nuitka-linux:
     --disable-console \
 	--no-deployment-flag=excluded-module-usage \
 	--disable-plugin=pywebview \
-	--enable-plugin=pyqt6 \
+	--enable-plugin=pyside6 \
 	--include-package-data=fastapi \
 	--include-package-data=uvicorn \
 	--include-package-data=pydantic_settings \
