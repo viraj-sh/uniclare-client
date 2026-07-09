@@ -1,21 +1,23 @@
-from contextlib import asynccontextmanager
-from fastapi.responses import FileResponse
-import httpx
 import os
+from contextlib import asynccontextmanager
+
+import httpx
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
-from app.core.http import http_state
 from app.core.config import settings
-from app.routes import notifications, system, auth, result, user
+from app.core.http import NullCookieJar, http_state
 from app.core.utils import static_path
+from app.routes import auth, notifications, result, system, user
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # Startup
     http_state.client = httpx.AsyncClient(
+        cookies=NullCookieJar(),
         timeout=httpx.Timeout(
             connect=5.0,
             read=150.0,

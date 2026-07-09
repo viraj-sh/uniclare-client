@@ -1,9 +1,19 @@
-from fastapi import Depends
-import httpx
+import http.cookiejar
 from typing import Annotated
+
+import httpx
+from fastapi import Depends
 from fastapi.security import HTTPBearer
 
 security = HTTPBearer()
+
+
+class NullCookieJar(http.cookiejar.CookieJar):
+    def set_cookie(self, cookie, *args, **kwargs):
+        pass
+
+    def extract_cookies(self, response, request, *args, **kwargs):
+        pass
 
 
 class HTTPClientState:
