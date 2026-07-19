@@ -1,7 +1,0 @@
-services:
-  uniclare-client:
-    container_name: uniclare-client
-    image: virajsh/uniclare-client:latest
-    ports:
-      - "3000:80"
-    restart: unless-stopped
