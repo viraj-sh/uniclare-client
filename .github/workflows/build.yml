@@ -1,0 +1,56 @@
+name: Manual Build
+
+on:
+  workflow_dispatch:
+    inputs:
+      build_macos:
+        description: "Build macOS .app"
+        type: boolean
+        default: false
+      build_linux:
+        description: "Build Linux standalone"
+        type: boolean
+        default: false
+      build_windows:
+        description: "Build Windows standalone + MSIX"
+        type: boolean
+        default: false
+      version:
+        description: "Version to stamp onto this test build (three-part, e.g. 2.0.1)"
+        type: string
+        default: "0.0.0"
+
+jobs:
+  macos:
+    if: ${{ inputs.build_macos }}
+    uses: viraj-sh/dev-workflows/.github/workflows/build-macos-app.yml@v1.0.0
+    with:
+      app_version: ${{ inputs.version }}
+      product_name: UNI
+      company_name: viraj-sh
+      file_description: "View end-semester marks and more result data that is hidden on the Uniclare App or Student Portal."
+      copyright_text: "Copyright © 2025 github.com/viraj-sh"
+
+  linux:
+    if: ${{ inputs.build_linux }}
+    uses: viraj-sh/dev-workflows/.github/workflows/build-linux-standalone.yml@v1.0.0
+    with:
+      app_version: ${{ inputs.version }}
+      product_name: UNI
+      company_name: viraj-sh
+      file_description: "View end-semester marks and more result data that is hidden on the Uniclare App or Student Portal."
+      copyright_text: "Copyright © 2025 github.com/viraj-sh"
+
+  windows:
+    if: ${{ inputs.build_windows }}
+    uses: viraj-sh/dev-workflows/.github/workflows/build-windows-msix.yml@v1.0.0
+    with:
+      app_version: ${{ inputs.version }}
+      product_name: UNI
+      company_name: viraj-sh
+      publisher_display_name: viraj-sh
+      display_name: "UNI Student Portal (Unofficial)"
+      file_description: "View end-semester marks and more result data that is hidden on the Uniclare App or Student Portal."
+      copyright_text: "Copyright © 2025 github.com/viraj-sh"
+      executable_name: UNI
+    secrets: inherit
