@@ -9,6 +9,8 @@ from app.auth.schemas import (
 from app.auth.service import get_captcha, get_otp, logout, reset_pass
 from app.auth.service import login as auth_login
 from app.auth.service import verify_session as verify_session
+from app.profile.schemas import ProfileResult
+from app.profile.service import profile as get_profile
 
 
 class App:
@@ -37,6 +39,9 @@ class App:
         session_token: str,
     ) -> ResetPassResult:
         return await reset_pass(mob_no, otp, new_password, session_token)
+
+    async def profile(self, session_token: str) -> ProfileResult:
+        return await get_profile(session_token)
 
 
 app = App()
