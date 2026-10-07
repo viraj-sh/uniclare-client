@@ -1,8 +1,0 @@
-node_modules/
-guidelines/
-src/imports/
-.env
-ATTRIBUTIONS.md
-.vercel
-dist
-shell.nix
