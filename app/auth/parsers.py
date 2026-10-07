@@ -2,6 +2,8 @@ import httpx
 
 from app.auth.schemas import (
     CaptchaResult,
+    OTPResult,
+    ResetPassResult,
     SigninResult,
     SignoutResult,
     VerifySessionResult,
@@ -16,7 +18,7 @@ def parse_signin(response: httpx.Response) -> SigninResult:
             or f"Signin failed with {response.status_code}"
         )
     ec = data.get("error_code")
-    return SigninResult(error_code=ec, msg=data.get("msg"))
+    return SigninResult(error_code=ec, message=data.get("msg"))
 
 
 def parse_captcha(response: httpx.Response) -> CaptchaResult:
@@ -50,3 +52,29 @@ def parse_signout(response: httpx.Response) -> SignoutResult:
     if response.status_code != 200:
         raise ValueError(f"Signout failed with {response.status_code}")
     return SignoutResult(message=data)
+
+
+def parse_otp(response: httpx.Response) -> OTPResult:
+    data = response.json()
+
+    if response.status_code != 200:
+        raise ValueError(
+            f"{data.get('error_code')} -> {data.get('msg')}"
+            or f"Signin failed with {response.status_code}"
+        )
+    email = data.get("femail")
+    status = data.get("status")
+    msg = data.get("msg")
+    return OTPResult(email=email, message=msg, status=status)
+
+
+def parse_reset_password(response: httpx.Response) -> ResetPassResult:
+    data = response.json()
+
+    if response.status_code != 200:
+        raise ValueError(
+            f"{data.get('error_code')} -> {data.get('msg')}"
+            or f"Signin failed with {response.status_code}"
+        )
+    status = data.get("status")
+    return ResetPassResult(status=status)
