@@ -16,3 +16,8 @@ class CaptchaResult(BaseModel):
 class VerifySessionResult(BaseModel):
     error_code: Optional[int] = Field(None)
     status: Optional[str] = Field(None)
+    message: Optional[str] = Field(None)
+
+
+class SignoutResult(BaseModel):
+    message: Optional[str] = Field(None)

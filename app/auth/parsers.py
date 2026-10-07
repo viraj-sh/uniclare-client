@@ -1,6 +1,11 @@
 import httpx
 
-from app.auth.schemas import CaptchaResult, SigninResult, VerifySessionResult
+from app.auth.schemas import (
+    CaptchaResult,
+    SigninResult,
+    SignoutResult,
+    VerifySessionResult,
+)
 
 
 def parse_signin(response: httpx.Response) -> SigninResult:
@@ -26,10 +31,22 @@ def parse_captcha(response: httpx.Response) -> CaptchaResult:
 
 def parse_verify_session(response: httpx.Response) -> VerifySessionResult:
     data = response.json()
-    if response.status_code != 200 or data.get("error_code") == -1:
+    if (response.status_code != 200 and response.status_code != 403) or data.get(
+        "error_code"
+    ) == -1:
         raise ValueError(
             f"{data.get('error_code')} -> {data.get('msg')}"
             or f"Session Verification failed with {response.status_code}"
         )
     ec = data.get("error_code")
-    return VerifySessionResult(error_code=ec, status=data.get("status"))
+    status = data.get("status")
+    msg = data.get("message")
+
+    return VerifySessionResult(error_code=ec, status=status, message=msg)
+
+
+def parse_signout(response: httpx.Response) -> SignoutResult:
+    data = response.text
+    if response.status_code != 200:
+        raise ValueError(f"Signout failed with {response.status_code}")
+    return SignoutResult(message=data)

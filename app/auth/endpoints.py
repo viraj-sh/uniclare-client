@@ -6,6 +6,7 @@ from app.http_headers import authenticated_headers, unauthenticated_headers
 SIGNIN_URL = f"{API_BASE_URL}/signin.php"
 CAPTCHA_URL = f"{API_BASE_URL}/get_captcha.php"
 VERIFY_SESSION_URL = f"{API_BASE_URL}/app.php"
+SIGNOUT_URL = f"{API_BASE_URL}/src/logout.php"
 
 
 async def signin(
@@ -32,4 +33,10 @@ async def verify_session(session_token: str, client: httpx.AsyncClient):
         url=VERIFY_SESSION_URL,
         headers=authenticated_headers(session_token),
         params={"a": "showneedhelp", "univcode": "undefined", "fregno": "undefined"},
+    )
+
+
+async def signout(session_token: str, client: httpx.AsyncClient):
+    return await client.post(
+        url=SIGNOUT_URL, headers=authenticated_headers(session_token)
     )
