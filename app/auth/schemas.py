@@ -10,4 +10,9 @@ class SigninResult(BaseModel):
 
 class CaptchaResult(BaseModel):
     captcha: Optional[int] = Field(None)
-    session_id: Optional[str] = Field(None)
+    session_token: Optional[str] = Field(None)
+
+
+class VerifySessionResult(BaseModel):
+    error_code: Optional[int] = Field(None)
+    status: Optional[str] = Field(None)
