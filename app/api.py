@@ -9,6 +9,8 @@ from app.auth.schemas import (
 from app.auth.service import get_captcha, get_otp, logout, reset_pass
 from app.auth.service import login as auth_login
 from app.auth.service import verify_session as verify_session
+from app.notifications.schemas import NotificationResponse
+from app.notifications.service import noti
 from app.profile.schemas import ProfileResult
 from app.profile.service import profile as get_profile
 from app.results.schemas import Result, ResultListResult
@@ -55,6 +57,9 @@ class App:
         session_token: str,
     ) -> Result:
         return await result_det(exam_no, reg_no, session_token)
+
+    async def notifications(self, session_token: str) -> list[NotificationResponse]:
+        return await noti(session_token)
 
 
 app = App()
