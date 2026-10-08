@@ -9,6 +9,7 @@ VERIFY_SESSION_URL = f"{API_BASE_URL}/app.php"
 SIGNOUT_URL = f"{API_BASE_URL}/src/logout.php"
 OTP_URL = f"{API_BASE_URL}/forgot-password.php"
 RESET_PASS_URL = f"{API_BASE_URL}/resetpassword.php"
+VERIFY_PASS_URL = f"{API_BASE_URL}/src/chngPassword.php"
 
 
 async def signin(

@@ -11,6 +11,8 @@ from app.auth.service import login as auth_login
 from app.auth.service import verify_session as verify_session
 from app.profile.schemas import ProfileResult
 from app.profile.service import profile as get_profile
+from app.results.schemas import Result, ResultListResult
+from app.results.service import list_result, result_det
 
 
 class App:
@@ -42,6 +44,17 @@ class App:
 
     async def profile(self, session_token: str) -> ProfileResult:
         return await get_profile(session_token)
+
+    async def results_list(self, session_token: str) -> list[ResultListResult]:
+        return await list_result(session_token)
+
+    async def result_details(
+        self,
+        exam_no: str,
+        reg_no: str,
+        session_token: str,
+    ) -> Result:
+        return await result_det(exam_no, reg_no, session_token)
 
 
 app = App()

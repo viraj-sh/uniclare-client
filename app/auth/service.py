@@ -1,6 +1,12 @@
 import httpx
 
-from app.auth.endpoints import captcha, otp, reset_password, signin, signout
+from app.auth.endpoints import (
+    captcha,
+    otp,
+    reset_password,
+    signin,
+    signout,
+)
 from app.auth.endpoints import verify_session as verify_sess
 from app.auth.parsers import (
     parse_captcha,
