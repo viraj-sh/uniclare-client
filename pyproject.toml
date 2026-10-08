@@ -9,5 +9,10 @@ dependencies = [
     "pydantic>=2.13.5",
 ]
 
+[project.optional-dependencies]
+mcp = [
+    "fastmcp>=4.0.11",
+]
+
 [dependency-groups]
 dev = []
