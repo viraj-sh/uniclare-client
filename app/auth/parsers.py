@@ -18,7 +18,9 @@ def parse_signin(response: httpx.Response) -> SigninResult:
             or f"Signin failed with {response.status_code}"
         )
     ec = data.get("error_code")
-    return SigninResult(error_code=ec, message=data.get("msg"))
+    return SigninResult(
+        status_code=response.status_code, error_code=ec, message=data.get("msg")
+    )
 
 
 def parse_captcha(response: httpx.Response) -> CaptchaResult:
@@ -27,7 +29,9 @@ def parse_captcha(response: httpx.Response) -> CaptchaResult:
     if response.status_code != 200 or not captcha:
         raise ValueError(f"Captcha failed with {response.status_code}")
     return CaptchaResult(
-        captcha=captcha, session_token=response.cookies.get("PHPSESSID")
+        status_code=response.status_code,
+        captcha=captcha,
+        session_token=response.cookies.get("PHPSESSID"),
     )
 
 
@@ -44,14 +48,16 @@ def parse_verify_session(response: httpx.Response) -> VerifySessionResult:
     status = data.get("status")
     msg = data.get("message")
 
-    return VerifySessionResult(error_code=ec, status=status, message=msg)
+    return VerifySessionResult(
+        status_code=response.status_code, error_code=ec, status=status, message=msg
+    )
 
 
 def parse_signout(response: httpx.Response) -> SignoutResult:
     data = response.text
     if response.status_code != 200:
         raise ValueError(f"Signout failed with {response.status_code}")
-    return SignoutResult(message=data)
+    return SignoutResult(status_code=response.status_code, message=data)
 
 
 def parse_otp(response: httpx.Response) -> OTPResult:
@@ -65,7 +71,9 @@ def parse_otp(response: httpx.Response) -> OTPResult:
     email = data.get("femail")
     status = data.get("status")
     msg = data.get("msg")
-    return OTPResult(email=email, message=msg, status=status)
+    return OTPResult(
+        status_code=response.status_code, email=email, message=msg, status=status
+    )
 
 
 def parse_reset_password(response: httpx.Response) -> ResetPassResult:
@@ -77,4 +85,4 @@ def parse_reset_password(response: httpx.Response) -> ResetPassResult:
             or f"Signin failed with {response.status_code}"
         )
     status = data.get("status")
-    return ResetPassResult(status=status)
+    return ResetPassResult(status_code=response.status_code, status=status)

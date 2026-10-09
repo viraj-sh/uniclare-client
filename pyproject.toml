@@ -13,6 +13,10 @@ dependencies = [
 mcp = [
     "fastmcp>=4.0.11",
 ]
+cli = [
+    "keyring>=25.7.0",
+    "typer>=0.27.3",
+]
 
 [dependency-groups]
 dev = []
