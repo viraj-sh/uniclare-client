@@ -11,6 +11,7 @@ def parse_profile(response: httpx.Response) -> ProfileResult:
             or f"Fetching User Profile with {response.status_code}"
         )
     return ProfileResult(
+        status_code=response.status_code,
         full_name=data.get("fname"),
         fat_name=data.get("ffatname"),
         mot_name=data.get("fmotname"),

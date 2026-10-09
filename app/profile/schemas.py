@@ -4,6 +4,7 @@ from pydantic import BaseModel, Field
 
 
 class ProfileResult(BaseModel):
+    status_code: Optional[int] = Field(None)
     full_name: Optional[str] = Field(None)
     fat_name: Optional[str] = Field(None)
     mot_name: Optional[str] = Field(None)
