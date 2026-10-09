@@ -44,6 +44,7 @@ class ResultInfo(BaseModel):
 
 
 class Result(BaseModel):
+    status_code: Optional[int] = Field(None)
     student_details: StudentDetail
     result: ResultInfo
     subjects: List[SubjectResult]

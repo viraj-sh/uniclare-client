@@ -16,7 +16,7 @@ def parse_results_list(response: httpx.Response) -> list[ResultListResult]:
             f"{data.get('error_code')} -> {data.get('msg')}"
             or f"Fetching User Profile with {response.status_code}"
         )
-    return [
+    results = [
         ResultListResult(
             year=result.get("year"),
             exam_date=result.get("examdate"),
@@ -29,6 +29,7 @@ def parse_results_list(response: httpx.Response) -> list[ResultListResult]:
         )
         for result in response.json().get("data")
     ]
+    return results[::-1]
 
 
 def parse_results_details(response: httpx.Response) -> Result:
@@ -39,6 +40,7 @@ def parse_results_details(response: httpx.Response) -> Result:
             or f"Fetching User Profile with {response.status_code}"
         )
     return Result(
+        status_code=response.status_code,
         student_details=StudentDetail(
             sem=response.json().get("studDet").get("FEXAMNAME"),
             full_sem=response.json().get("studDet").get("FDESCPN"),
