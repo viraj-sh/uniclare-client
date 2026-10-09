@@ -212,4 +212,5 @@ def results_list_cmd():
 
 @results_app.command("show")
 def results_details(result_no: int = typer.Argument(-1, help="Result number to show")):
+    """Show detailed result information."""
     asyncio.run(_results_details(result_no))
