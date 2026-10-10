@@ -1,6 +1,6 @@
 [project]
 name = "uniclare-client"
-version = "2.0.0"
+version = "2.1.0"
 description = "View data that is hidden on the Uniclare App or Student Portal."
 readme = "README.md"
 license = "MIT"
@@ -16,6 +16,7 @@ dependencies = [
 
 [project.scripts]
 unicli = "uniclare_client.cli.entry:run"
+unimcp = "uniclare_client.mcp_server.entry:run"
 
 [project.optional-dependencies]
 cli = [
