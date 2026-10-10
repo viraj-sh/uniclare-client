@@ -1,14 +1,14 @@
 import httpx
 
-from app.auth.endpoints import (
+from uniclare_client.core.auth.endpoints import (
     captcha,
     otp,
     reset_password,
     signin,
     signout,
 )
-from app.auth.endpoints import verify_session as verify_sess
-from app.auth.parsers import (
+from uniclare_client.core.auth.endpoints import verify_session as verify_sess
+from uniclare_client.core.auth.parsers import (
     parse_captcha,
     parse_otp,
     parse_reset_password,
@@ -16,7 +16,7 @@ from app.auth.parsers import (
     parse_signout,
     parse_verify_session,
 )
-from app.auth.schemas import (
+from uniclare_client.core.auth.schemas import (
     CaptchaResult,
     OTPResult,
     ResetPassResult,
@@ -24,7 +24,7 @@ from app.auth.schemas import (
     SignoutResult,
     VerifySessionResult,
 )
-from app.clients.http import get_http_client
+from uniclare_client.core.clients.http import get_http_client
 
 
 async def login(

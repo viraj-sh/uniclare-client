@@ -1,9 +1,12 @@
 import httpx
 
-from app.clients.http import get_http_client
-from app.results.endpoints import results_details, results_list
-from app.results.parsers import parse_results_details, parse_results_list
-from app.results.schemas import Result, ResultListResult
+from uniclare_client.core.clients.http import get_http_client
+from uniclare_client.core.results.endpoints import results_details, results_list
+from uniclare_client.core.results.parsers import (
+    parse_results_details,
+    parse_results_list,
+)
+from uniclare_client.core.results.schemas import Result, ResultListResult
 
 
 async def list_result(session_token: str) -> list[ResultListResult]:

@@ -1,9 +1,9 @@
 import typer
 
-from cli.auth import auth_app
-from cli.notifications import noti_app
-from cli.profile import profile_app
-from cli.results import results_app
+from uniclare_client.cli.auth import auth_app
+from uniclare_client.cli.notifications import noti_app
+from uniclare_client.cli.profile import profile_app
+from uniclare_client.cli.results import results_app
 
 cli = typer.Typer(
     name="unicli", help="UniCLI — Uniclare command-line client", no_args_is_help=True

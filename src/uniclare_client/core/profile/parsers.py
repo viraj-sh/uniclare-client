@@ -1,6 +1,6 @@
 import httpx
 
-from app.profile.schemas import ProfileResult
+from uniclare_client.core.profile.schemas import ProfileResult
 
 
 def parse_profile(response: httpx.Response) -> ProfileResult:

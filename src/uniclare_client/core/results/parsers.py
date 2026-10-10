@@ -1,6 +1,6 @@
 import httpx
 
-from app.results.schemas import (
+from uniclare_client.core.results.schemas import (
     Result,
     ResultInfo,
     ResultListResult,

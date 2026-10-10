@@ -7,8 +7,8 @@ from rich.console import Console, Group
 from rich.panel import Panel
 from rich.table import Table
 
-from app.api import app
-from app.lifecycle import shutdown, startup
+from uniclare_client.core.api import app
+from uniclare_client.core.lifecycle import shutdown, startup
 
 results_app = typer.Typer(invoke_without_command=True)
 

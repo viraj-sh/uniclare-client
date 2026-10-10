@@ -1,6 +1,6 @@
 import httpx
 
-from app.notifications.schemas import NotificationResponse
+from uniclare_client.core.notifications.schemas import NotificationResponse
 
 
 def parse_noti(response: httpx.Response) -> list[NotificationResponse]:

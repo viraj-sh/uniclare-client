@@ -5,8 +5,8 @@ import typer
 from rich import box, print
 from rich.table import Table
 
-from app.api import app
-from app.lifecycle import shutdown, startup
+from uniclare_client.core.api import app
+from uniclare_client.core.lifecycle import shutdown, startup
 
 profile_app = typer.Typer()
 

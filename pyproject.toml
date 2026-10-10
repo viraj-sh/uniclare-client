@@ -3,20 +3,29 @@ name = "uniclare-client"
 version = "2.0.0"
 description = "View data that is hidden on the Uniclare App or Student Portal."
 readme = "README.md"
-requires-python = ">=3.12.13"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [
+    { name = "viraj-sh", email = "virajs45@proton.me" }
+]
+requires-python = ">=3.12"
 dependencies = [
     "httpx>=0.28.1",
-    "pydantic>=2.13.5",
+    "pydantic>=2.14.0",
 ]
 
+[project.scripts]
+unicli = "uniclare_client.cli.entry:run"
+
 [project.optional-dependencies]
-mcp = [
-    "fastmcp>=4.0.11",
-]
 cli = [
     "keyring>=25.7.0",
     "typer>=0.27.3",
 ]
+mcp = [
+    "fastmcp>=4.0.11",
+]
 
-[dependency-groups]
-dev = []
+[build-system]
+requires = ["uv_build>=0.11.21,<0.12.0"]
+build-backend = "uv_build"

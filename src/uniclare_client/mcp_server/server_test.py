@@ -1,19 +1,15 @@
 from contextlib import asynccontextmanager
 
 from fastmcp import FastMCP
-from fastmcp.server.auth import AccessToken, TokenVerifier
 from fastmcp.server.dependencies import get_access_token
 
-from app.api import app
-from app.lifecycle import shutdown, startup
-
-
-class UniTokenVerifier(TokenVerifier):
-    async def verify_token(self, token: str) -> AccessToken | None:
-        result = await app.verify_session_token(token)
-        if result.status != "success" or result.error_code != 0:
-            return None
-        return AccessToken(token=token, client_id="uniclare", scopes=[])
+from uniclare_client.core.api import app
+from uniclare_client.core.lifecycle import shutdown, startup
+from uniclare_client.mcp_server.auth_test import (
+    complete_handler,
+    connect_info_handler,
+    provider,
+)
 
 
 @asynccontextmanager
@@ -25,7 +21,10 @@ async def lifespan(server: FastMCP):
         await shutdown()
 
 
-mcp = FastMCP("Uniclare MCP", auth=UniTokenVerifier(), lifespan=lifespan)
+mcp = FastMCP("Uniclare MCP", auth=provider, lifespan=lifespan)
+mcp.custom_route("/connect-info", methods=["GET", "OPTIONS"])(connect_info_handler)
+mcp.custom_route("/complete", methods=["POST", "OPTIONS"])(complete_handler)
+# mcp.custom_route("/login", methods=["GET", "POST"])(login_handler) # main
 
 
 def _token() -> str:
@@ -38,22 +37,19 @@ def _token() -> str:
 @mcp.tool()
 async def fetch_profile():
     """Fetch the current student's profile details."""
-    profile = await app.profile(_token())
-    return profile
+    return await app.profile(_token())
 
 
 @mcp.tool()
 async def fetch_notifications():
     """Fetch the current student's notifications."""
-    notifications = await app.notifications(_token())
-    return notifications
+    return await app.notifications(_token())
 
 
 @mcp.tool()
 async def fetch_results_list():
     """Fetch a list of the current student's results with summary details (title, semester, pass/fail, etc.)."""
-    results_list = await app.results_list(_token())
-    return results_list
+    return await app.results_list(_token())
 
 
 @mcp.tool()
@@ -65,14 +61,10 @@ async def fetch_result_deatails(
 
     Args:
         exam_no: Exam number identifying which exam result to view in detail.
-            This is the `year` value returned by `fetch_results_list`
-            (e.g., 'F-2026-1' for VI Semester, 'E-2025-2' for V Semester, etc.).
-            Get this from `fetch_results_list` by reading the `year` field of the
-            desired result entry.
+            Get this from `fetch_results_list`.
         reg_no: Student registration number. Get this from `fetch_profile`.
     """
-    result_details = await app.result_details(exam_no, reg_no, _token())
-    return result_details
+    return await app.result_details(exam_no, reg_no, _token())
 
 
 if __name__ == "__main__":

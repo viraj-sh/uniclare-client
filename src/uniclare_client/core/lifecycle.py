@@ -1,4 +1,4 @@
-from app.clients.http import close_http_client, init_http_client
+from uniclare_client.core.clients.http import close_http_client, init_http_client
 
 
 async def startup():

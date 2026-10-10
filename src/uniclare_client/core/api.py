@@ -1,4 +1,4 @@
-from app.auth.schemas import (
+from uniclare_client.core.auth.schemas import (
     CaptchaResult,
     OTPResult,
     ResetPassResult,
@@ -6,15 +6,15 @@ from app.auth.schemas import (
     SignoutResult,
     VerifySessionResult,
 )
-from app.auth.service import get_captcha, get_otp, logout, reset_pass
-from app.auth.service import login as auth_login
-from app.auth.service import verify_session as verify_session
-from app.notifications.schemas import NotificationResponse
-from app.notifications.service import noti
-from app.profile.schemas import ProfileResult
-from app.profile.service import profile as get_profile
-from app.results.schemas import Result, ResultListResult
-from app.results.service import list_result, result_det
+from uniclare_client.core.auth.service import get_captcha, get_otp, logout, reset_pass
+from uniclare_client.core.auth.service import login as auth_login
+from uniclare_client.core.auth.service import verify_session as verify_session
+from uniclare_client.core.notifications.schemas import NotificationResponse
+from uniclare_client.core.notifications.service import noti
+from uniclare_client.core.profile.schemas import ProfileResult
+from uniclare_client.core.profile.service import profile as get_profile
+from uniclare_client.core.results.schemas import Result, ResultListResult
+from uniclare_client.core.results.service import list_result, result_det
 
 
 class App:

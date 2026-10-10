@@ -4,8 +4,8 @@ import keyring
 import typer
 from rich import print
 
-from app.api import app
-from app.lifecycle import shutdown, startup
+from uniclare_client.core.api import app
+from uniclare_client.core.lifecycle import shutdown, startup
 
 auth_app = typer.Typer()
 

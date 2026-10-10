@@ -1,7 +1,10 @@
 import httpx
 
-from app.constants import API_BASE_URL
-from app.http_headers import authenticated_headers, unauthenticated_headers
+from uniclare_client.core.constants import API_BASE_URL
+from uniclare_client.core.http_headers import (
+    authenticated_headers,
+    unauthenticated_headers,
+)
 
 SIGNIN_URL = f"{API_BASE_URL}/signin.php"
 CAPTCHA_URL = f"{API_BASE_URL}/get_captcha.php"

@@ -1,7 +1,7 @@
 import httpx
 
-from app.constants import API_BASE_URL
-from app.http_headers import authenticated_headers
+from uniclare_client.core.constants import API_BASE_URL
+from uniclare_client.core.http_headers import authenticated_headers
 
 PROFILE_URL = f"{API_BASE_URL}/src/profile.php"
 

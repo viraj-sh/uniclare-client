@@ -7,8 +7,8 @@ from rich.console import Group
 from rich.panel import Panel
 from rich.text import Text
 
-from app.api import app
-from app.lifecycle import shutdown, startup
+from uniclare_client.core.api import app
+from uniclare_client.core.lifecycle import shutdown, startup
 
 noti_app = typer.Typer()
 

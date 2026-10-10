@@ -1,6 +1,6 @@
 import httpx
 
-from app.auth.schemas import (
+from uniclare_client.core.auth.schemas import (
     CaptchaResult,
     OTPResult,
     ResetPassResult,
