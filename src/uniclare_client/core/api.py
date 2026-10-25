@@ -4,6 +4,7 @@ from uniclare_client.core import lifecycle
 from uniclare_client.core.auth import AuthService
 from uniclare_client.core.config import Settings
 from uniclare_client.core.errors import AppNotStarted
+from uniclare_client.core.results import ResultsService
 
 
 class App:
@@ -12,12 +13,19 @@ class App:
         self._stack = AsyncExitStack()
         self._started = False
         self._auth: AuthService | None = None
+        self._results: ResultsService | None = None
 
     @property
     def auth(self) -> AuthService:
         if not self._started or self._auth is None:
             raise AppNotStarted("App not started")
         return self._auth
+
+    @property
+    def results(self) -> ResultsService:
+        if not self._started or self._results is None:
+            raise AppNotStarted("App not started")
+        return self._results
 
     async def start(self) -> "App":
         if self._started:
@@ -29,6 +37,7 @@ class App:
             raise
         self._http = res.http
         self._auth = AuthService(res.http)
+        self._results = ResultsService(res.http)
         self._started = True
         return self
 
