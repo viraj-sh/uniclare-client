@@ -68,6 +68,13 @@ async def fetch_profile() -> dict:
 
 
 @mcp.tool()
+async def fetch_notifications() -> list[dict]:
+    """Fetch the current student's notifications, newest first."""
+    items = await _get_app().notifications.list(_token())
+    return [n.model_dump(mode="json") for n in items]
+
+
+@mcp.tool()
 async def fetch_results_list() -> list[dict]:
     """Fetch a list of the current student's exam results, newest first.
 
