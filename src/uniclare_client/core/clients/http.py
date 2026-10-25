@@ -43,6 +43,10 @@ class HttpClient:
         self._config = config
         self._client: httpx.AsyncClient | None = None
 
+    @property
+    def is_started(self) -> bool:
+        return self._client is not None
+
     async def _send(
         self, client: httpx.AsyncClient, method: str, url: str, **kwargs: Any
     ) -> httpx.Response:

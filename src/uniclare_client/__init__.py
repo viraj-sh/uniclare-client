@@ -1,5 +1,6 @@
 from importlib.metadata import PackageNotFoundError, version
 
+from uniclare_client.core.api import App
 from uniclare_client.core.errors import AppError
 
 try:
@@ -7,4 +8,4 @@ try:
 except PackageNotFoundError:
     __version__ = "0+unknown"
 
-__all__ = ["AppError", "__version__"]
+__all__ = ["App", "AppError", "__version__"]
