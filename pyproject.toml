@@ -15,7 +15,16 @@ dependencies = [
 ]
 
 [project.scripts]
-uniclare-client = "uniclare_client:main"
+unicli = "uniclare_client.interfaces.cli.entry:run"
+unimcp = "uniclare_client.interfaces.mcp.entry:run"
+
+[project.optional-dependencies]
+cli = [
+    "typer>=0.27.3",
+]
+mcp = [
+    "fastmcp>=4.1.3",
+]
 
 [build-system]
 requires = ["uv_build>=0.11.21,<0.12.0"]
