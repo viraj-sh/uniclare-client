@@ -22,7 +22,9 @@ def run() -> None:
                 str(static_dir / "index.html"),
                 js_api=api,
             )
-            webview.start()
+            webview.start(
+                private_mode=False,
+            )
     finally:
         runner.run(app.close())
         runner.stop()
