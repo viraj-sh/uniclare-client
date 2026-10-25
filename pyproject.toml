@@ -18,6 +18,9 @@ dependencies = [
 unicli = "uniclare_client.interfaces.cli.entry:run"
 unimcp = "uniclare_client.interfaces.mcp.entry:run"
 
+[project.gui-scripts]
+unigui = "uniclare_client.interfaces.desktop.entry:run"
+
 [project.optional-dependencies]
 cli = [
     "keyring>=25.7.0",
@@ -25,6 +28,12 @@ cli = [
 ]
 mcp = [
     "fastmcp>=4.1.3",
+]
+desktop = [
+    "pyqt6>=6.11.0",
+    "pyqt6-webengine>=6.11.0",
+    "pywebview>=6.2.1",
+    "qtpy>=2.4.3",
 ]
 
 [build-system]
