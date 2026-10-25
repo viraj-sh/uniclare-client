@@ -9,7 +9,10 @@ authors = [
     { name = "viraj-sh", email = "virajs45@proton.me" }
 ]
 requires-python = ">=3.12"
-dependencies = []
+dependencies = [
+    "httpx>=0.28.1",
+    "pydantic-settings>=2.16.1",
+]
 
 [project.scripts]
 uniclare-client = "uniclare_client:main"
