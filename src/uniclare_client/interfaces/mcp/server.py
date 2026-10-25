@@ -62,6 +62,12 @@ async def health() -> str:
 
 
 @mcp.tool()
+async def fetch_profile() -> dict:
+    """Fetch the current student's profile details."""
+    return (await _get_app().profile.get(_token())).model_dump(mode="json")
+
+
+@mcp.tool()
 async def fetch_results_list() -> list[dict]:
     """Fetch a list of the current student's exam results, newest first.
 

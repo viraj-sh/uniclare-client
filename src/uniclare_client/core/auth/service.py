@@ -28,7 +28,6 @@ class AuthService:
         return parsers.parse_signin(response, session_token=session_token)
 
     async def verify_session(self, session_token: str) -> bool:
-        print(session_token)
         return parsers.parse_verify_session(
             await endpoints.verify_session(self._http, session_token)
         )
