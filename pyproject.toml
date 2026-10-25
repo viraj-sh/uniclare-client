@@ -1,0 +1,19 @@
+[project]
+name = "uniclare-client"
+version = "3.0.0"
+description = "View data that is hidden on the Uniclare App or Student Portal."
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [
+    { name = "viraj-sh", email = "virajs45@proton.me" }
+]
+requires-python = ">=3.12"
+dependencies = []
+
+[project.scripts]
+uniclare-client = "uniclare_client:main"
+
+[build-system]
+requires = ["uv_build>=0.11.21,<0.12.0"]
+build-backend = "uv_build"
