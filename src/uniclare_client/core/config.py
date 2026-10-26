@@ -16,3 +16,6 @@ class Settings(BaseSettings):
     http_max_keepalive: int = 20
     http_keepalive_expiry: float = 120.0
     http_retries: int = 2
+
+    # Webview Port
+    desktop_http_port: int = 17321

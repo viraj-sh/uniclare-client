@@ -1,2 +1,16 @@
 **__pycache__
 src/uniclare_client/interfaces/desktop/static
+flatpak-pip-generator.py
+flatpak-builder-tools-master
+packaging/*
+!packaging/flatpak/
+.flatpak-builder
+# 2. Ignore absolutely everything inside the flatpak folder by default
+packaging/flatpak/*
+
+# 3. Whitelist ONLY your specific file extensions
+!packaging/flatpak/*.json
+!packaging/flatpak/*.desktop
+!packaging/flatpak/*.xml
+!packaging/flatpak/*.svg
+!packaging/flatpak/*.yml
