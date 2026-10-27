@@ -1,0 +1,8 @@
+Package: uniclare-client
+Version: 3.0.0
+Section: utils
+Priority: optional
+Architecture: amd64
+Depends: python3 (>= 3.12), python3-pydantic-settings, python3-pywebview, python3-platformdirs, python3-pyqt6, python3-pyqt6-webengine, python3-httpx, python3-qtpy
+Maintainer: Viraj <virajs45@proton.me>
+Description: View data that is hidden on the Uniclare App or Student Portal.
