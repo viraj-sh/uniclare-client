@@ -19,7 +19,7 @@ unicli = "uniclare_client.interfaces.cli.entry:run"
 unimcp = "uniclare_client.interfaces.mcp.entry:run"
 
 [project.gui-scripts]
-unigui = "uniclare_client.interfaces.desktop.entry:run"
+unidesk = "uniclare_client.interfaces.desktop.entry:run"
 
 [project.optional-dependencies]
 cli = [

@@ -45,7 +45,7 @@ def run() -> None:
             f"- If no window is visible, a previous process may be stuck —\n"
             f"  find and terminate it, then try again.\n"
             f"- To use a different port (note: this resets your saved session):\n"
-            f"    UNICLARE_DESKTOP_HTTP_PORT={port + 1} unigui"
+            f"    UNICLARE_DESKTOP_HTTP_PORT={port + 1} unidesk"
         )
 
     storage_path = Path(user_data_dir("uniclare-client", appauthor=False)) / "webview"
