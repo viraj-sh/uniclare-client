@@ -1,8 +1,11 @@
+import os
 import socket
 import sys
 import time
 from importlib.resources import as_file, files
 from pathlib import Path
+
+os.environ.setdefault("PYWEBVIEW_GUI", "qt")
 
 import webview
 from platformdirs import user_data_dir
