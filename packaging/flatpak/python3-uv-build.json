@@ -1,0 +1,25 @@
+{
+    "name": "python3-uv_build",
+    "buildsystem": "simple",
+    "build-commands": [
+        "pip3 install --verbose --exists-action=i --no-index --find-links=\"file://${PWD}\" --prefix=${FLATPAK_DEST} \"uv_build==0.11.33\" --no-build-isolation"
+    ],
+    "sources": [
+        {
+            "type": "file",
+            "url": "https://files.pythonhosted.org/packages/de/1b/5503be7c92d5d4973832dafd373af29a2e550a945948fc5838dc392105d6/uv_build-0.11.33-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+            "sha256": "9dd92f812965010d4109c2a34e07b9405ca17d2783d15cb2bb0e024a2f9f407d",
+            "only-arches": [
+                "x86_64"
+            ]
+        },
+        {
+            "type": "file",
+            "url": "https://files.pythonhosted.org/packages/5f/dd/66c4e33784a24540716b899be1e2aa76f1e52aed8aa01a40a823746de556/uv_build-0.11.33-py3-none-manylinux_2_17_aarch64.manylinux2014_aarch64.musllinux_1_1_aarch64.whl",
+            "sha256": "0757cd5359d98a83aea5463f43299be0c61bcd035cd0628cfee782fed8037f63",
+            "only-arches": [
+                "aarch64"
+            ]
+        }
+    ]
+}

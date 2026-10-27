@@ -1,0 +1,41 @@
+id: io.github.viraj_sh.uniclare_client
+runtime: org.kde.Platform
+runtime-version: '6.11'
+sdk: org.kde.Sdk
+base: com.riverbankcomputing.PyQt.BaseApp
+base-version: '6.11'
+sdk-extensions:
+  - org.freedesktop.Sdk.Extension.node24
+command: unidesk
+
+cleanup-commands:
+  - /app/cleanup-BaseApp.sh
+
+finish-args:
+  - --share=network
+  - --share=ipc
+  - --socket=wayland
+  - --socket=fallback-x11
+  - --socket=system-bus
+  - --device=dri
+  - --env=PYWEBVIEW_GUI=qt
+  - --env=QTWEBENGINEPROCESS_PATH=/app/bin/QtWebEngineProcess
+  - --env=SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
+modules:
+  - python3-deps.json
+  - python3-uv-build.json
+  - name: uniclare-client
+    buildsystem: simple
+    build-options:
+      append-path: /usr/lib/sdk/node24/bin
+      strip: true
+    build-commands:
+      - cd web && npm ci --offline --cache=$FLATPAK_BUILDER_BUILDDIR/flatpak-node/npm-cache && npm run build
+      - pip3 install --prefix=/app --no-deps --no-build-isolation .
+      - install -Dm644 packaging/flatpak/io.github.viraj_sh.uniclare_client.desktop /app/share/applications/io.github.viraj_sh.uniclare_client.desktop
+      - install -Dm644 packaging/flatpak/io.github.viraj_sh.uniclare_client.metainfo.xml /app/share/metainfo/io.github.viraj_sh.uniclare_client.metainfo.xml
+      - install -Dm644 packaging/flatpak/io.github.viraj_sh.uniclare_client.svg /app/share/icons/hicolor/scalable/apps/io.github.viraj_sh.uniclare_client.svg
+    sources:
+      - type: dir
+        path: ../..
+      - generated-sources.json

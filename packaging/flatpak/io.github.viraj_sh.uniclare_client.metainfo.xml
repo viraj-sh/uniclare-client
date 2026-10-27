@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>io.github.viraj_sh.uniclare_client</id>
+  <name>Uniclare Client</name>
+  <summary>View data that is hidden on the Uniclare App or Student Portal</summary>
+  <metadata_license>MIT</metadata_license>
+  <project_license>MIT</project_license>
+  <description>
+    <p>Uniclare Client lets you view data that is hidden on the Uniclare App or Student Portal.</p>
+  </description>
+  <launchable type="desktop-id">io.github.viraj_sh.uniclare_client.desktop</launchable>
+  <developer id="io.github.viraj_sh">
+    <name>viraj-sh</name>
+  </developer>
+  <url type="homepage">https://github.com/viraj-sh/uniclare-client</url>
+  <content_rating type="oars-1.1"/>
+  <releases>
+    <release version="3.0.0" date="2026-10-25"/>
+  </releases>
+</component>

@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Uniclare Client
+Exec=unidesk
+Icon=io.github.viraj_sh.uniclare_client
+Terminal=false
+Type=Application
+Categories=Utility;
+StartupWMClass=unidesk
