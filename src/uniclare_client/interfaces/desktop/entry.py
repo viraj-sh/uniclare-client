@@ -1,6 +1,8 @@
 from importlib.resources import as_file, files
+from pathlib import Path
 
 import webview
+from platformdirs import user_data_dir
 
 from uniclare_client.core.api import App
 from uniclare_client.interfaces.desktop.bridge import JsApi
@@ -14,6 +16,9 @@ def run() -> None:
     runner.run(app.start())
     api = JsApi(runner, app)
 
+    storage_path = Path(user_data_dir("uniclare_client", appauthor=False)) / "webview"
+    storage_path.mkdir(parents=True, exist_ok=True)
+
     try:
         with as_file(
             files("uniclare_client.interfaces.desktop") / "static"
@@ -25,6 +30,7 @@ def run() -> None:
             )
             webview.start(
                 private_mode=False,
+                storage_path=str(storage_path),
             )
     finally:
         runner.run(app.close())
