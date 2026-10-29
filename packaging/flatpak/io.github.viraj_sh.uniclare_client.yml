@@ -1,15 +1,10 @@
 id: io.github.viraj_sh.uniclare_client
-runtime: org.kde.Platform
-runtime-version: '6.11'
-sdk: org.kde.Sdk
-base: com.riverbankcomputing.PyQt.BaseApp
-base-version: '6.11'
+runtime: org.gnome.Platform
+runtime-version: '51'
+sdk: org.gnome.Sdk
 sdk-extensions:
-  - org.freedesktop.Sdk.Extension.node24
+  - org.freedesktop.Sdk.Extension.node26
 command: unidesk
-
-cleanup-commands:
-  - /app/cleanup-BaseApp.sh
 
 finish-args:
   - --share=network
@@ -18,16 +13,16 @@ finish-args:
   - --socket=fallback-x11
   - --socket=system-bus
   - --device=dri
-  - --env=PYWEBVIEW_GUI=qt
-  - --env=QTWEBENGINEPROCESS_PATH=/app/bin/QtWebEngineProcess
+  - --env=PYWEBVIEW_GUI=gtk
   - --env=SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
+
 modules:
   - python3-deps.json
   - python3-uv-build.json
   - name: uniclare-client
     buildsystem: simple
     build-options:
-      append-path: /usr/lib/sdk/node24/bin
+      append-path: /usr/lib/sdk/node26/bin
       strip: true
     build-commands:
       - cd web && npm ci --offline --cache=$FLATPAK_BUILDER_BUILDDIR/flatpak-node/npm-cache && npm run build
