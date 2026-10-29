@@ -1,10 +1,10 @@
 import type {
-    Captcha,
-    Notification,
-    OtpInfo,
-    Profile,
-    Result,
-    ResultSummary,
+  Captcha,
+  Notification,
+  OtpInfo,
+  Profile,
+  Result,
+  ResultSummary,
 } from "./types";
 
 const API_BASE =
@@ -64,8 +64,22 @@ async function viaHttp<T>(method: string, args: object): Promise<T> {
   return body as T;
 }
 
-const call = <T>(method: string, args: object = {}): Promise<T> =>
-  isDesktop() ? viaBridge<T>(method, args) : viaHttp<T>(method, args);
+const call = async <T>(
+  method: string,
+  args: object = {},
+): Promise<T> => {
+  if (isDesktop()) {
+    return viaBridge<T>(method, args);
+  }
+
+  await bridgeReady;
+
+  if (isDesktop()) {
+    return viaBridge<T>(method, args);
+  }
+
+  return viaHttp<T>(method, args);
+};
 
 const token = (): string => localStorage.getItem(TOKEN_KEY) || "";
 

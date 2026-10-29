@@ -353,20 +353,6 @@
             ]
         },
         {
-            "name": "python3-qtpy",
-            "buildsystem": "simple",
-            "build-commands": [
-                "pip3 install --verbose --exists-action=i --no-index --find-links=\"file://${PWD}\" --prefix=${FLATPAK_DEST} \"qtpy==2.4.3\" --no-build-isolation"
-            ],
-            "sources": [
-                {
-                    "type": "file",
-                    "url": "https://files.pythonhosted.org/packages/69/76/37c0ccd5ab968a6a438f9c623aeecc84c202ab2fabc6a8fd927580c15b5a/QtPy-2.4.3-py3-none-any.whl",
-                    "sha256": "72095afe13673e017946cc258b8d5da43314197b741ed2890e563cf384b51aa1"
-                }
-            ]
-        },
-        {
             "name": "python3-typing-extensions",
             "buildsystem": "simple",
             "build-commands": [

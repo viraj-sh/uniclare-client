@@ -3,6 +3,7 @@ src/uniclare_client/interfaces/desktop/static
 flatpak-pip-generator.py
 flatpak-builder-tools-master
 .flatpak-builder
+Makefile
 
 # Ignore contents by default (using /* leaves the door open for whitelists)
 packaging/flatpak/*
