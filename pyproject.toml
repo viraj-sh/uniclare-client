@@ -43,5 +43,6 @@ build-backend = "uv_build"
 
 [dependency-groups]
 dev = [
+    "nuitka>=4.3.3",
     "requirements-parser>=0.13.1",
 ]

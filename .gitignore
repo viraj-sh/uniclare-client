@@ -4,7 +4,8 @@ flatpak-pip-generator.py
 flatpak-builder-tools-master
 .flatpak-builder
 Makefile
-
+repo
+*.flatpak
 # Ignore contents by default (using /* leaves the door open for whitelists)
 packaging/flatpak/*
 packaging/deb/*
